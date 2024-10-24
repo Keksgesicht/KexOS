@@ -1,4 +1,4 @@
-{ config, pkgs, lib, cookie-pkg, ssd-mnt, ... }:
+{ config, pkgs, lib, cookie-pkg, ssd-mnt, lan-subnet-v4, ... }:
 
 let
   cc-dir = "${cookie-pkg}/containers";
@@ -28,12 +28,16 @@ in
       ports = [
         "53:53/tcp"
         "53:53/udp"
-        #"5353:5353/udp"
       ];
       environment = {
         TZ = config.time.timeZone;
         IPv6 = "True";
-        ServerIP = "192.168.178.150";
+        ServerIP =
+          if (config.networking.hostName == "cookieclicker") then
+            "${lan-subnet-v4}.150"
+          else if (config.networking.hostName == "cookiepi") then
+            "${lan-subnet-v4}.25"
+          else "0.0.0.0";
         INTERFACE = "eth0";
         WEBUIBOXEDLAYOUT = "boxed";
       };

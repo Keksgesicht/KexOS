@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lan-subnet-v4, ... }:
 
 let
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
@@ -23,8 +23,8 @@ in
       mode = "0600";
       source = pkgs.substituteAll {
         src       =  ../../../files + "/${nmsc-path}/server-lan.nmconnection";
-        dnsserver = "192.168.178.25;172.23.53.1;";
-        ipaddr    = "192.168.178.25/24,192.168.178.1";
+        dnsserver = "${lan-subnet-v4}.25;172.23.53.1;";
+        ipaddr    = "${lan-subnet-v4}.25/24,${lan-subnet-v4}.1";
       };
     };
   };
@@ -57,6 +57,6 @@ in
     "ff02::2" = [ "ip6-allrouters" ];
 
     # Router
-    "192.168.178.1" = [ "fritz.box" ];
+    "${lan-subnet-v4}.1" = [ "fritz.box" ];
   };
 }

@@ -1,4 +1,4 @@
-config:
+config: lan-subnet-v6:
 {
   MY_IFLINK =
     if (config.networking.hostName == "cookieclicker") then
@@ -8,9 +8,9 @@ config:
     else "eth0";
   MY_IPV6_ULU =
     if (config.networking.hostName == "cookieclicker") then
-      "fd00:3581::192:168:178:150/64"
+      "${lan-subnet-v6}:150/64"
     else if (config.networking.hostName == "cookiepi") then
-      "fd00:3581::192:168:178:25/64"
+      "${lan-subnet-v6}:25/64"
     else "";
   MY_IPV6_SUFFIX =
     if (config.networking.hostName == "cookieclicker") then

@@ -50,9 +50,9 @@ in
     ({ tmpfiles.rules = [
       "q  ${hdd-mnt}/machines"
     ]; })
-    (bd-units "cookiepi" "cookiepi")
+    (bd-units "cookiepi" "cookiepi.keksgesicht.de")
     (bd-units "cookiemailer" "mail.keksgesicht.de")
-    (bd-units "pihole" "rpi.pihole.local")
+    (bd-units "pihole" "rpi.pihole.internal")
   ];
 
   /*

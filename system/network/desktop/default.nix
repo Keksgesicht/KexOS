@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, myDomain, lan-subnet-v4, ... }:
 
 let
   my-functions = (import ../../../nix/my-functions.nix lib);
@@ -170,16 +170,16 @@ with my-functions;
     "ff02::1" = [ "ip6-allnodes" ];
     "ff02::2" = [ "ip6-allrouters" ];
 
-    # Pihole
-    "192.168.178.23" = [ "rpi.pihole.local" ];
-    "172.23.53.1" = [ "docker.pihole.local" ];
     # Router
-    "192.168.178.1" = [ "fritz.box" ];
+    "${lan-subnet-v4}.1" = [ "fritz.box" ];
+
+    # Pihole
+    "${lan-subnet-v4}.23" = [ "rpi.pihole.internal" ];
+    "172.23.53.1"      = [ "docker.pihole.internal" ];
 
     # LAN devices
-    "192.168.178.150" = [ "cookieclicker.local" ];
-    "192.168.178.25"  = [ "cookiepi.local" ];
-    "192.168.178.147" = [ "cookiethinker.local" ];
+    "${lan-subnet-v4}.147" = [ "cookiethinker.${myDomain}" ];
+    "${lan-subnet-v4}.230" = [ "temp.host.internal" ];
 
     # TUDa ESA-Infrastruktur (sshuttle)
     "10.5.0.38" = [ "gitlab.esa.informatik.tu-darmstadt.de" ];

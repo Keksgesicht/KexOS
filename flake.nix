@@ -117,6 +117,9 @@
         secrets-pkg = inputs.secrets-pkg;
         cookie-pkg  = inputs.cookie-pkg;
         self = inputs.self;
+
+        lan-subnet-v4 = "192.168.178";
+        lan-subnet-v6 = "fd00:3581::192:168:178";
       });
     in
     {

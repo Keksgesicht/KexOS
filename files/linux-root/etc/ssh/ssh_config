@@ -43,23 +43,15 @@ Host *
 #   Tunnel no
 #   TunnelDevice any:any
 
-Host remote-devel
-	HostName 127.0.0.1
-	Port 3322
-	User root
-	IdentityFile ~/devel/containers/data/id_ecdsa_podman
-	StrictHostKeyChecking no
-	UserKnownHostsFile /dev/null
-
 Host nixos-installer
-	HostName 192.168.178.146
+	HostName temp.host.internal
 	User nix
 	IdentityFile ~/.secrets/ssh/id_nixos
 	StrictHostKeyChecking no
 	UserKnownHostsFile /dev/null
 
 Host cookieclicker
-	HostName cookieclicker.local
+	HostName cookieclicker.keksgesicht.de
 	User keks
 	IdentityFile ~/.secrets/ssh/id_nixos
 
@@ -69,12 +61,12 @@ Host cookiemailer
 	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host cookiepi
-	HostName cookiepi.local
+	HostName cookiepi.keksgesicht.de
 	User keks
 	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host cookiethinker
-	HostName cookiethinker.local
+	HostName cookiethinker.keksgesicht.de
 	User keks
 	IdentityFile ~/.secrets/ssh/id_nixos
 

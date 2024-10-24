@@ -1,4 +1,6 @@
-{ self, config, pkgs, lib, myDomain, cookie-pkg, ssd-mnt, ... }:
+{ self, config, pkgs, lib, cookie-pkg, ssd-mnt
+, myDomain, lan-subnet-v4, lan-subnet-v6
+, ... }:
 
 let
   cookie-dir = "/etc/unCookie";
@@ -110,14 +112,6 @@ with my-functions;
 
   systemd.tmpfiles.rules =
   let
-    inCfg = "${self}/files/container-cfg/unbound";
-    eList = (forEach (listFilesRec inCfg) (e:
-      let
-        eFile = lib.removePrefix inCfg e;
-      in
-      "r ${bind-path}${eFile} - - - - -"
-    ));
-
     myDomainGen = (l: forEach l (eL: forEach eL.zone (eZ:
       ''
         local-zone: "${eZ.name}" ${eZ.type}
@@ -126,11 +120,11 @@ with my-functions;
       ''
     )));
     myDomainText = myDomainGen [
-      { ip4 = "192.168.178.25"; ip6 = "fd00:3581::192:168:178:25"; zone = [
+      { ip4 = "${lan-subnet-v4}.25"; ip6 = "${lan-subnet-v6}:25"; zone = [
         { name = "cloud.${myDomain}"; type = "static"; }
         { name = "cookiepi.${myDomain}"; type = "redirect"; }
       ]; }
-      { ip4 = "192.168.178.150"; ip6 = "fd00:3581::192:168:178:150"; zone = [
+      { ip4 = "${lan-subnet-v4}.150"; ip6 = "${lan-subnet-v6}:150"; zone = [
         { name = "games.${myDomain}"; type = "redirect"; }
         { name = "cookieclicker.${myDomain}"; type = "redirect"; }
       ]; }
@@ -139,8 +133,7 @@ with my-functions;
       lib.strings.concatStringsSep "\n" (flatList myDomainText)
     );
   in
-  eList ++ [
-    "C+ ${bind-path} - 100 101 - ${inCfg}"
+  [
     "r  ${bind-path}/conf/${myDomain}.conf - - - - -"
     "C+ ${bind-path}/conf/${myDomain}.conf - 100 101 - ${myDomainConf}"
   ];

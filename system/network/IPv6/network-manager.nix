@@ -1,7 +1,7 @@
-{ self, config, pkgs, ... }:
+{ self, config, pkgs, lan-subnet-v6, ... }:
 
 let
-  ip-vars = (import ./variables.nix config);
+  ip-vars = (import ./variables.nix config lan-subnet-v6);
   dispatchVars = with ip-vars; ''
     export MY_IFLINK=${MY_IFLINK}
     export MY_IPV6_ULU=${MY_IPV6_ULU}

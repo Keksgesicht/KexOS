@@ -364,8 +364,8 @@
     "secrets-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1729341639,
-        "narHash": "sha256-YPo+hb9gcwKgItnocDB4DZia11RFHsbFas/bRM/QU7E=",
+        "lastModified": 1729884571,
+        "narHash": "sha256-OU8CehW9GtfYL8G88w+u9ggIFLQtJxbHmYtanXVeDKA=",
         "path": "/etc/nixos/secrets/local",
         "type": "path"
       },

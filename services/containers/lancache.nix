@@ -1,4 +1,6 @@
-{ config, pkgs, lib, cookie-pkg, ssd-mnt, nvm-mnt, nvm-name, ... }:
+{ config, pkgs, lib, ssd-mnt, nvm-mnt, nvm-name
+, cookie-pkg, lan-subnet-v4
+, ... }:
 
 let
   cc-dir = "${cookie-pkg}/containers";
@@ -72,7 +74,7 @@ in
 
       environment = {
         TZ = config.time.timeZone;
-        LANCACHE_IP = "192.168.178.150";
+        LANCACHE_IP = "${lan-subnet-v4}.150";
         UPSTREAM_DNS = "172.23.53.2";
         CACHE_MAX_AGE = "1234d";
         CACHE_MEM_SIZE = "1000m";

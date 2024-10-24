@@ -1,4 +1,4 @@
-{ config, pkgs, secrets-pkg, ... }:
+{ config, pkgs, secrets-pkg, lan-subnet-v4, ... }:
 
 let
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
@@ -34,8 +34,8 @@ in
       mode = "0600";
       source = pkgs.substituteAll {
         src       =  ../../../files + "/${nmsc-path}/home.nmconnection";
-        dnsserver = (builtins.readFile "${nmsc-data}/cookieclicker-home-dnsserver");
-        ipaddr    = (builtins.readFile "${nmsc-data}/cookieclicker-home-ipaddr");
+        dnsserver = "${lan-subnet-v4}.150;172.23.53.1";
+        ipaddr    = "${lan-subnet-v4}.150/24,${lan-subnet-v4}.1";
         macaddr   = (builtins.readFile "${nmsc-data}/cookieclicker-home-macaddr");
       };
     };

@@ -1,8 +1,7 @@
-{ self, config, pkgs, myDomain, secrets-dir, ... }:
+{ self, config, pkgs, myDomain, secrets-dir, lan-subnet-v6, ... }:
 
 let
-  ip-vars = import "${self}/system/network/IPv6/variables.nix" config;
-  envVars = config.environment.sessionVariables;
+  ip-vars = (import "${self}/system/network/IPv6/variables.nix" config lan-subnet-v6);
   cfgNetName = config.networking.hostName;
 in
 {
