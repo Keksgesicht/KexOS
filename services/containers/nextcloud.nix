@@ -18,7 +18,7 @@ in
     };
     "nextcloud-db" = {
       upstream.name = "mariadb";
-      upstream.tag = "10.5";
+      upstream.tag = "lts";
       final.name = "nextcloud-db";
     };
     "nextcloud-redis" = {
@@ -86,7 +86,7 @@ in
       autoStart = true;
       dependsOn = [];
 
-      image = "localhost/nextcloud-db:10.5";
+      image = "localhost/nextcloud-db:lts";
       imageFile = pkgs.dockerTools.pullImage (
         builtins.fromJSON (builtins.readFile "${cc-dir}/nextcloud-db.json")
       );
@@ -99,6 +99,8 @@ in
         TZ = config.time.timeZone;
         MYSQL_DATABASE = "nextcloud";
         MYSQL_USER = "nextcloud";
+        MARIADB_AUTO_UPGRADE = "1";
+        MARIADB_INITDB_SKIP_TZINFO = "1";
       };
       environmentFiles = [
         "${secrets-dir}/keys/containers/nextcloud/MYSQL"
