@@ -14,26 +14,26 @@ fi
 
 ### LaTex
 export LC_ALL='en_US.utf8'
-tmp_file_endings="$(dirname $(realpath $0))/../cfg/LaTex"
+tmp_file_endings="$(dirname "$(realpath "$0")")/../cfg/LaTex"
 
 tmp_file_dir=$(mktemp)
-cat << 'EOF' > $tmp_file_dir
+cat << 'EOF' > "$tmp_file_dir"
 array/homeBraunJan/Documents/Studium/Module
 array/homeBraunJan/Documents/Office
 array/homeBraunJan/Documents/development/git/Studium
 EOF
 
 IFS=$'\n'   # forloop separator - only newlines
-for dir in $(cat $tmp_file_dir); do
+for dir in $(cat "$tmp_file_dir"); do
 	for file in $(plocate '*/'"${dir}"'/*.tex'); do
 		texdir=$(dirname "${file}")
-		for end in $(cat $tmp_file_endings); do
+		for end in $(cat "$tmp_file_endings"); do
 			find "${texdir}" -maxdepth 1 -type f -name '*.'"${end}" -print -delete
 		done
 	done
 done
 IFS=${OLDIFS}
-rm $tmp_file_dir
+rm "$tmp_file_dir"
 
 
 ### only keep newest version of nextcloud or mobile phone backups
@@ -44,16 +44,16 @@ if [ -d "/mnt/array/appdata2/nextcloud" ]; then
 	done
 	sleep 3s
 
-	##
-	### Cleanup older Backups in Nextcloud
-	##
+	# Cleanup older Backups in Nextcloud
 	docexe-nextcloud() {
-		podman exec nextcloud $@
+		podman exec nextcloud "$@"
 	}
+
+	nextcloud_janb_files="/mnt/array/appdata2/nextcloud/janb/files"
 
 	### limit Calendar Backups
 	IFS=$'\n'
-	for contact_group in $(find /mnt/array/appdata2/nextcloud/janb/files/.Calendar-Backup -type f -name '*.ics' | \
+	for contact_group in $(find ${nextcloud_janb_files}/.Calendar-Backup -type f -name '*.ics' | \
                            awk -F'_' '{for(i=1;i<=NF-2;i++) printf $i"_"; print ""}' | sort | uniq); do
 		for contact_file in $(ls "${contact_group}"* | head -n -3); do
 			rm "${contact_file}"
@@ -63,12 +63,13 @@ if [ -d "/mnt/array/appdata2/nextcloud" ]; then
 	docexe-nextcloud occ files:scan --path=/janb/files/.Calendar-Backup/ >/dev/null
 
 	### limit Contact Backups
-	find /mnt/array/appdata2/nextcloud/janb/files/.Contacts-Backup -type f -name '*.vcf' | \
+	find ${nextcloud_janb_files}/.Contacts-Backup -type f -name '*.vcf' | \
 		head -n -3 | xargs --no-run-if-empty /bin/rm -v
 	docexe-nextcloud occ files:scan --path=/janb/files/.Contacts-Backup/ >/dev/null
 
 	### limit Signal Chat Backups
-	find /mnt/array/appdata2/nextcloud/janb/files/InstantUpload/SignalBackup -type f -name 'signal-*.backup' | \
+	find ${nextcloud_janb_files}/InstantUpload/SignalBackup -type f -name 'signal-*.backup' | \
 		head -n -3 | xargs --no-run-if-empty /bin/rm -v
+	find ${nextcloud_janb_files}/InstantUpload/SignalBackup -type f -name '.backup*.tmp' -delete
 	docexe-nextcloud occ files:scan --path=/janb/files/InstantUpload/SignalBackup/ >/dev/null
 fi
