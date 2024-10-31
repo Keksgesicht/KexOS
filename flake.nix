@@ -101,6 +101,8 @@
           inherit system;
         } // extraConfig));
 
+        holidayMode = false;
+
         username = "keks";
         home-dir = "/home/${username}";
         myDomain = "keksgesicht.de";

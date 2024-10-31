@@ -1,4 +1,4 @@
-{ pkgs, hdd-name, hdd-mnt, ... }:
+{ pkgs, holidayMode, hdd-name, hdd-mnt, ... }:
 
 # https://docs.mailcow.email/
 # https://github.com/mailcow/mailcow-dockerized
@@ -25,6 +25,7 @@ in
 
   systemd.services = {
     "mailcow-update" = mailcow-srv-cfg // {
+      enable = !holidayMode;
       startAt = "Sat *-*-* 01:12:35";
       path = with pkgs; [
         bash curl docker gawk git iptables systemd

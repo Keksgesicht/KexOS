@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, holidayMode, ... }:
 
 let
   inherit (lib) types;
@@ -48,7 +48,7 @@ let
     }
   );
   mkCIUtimer = {
-    enable = true;
+    enable = !holidayMode;
     overrideStrategy = "asDropin";
     wantedBy = [ "timers.target" ];
   };

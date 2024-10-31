@@ -1,4 +1,4 @@
-{ config, inputs, home-dir, username, ... }:
+{ self, config, holidayMode, home-dir, username, ... }:
 
 let
   current-system = "/nix/var/nix/profiles/system";
@@ -15,13 +15,13 @@ in
 {
   environment.etc = {
     "flake-output/nixos-config" = {
-      source = inputs.self.outPath;
+      source = self.outPath;
     };
   };
 
   # https://nixos.wiki/wiki/Automatic_system_upgrades
   system.autoUpgrade = {
-    enable = true;
+    enable = !holidayMode;
     dates = "*-*-2,4,6,8,12,14,16,18,22,24,26,28 02:22:19";
     randomizedDelaySec = "123min";
 
@@ -34,7 +34,7 @@ in
       upper = "04:32";
     };
 
-    flake = inputs.self.outPath;
+    flake = self.outPath;
     flags = [
       "--update-input" "nixpkgs-stable"
       "--update-input" "nixpkgs-unstable"
