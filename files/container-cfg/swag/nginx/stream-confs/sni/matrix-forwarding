@@ -11,16 +11,16 @@ geo $upstream_443 {
 map $ssl_preread_server_name $upstream_1443 {
     hostnames;
     # https://datatracker.ietf.org/doc/html/rfc863
-    *.cookieclicker.keksgesicht.net 9;
-    *.cookiepi.keksgesicht.net 9;
-    *.keksgesicht.net  8443;
+    *.cookieclicker.keksgesicht.de 9;
+    *.cookiepi.keksgesicht.de 9;
+    *.keksgesicht.de    8443;
 }
 
 
 # LAN switch - upstream or downstream SNI-proxy
 map $ssl_preread_server_name $upstream_2443 {
     hostnames;
-    default           3443;
-    *.keksgesicht.net 8443;
-    keksgesicht.net   8443;
+    default             3443;
+    *.keksgesicht.de    8443;
+    keksgesicht.de      8443;
 }

@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, cookie-pkg, ssd-mnt, ... }:
+{ inputs, config, pkgs, lib, myDomain, cookie-pkg, ssd-mnt, ... }:
 
 let
   cc-dir = "${cookie-pkg}/containers";
@@ -21,21 +21,6 @@ with my-functions;
   systemd = {
     services = {
       "podman-proxy" = (import ./podman-systemd-service.nix lib 25);
-      "server-and-config-update@CloudflareProxyIps" = {
-        overrideStrategy = "asDropin";
-        path = [
-          pkgs.gnused
-          pkgs.wget
-        ];
-        description = "Updates Cloudflares Proxy IPs for reverse proxy (swag)";
-        serviceConfig = {
-          ReadWritePaths = "${bind-path}/nginx";
-          BindReadOnlyPaths = [
-            "/etc/ssl"
-            "/etc/static/ssl"
-          ];
-        };
-      };
       "server-and-config-update@SwagCertbot" = {
         overrideStrategy = "asDropin";
         path = [ pkgs.podman ];
@@ -48,11 +33,6 @@ with my-functions;
     };
 
     timers = {
-      "server-and-config-update@CloudflareProxyIps" = {
-        enable = true;
-        overrideStrategy = "asDropin";
-        wantedBy = [ "timers.target" ];
-      };
       "server-and-config-update@SwagCertbot" = {
         enable = true;
         overrideStrategy = "asDropin";
@@ -77,8 +57,8 @@ with my-functions;
 
       environment = {
         TZ = config.time.timeZone;
-        URL = "keksgesicht.net";
-        EMAIL = "certbot@keksgesicht.net";
+        URL = myDomain;
+        EMAIL = "certbot@${myDomain}";
         SUBDOMAINS =
           if (config.networking.hostName == "cookieclicker") then
             "wildcard,*.cookieclicker"
@@ -87,7 +67,7 @@ with my-functions;
           else "";
         ONLY_SUBDOMAINS = "true";
         VALIDATION = "dns";
-        DNSPLUGIN = "cloudflare";
+        DNSPLUGIN = "hetzner";
         # seconds to wait for DNS record propagation
         PROPAGATION = "42";
         STAGING = "false";

@@ -1,20 +1,20 @@
-{ config, lib, ... }:
+{ config, lib, myDomain, ... }:
 
 {
   nix.settings = {
     substituters = []
       ++ lib.optionals (config.networking.hostName != "cookieclicker") [
-        "https://nix-serve.cookieclicker.keksgesicht.net/"
+        "https://nix-serve.cookieclicker.${myDomain}/"
       ]
       ++ lib.optionals (config.networking.hostName != "cookiepi") [
-        "https://nix-serve.cookiepi.keksgesicht.net/"
+        "https://nix-serve.cookiepi.${myDomain}/"
       ];
     trusted-public-keys = []
       ++ lib.optionals (config.networking.hostName != "cookieclicker") [
-        "nix-serve.cookieclicker.keksgesicht.net:nFpvWc0EnsNT9f6DPYidYd1f3eN8CGA4RQ7u9ygDzLk="
+        "nix-serve.cookieclicker.${myDomain}:uR9PO+9+vDixa/2TPJ3pox41GtT2lMhq/fwRLAEMH3s="
       ]
       ++ lib.optionals (config.networking.hostName != "cookiepi") [
-        "nix-serve.cookiepi.keksgesicht.net:TQ3kzk1z7Pq0aEcY7yA7E2Y6MKju/CVHBk6I/NpCF2E="
+        "nix-serve.cookiepi.${myDomain}:rRX9WW+JPdk2lsBKDP2JjJHj7ib5Vh111JxSORwZRdU="
       ];
     # nixos-rebuild failed when a previously online substituters goes offline
     # this reenables local building

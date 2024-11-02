@@ -6,7 +6,6 @@ in
 {
   imports = [
     ../../system/containers/podman.nix
-    ../system/server-and-config-update.nix
     ./container-image-updater
   ];
 
@@ -43,12 +42,6 @@ in
       "podman-nextcloud" = (import ./podman-systemd-service.nix lib 23) // serviceExtraConfig;
       "podman-nextcloud-db" = (import ./podman-systemd-service.nix lib 27);
       "podman-nextcloud-redis" = (import ./podman-systemd-service.nix lib 27);
-    };
-
-    timers."server-and-config-update@NextcloudUpdates" = {
-      enable = true;
-      overrideStrategy = "asDropin";
-      wantedBy = [ "timers.target" ];
     };
   };
 
