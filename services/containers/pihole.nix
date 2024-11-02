@@ -2,6 +2,7 @@
 
 let
   cc-dir = "${cookie-pkg}/containers";
+  cfgNetName = config.networking.hostName;
 in
 {
   imports = [
@@ -33,9 +34,9 @@ in
         TZ = config.time.timeZone;
         IPv6 = "True";
         ServerIP =
-          if (config.networking.hostName == "cookieclicker") then
+          if (cfgNetName == "cookieclicker") then
             "${lan-subnet-v4}.150"
-          else if (config.networking.hostName == "cookiepi") then
+          else if (cfgNetName == "cookiepi") then
             "${lan-subnet-v4}.25"
           else "0.0.0.0";
         INTERFACE = "eth0";
@@ -47,6 +48,7 @@ in
         "${ssd-mnt}/appdata/pihole/pihole:/etc/pihole:Z"
         #"/tmp/containers/pihole:/var/log"
       ];
+      hostname = cfgNetName;
       extraOptions = [
         "--network" "server"
         "--ip" "172.23.53.1"
