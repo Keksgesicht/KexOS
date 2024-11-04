@@ -1,4 +1,4 @@
-{ config, pkgs, username, ... }:
+{ pkgs, username, isDesktop, ... }:
 
 {
   users.users."${username}".packages = with pkgs; [
@@ -10,7 +10,7 @@
     okteta
     qrencode
     (ventoy.override {
-      withQt5 = (config.services.xserver.enable);
+      withQt5 = isDesktop;
     })
     waypipe
     wireguard-tools

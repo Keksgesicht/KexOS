@@ -101,6 +101,7 @@
           inherit system;
         } // extraConfig));
 
+        isDesktop = false;
         holidayMode = false;
 
         username = "keks";
@@ -136,7 +137,9 @@
       };
       "live-cd-graphics" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system;
+        specialArgs = (myArgs system) // {
+          isDesktop = true;
+        };
         modules = [
           ./machines/installer
           ./machines/installer/graphics.nix
@@ -147,7 +150,9 @@
       # sudo nixos-rebuild --flake . test -L
       "cookieclicker" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system;
+        specialArgs = (myArgs system) // {
+          isDesktop = true;
+        };
         modules = [
           ./machines/cookieclicker.nix
           home-manager.nixosModules.home-manager
@@ -158,7 +163,9 @@
 
       "cookiethinker" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system;
+        specialArgs = (myArgs system) // {
+          isDesktop = true;
+        };
         modules = [
           ./machines/cookiethinker.nix
           home-manager.nixosModules.home-manager

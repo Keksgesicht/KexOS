@@ -1,4 +1,4 @@
-{ config, pkgs, lib, myDomain, lan-subnet-v4, ... }:
+{ config, pkgs, lib, isDesktop, myDomain, lan-subnet-v4, ... }:
 
 let
   my-functions = (import ../../../nix/my-functions.nix lib);
@@ -123,7 +123,7 @@ with my-functions;
     services = {
       "NetworkManager-wait-online" =
         # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
-        if (config.services.xserver.enable) then
+        if (isDesktop) then
           { enable = lib.mkForce false; }
         else {};
     };

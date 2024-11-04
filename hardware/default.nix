@@ -1,4 +1,4 @@
-{ config, pkgs, lib, system, modulesPath, ... }:
+{ pkgs, lib, modulesPath, system, isDesktop, ... }:
 
 {
   imports = [
@@ -9,7 +9,7 @@
   ;
 
   boot.kernelPackages =
-    if (config.services.xserver.enable) then
+    if (isDesktop) then
       pkgs.linuxPackages_latest
     else
       pkgs.linuxPackages;

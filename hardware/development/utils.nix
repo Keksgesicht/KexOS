@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, isDesktop, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -7,7 +7,7 @@
     e2fsprogs
     gptfdisk
     (hwloc.override {
-      x11Support = (config.services.xserver.enable);
+      x11Support = isDesktop;
     })
     iftop
     iotop

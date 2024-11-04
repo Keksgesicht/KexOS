@@ -1,4 +1,4 @@
-{ self, config, holidayMode, home-dir, username, ... }:
+{ self, config, isDesktop, holidayMode, home-dir, username, ... }:
 
 let
   current-system = "/nix/var/nix/profiles/system";
@@ -26,9 +26,9 @@ in
     randomizedDelaySec = "123min";
 
     operation =
-      if (config.services.xserver.enable) then "boot"
+      if (isDesktop) then "boot"
       else "switch";
-    allowReboot = !(config.services.xserver.enable);
+    allowReboot = !isDesktop;
     rebootWindow = {
       lower = "02:34";
       upper = "04:32";

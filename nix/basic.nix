@@ -1,8 +1,5 @@
-{ config, lib, system, ... }:
+{ system, isDesktop, ... }:
 
-let
-  inherit (lib) types;
-in
 {
   # set hardware architecture and os platform
   nixpkgs.hostPlatform = {
@@ -13,13 +10,13 @@ in
     # https://search.nixos.org/options?query=nix.daemon*
     # make system useable during (re)build
     daemonCPUSchedPolicy =
-      if (config.services.xserver.enable) then "idle"
+      if (isDesktop) then "idle"
       else "batch";
     daemonIOSchedClass =
-      if (config.services.xserver.enable) then "idle"
+      if (isDesktop) then "idle"
       else "best-effort";
     daemonIOSchedPriority =
-      if (config.services.xserver.enable) then 7
+      if (isDesktop) then 7
       else 3;
 
     # dublicates by creating hardlinks for matching files
