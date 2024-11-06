@@ -15,8 +15,8 @@ let
 in
 {
   xdg.configFile = {
-    "autostart/brave-browser.desktop" = {
-      source = mkOOSS "${profile-dir}/brave-browser.desktop";
+    "autostart/WebViewer.desktop" = {
+      source = mkOOSS "${profile-dir}/WebViewer.desktop";
       enable = (systemConfig.networking.hostName == "cookieclicker");
     };
     "autostart/ferdium.desktop" = {

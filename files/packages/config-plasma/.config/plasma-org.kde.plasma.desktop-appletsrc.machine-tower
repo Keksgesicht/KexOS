@@ -204,7 +204,7 @@ plugin=org.kde.plasma.icontasks
 [Containments][29][Applets][53][Configuration][General]
 groupedTaskVisualization=1
 iconSpacing=0
-launchers=applications:org.kde.konsole.desktop,applications:org.kde.dolphin.desktop,applications:thunderbird.desktop,applications:ferdium.desktop,applications:brave-browser.desktop,applications:firefox.desktop
+launchers=applications:org.kde.konsole.desktop,applications:org.kde.dolphin.desktop,applications:thunderbird.desktop,applications:ferdium.desktop,applications:WebViewer.desktop,applications:firefox.desktop
 middleClickAction=Close
 minimizeActiveTaskOnClick=false
 onlyGroupWhenFull=false
@@ -513,7 +513,7 @@ plugin=org.kde.plasma.icontasks
 groupedTaskVisualization=2
 iconSize=medium
 iconSpacing=0
-launchers=applications:org.kde.konsole.desktop,applications:org.kde.dolphin.desktop,applications:thunderbird.desktop,applications:ferdium.desktop,applications:brave-browser.desktop,applications:firefox.desktop
+launchers=applications:org.kde.konsole.desktop,applications:org.kde.dolphin.desktop,applications:thunderbird.desktop,applications:ferdium.desktop,applications:WebViewer.desktop,applications:firefox.desktop
 middleClickAction=Close
 minimizeActiveTaskOnClick=false
 showOnlyCurrentDesktop=false
@@ -695,9 +695,9 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][60][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,ibus-ui-gtk3
+extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
 hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3
-knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
+knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
 shownItems=org.kde.plasma.bluetooth,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol
 
 [Containments][78][Applets][79][Configuration][General]
@@ -790,8 +790,8 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][84][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
-knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
+extraItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
+knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
 
 [Containments][9]
 activityId=
@@ -881,9 +881,9 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][9][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,ibus-ui-gtk3
+extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
 hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3
-knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
+knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
 pin=true
 shownItems=org.kde.plasma.bluetooth,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol
 

@@ -35,10 +35,10 @@ let
     "vlc.desktop"
   ];
   webBrowserList = [
-    "com.brave.Browser.desktop"
+    "WebViewer.desktop"
     "com.github.Eloston.UngoogledChromium.desktop"
-    "librewolf.desktop"
     "firefox.desktop"
+    "librewolf.desktop"
   ];
 in
 {

@@ -49,7 +49,6 @@ let
 
   appCfgList = [
     ./BilderAnguck.nix
-    ./Brave.nix
     ./DevShell.nix
     ./DocPDF.nix
     ./Ferdium.nix
@@ -68,6 +67,7 @@ let
     ./UngoogledChromium.nix
     ./Vesktop.nix
     ./VideoEdit.nix
+    ./WebViewer.nix
   ];
   appFuncList = lib.lists.forEach appCfgList (app:
     (import app {

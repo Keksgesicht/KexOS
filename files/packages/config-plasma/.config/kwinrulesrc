@@ -18,7 +18,7 @@ wmclass=thunderbird
 wmclassmatch=1
 
 [2]
-Description=Window settings for brave-browser
+Description=Window settings for WebViewer
 desktops=\\0
 desktopsrule=3
 ignoregeometry=true
@@ -29,7 +29,7 @@ positionrule=3
 size=2222,1304
 sizerule=3
 types=1
-wmclass=brave-browser
+wmclass=WebViewer
 wmclassmatch=1
 
 [3]
