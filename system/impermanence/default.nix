@@ -200,6 +200,9 @@ in
                 && (config.networking.hostName != "cookiethinker"))
   [
     "C  ${nm-state-file} - - - - ${inputs.self}/files/linux-root${nm-state-file}"
-  ]
-  ;
+  ];
+
+  # /etc/machine-id is hopefully mounted by above settings
+  # https://www.freedesktop.org/software/systemd/man/latest/systemd-machine-id-commit.service.html
+  systemd.services."systemd-machine-id-commit".enable = false;
 }
