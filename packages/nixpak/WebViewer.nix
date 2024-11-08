@@ -9,11 +9,10 @@ let
     destination = "/share/applications/${WVname}.desktop";
     text = ''
       [Desktop Entry]
-      Actions=new-private-window;new-window;profile-manager-window
       Categories=Network;WebBrowser
-      Exec=${WVname} %U
+      Exec=${WVname} --name ${name} %U
       GenericName=Web Browser
-      Icon=${WVname}
+      Icon=4kyoutubetomp3
       MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;x-scheme-handler/http;x-scheme-handler/https
       Name=${name}
       StartupNotify=true

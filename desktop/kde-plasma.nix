@@ -36,24 +36,23 @@ with my-functions;
     plasma-browser-integration
   ];
 
-  users.users."${username}" = {
-    packages = [
-      libKDE.discover
-      libKDE.kruler
-      (lsp-wrapper pkgs lib libKDE.kate "kate")
-      # use digital clock with PIM plugin
-      libKDE.akonadi-calendar
-      libKDE.merkuro
-      # security stuff
-      libKDE.ksshaskpass
-      config.programs.kdeconnect.package
-      # graphics info
-      pkgs.clinfo
-      pkgs.glxinfo
-      pkgs.vulkan-tools
-      pkgs.wayland-utils
-    ];
-  };
+  users.users."${username}".packages = [
+    pkgs.candy-icons
+    libKDE.discover
+    libKDE.kruler
+    (lsp-wrapper pkgs lib libKDE.kate "kate")
+    # use digital clock with PIM plugin
+    libKDE.akonadi-calendar
+    libKDE.merkuro
+    # security stuff
+    libKDE.ksshaskpass
+    config.programs.kdeconnect.package
+    # graphics info
+    pkgs.clinfo
+    pkgs.glxinfo
+    pkgs.vulkan-tools
+    pkgs.wayland-utils
+  ];
 
   systemd.tmpfiles.rules = [
     # calendar does not show events without it
