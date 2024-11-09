@@ -1,6 +1,0 @@
-map $server_port $sni_proxy_proto {
-    default  off;
-    443      on;
-    1443     on;
-    2443     on;
-}
