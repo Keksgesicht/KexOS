@@ -3,8 +3,9 @@
 
 let
   name = "WebViewer";
-  WVname = "librewolf";
-  WVpkg = pkgs.writeTextFile {
+  WVname = "firefox";
+  WVpkg = pkgs."${WVname}";
+  WVdesk = pkgs.writeTextFile {
     name = "webviewer-desktop-file";
     destination = "/share/applications/${WVname}.desktop";
     text = ''
@@ -27,8 +28,8 @@ in
   nixpak."${name}" = {
     wrapper = {
       packages = [
-        pkgs.librewolf
-        { package = WVpkg; binName = WVname; appFile = [
+        WVpkg
+        { package = WVdesk; binName = WVname; appFile = [
           { dst = name; }
         ]; }
       ];
@@ -43,12 +44,12 @@ in
       bind.ro = [
         [
           # mozilla.cfg
-          ("${pkgs.librewolf}/lib/${WVname}")
+          ("${WVpkg}/lib/${WVname}")
           ("/app/etc/firefox")
         ]
       ];
       bind.rw = [
-        (bindHomeDir name "/.${WVname}")
+        (bindHomeDir name "/.mozilla")
       ];
       network = true;
     };
