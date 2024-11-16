@@ -33,6 +33,7 @@ in
         bash curl docker gawk git iptables systemd
       ];
       script = ''
+        set +e
         ${mailcow-updater-script}
         if [ "$?" = 2 ]; then
           ${mailcow-updater-script}
@@ -40,7 +41,6 @@ in
       '';
       serviceConfig = {
         Type = "oneshot";
-        RemainAfterExit = true;
         inherit WorkingDirectory;
       };
     };
