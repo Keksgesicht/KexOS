@@ -64,8 +64,7 @@ in
         { package = steamPkg; binName = "steam"; appFile = [
           { dst = "com.valvesoftware.Steam"; }
         ]; }
-        pkgs.steamPackages.steamcmd
-        pkgs.steam-run
+        pkgs.steamcmd
 
         # Heroic Games Launcher
         { package = pkgs.heroic; binName = "heroic"; appFile = [
@@ -232,7 +231,7 @@ in
   # Enable udev rules for Steam hardware such as the Steam Controller
   # steam-hardware.enable = true;
   services.udev.packages = if gamingPC then [
-    pkgs.steamPackages.steam
+    pkgs.steam-unwrapped
   ] else [];
 
   # optimise system performance on demand

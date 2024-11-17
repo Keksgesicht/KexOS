@@ -2,7 +2,7 @@
   inputs = {
     # https://github.com/NixOS/nixpkgs
     # update nixpkgs every couple of days
-    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
     # system state
