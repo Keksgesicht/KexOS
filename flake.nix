@@ -21,12 +21,7 @@
     # https://github.com/nix-community/home-manager
     # https://nix-community.github.io/home-manager/
     home-manager = {
-      type = "github";
-      owner = "nix-community";
-      repo = "home-manager";
-      ref = "master";
-      rev = "6a35d1969e4626a0f8d285e60b6cfd331e2687a9";
-
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
