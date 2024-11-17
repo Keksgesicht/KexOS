@@ -1,13 +1,27 @@
 pkgs: lib: p: n:
 let
   lsp-pkgs = with pkgs; [
+    # Bash
     bash-language-server
+    shfmt
+    # C/C++
     clang-tools
-    nil # Nix
-    lemminx # XML
+    # Java
+    jdt-language-server
+    # JSON
+    jq
+    # Markdown
+    marksman
+    # Nix
+    nil
     # Python
     python3Packages.python-lsp-server
     ruff
+    # XML
+    lemminx
+    libxml2
+    # YAML
+    yamlfmt
   ];
   lsp-string = lib.strings.concatStringsSep ":" (lib.lists.forEach lsp-pkgs (p:
     "${p}/bin"
