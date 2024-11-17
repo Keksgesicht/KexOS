@@ -62,11 +62,11 @@ let
     ./OBS-Studio.nix
     ./Office.nix
     ./Signal.nix
-    ./SIP.nix
+    #./SIP.nix
     ./ThunderBird.nix
     ./UngoogledChromium.nix
     ./Vesktop.nix
-    ./VideoEdit.nix
+    #./VideoEdit.nix
     ./WebViewer.nix
   ];
   appFuncList = lib.lists.forEach appCfgList (app:

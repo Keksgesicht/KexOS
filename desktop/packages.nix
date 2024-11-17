@@ -1,6 +1,8 @@
-{ pkgs, username, isDesktop, ... }:
+{ pkgs, username, ... }:
 
 {
+  # nix-shell -p "(ventoy.override { withQt5 = true; })"
+
   users.users."${username}".packages = with pkgs; [
     gnome-decoder
     gnome-calculator
@@ -9,14 +11,7 @@
     nextcloud-client
     okteta
     qrencode
-    (ventoy.override {
-      withQt5 = isDesktop;
-    })
-    waypipe
     wireguard-tools
-    xorg.xlsclients
-    xorg.xorgserver
-    xorg.xrandr
     yubikey-manager
   ];
 }
