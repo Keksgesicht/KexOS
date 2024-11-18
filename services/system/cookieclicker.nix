@@ -10,7 +10,6 @@
     ./files-cleanup.nix
     ./wireguard/server.nix
 
-    ../containers/dyndns.nix
     ../containers/lancache.nix
     ../containers/pihole.nix
     ../containers/proxy.nix

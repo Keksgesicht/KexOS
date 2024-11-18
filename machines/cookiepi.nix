@@ -19,7 +19,6 @@
     ../nix/secrets-pkg.nix
     ../nix/version-23-05.nix
     ../services/system/files-cleanup.nix
-    ../services/containers/dyndns.nix
     ../services/containers/nextcloud.nix
     ../services/containers/pihole.nix
     ../services/containers/proxy.nix
