@@ -19,6 +19,8 @@ in
     ../../system/containers/docker.nix
   ];
 
+  virtualisation.docker.logDriver = "local";
+
   environment.sessionVariables = {
     inherit MAILCOW_BACKUP_LOCATION;
   };
