@@ -5,44 +5,69 @@ let
   name = "DocPDF";
   latexSet = "work";
 
-  latexBase = [
-    (pkgs.texlive.combine {
-      inherit (pkgs.texlive)
-        scheme-small
-        latexmk
-      ;
-    })
-  ];
-  latexWork = [
-    (pkgs.texlive.combine {
-      inherit (pkgs.texlive)
-        # base texlive packages
-        scheme-small
-        latexmk
-        # TUDa comperate design
-        tuda-ci
-        adjustbox
-        anyfontsize
-        environ
-        fontaxes
-        pdfx
-        roboto
-        urcls
-        xcharter
-        xstring
-        # additional packages
-        csquotes
-        datetime
-        fmtcount
-        fontawesome
-        forest
-        glossaries
-        numprint
-        pgf-umlsd
-        siunitx
-        xmpincl
-      ;
-    })
+  tl = pkgs.texlive;
+  pkgsTexLive = (tl.combine ({
+    inherit (tl)
+      scheme-small
+      latexmk
+      standalone
+    ;
+  } // (lib.optionals (latexSet == "work") {
+    inherit (tl)
+      # TUDa comperate design
+      tuda-ci
+      adjustbox
+      anyfontsize
+      environ
+      fontaxes
+      pdfx
+      roboto
+      urcls
+      xcharter
+      xstring
+      # additional packages
+      csquotes
+      datetime
+      fmtcount
+      fontawesome
+      forest
+      glossaries
+      numprint
+      pgf-umlsd
+      siunitx
+      xmpincl
+    ;
+  })));
+
+
+
+  wrapperLaTeX = (name: args: let
+    strFunc = lib.strings;
+    npOut1 = strFunc.head (strFunc.splitString "-" pkgsTexLive);
+    npOut2 = strFunc.removePrefix npOut1 pkgsTexLive;
+    argStr = strFunc.concatStringsSep ", " (lib.lists.forEach args (e:
+      "\"${e}\""
+    ));
+  in
+  pkgs.writers.writePython3Bin "my-${name}" {
+        libraries = [];
+  } ''
+    import sys
+    import os
+    wrappedCmd = "${npOut1}"
+    wrappedCmd += "${npOut2}"
+    wrappedCmd += "/bin/${name}"
+    wrappedArgs = [wrappedCmd]
+    wrappedArgs += [${argStr}]
+    wrappedArgs += sys.argv[1:]
+    os.execv(wrappedCmd, wrappedArgs)
+  '');
+  pkgsLaTeX = [
+    pkgsTexLive
+    (wrapperLaTeX "mklatex"  [ "-synctex=1" "-pdf" "-silent" ])
+    (wrapperLaTeX "lualatex" [ "-synctex=1" "-interaction=nonstopmode" ])
+    (wrapperLaTeX "pdflatex" [ "-synctex=1" "-interaction=nonstopmode" ])
+    (wrapperLaTeX "xelatex"  [ "-synctex=1" "-interaction=nonstopmode" ])
   ];
 
   okularPkg = (myKDEpkg pkgs.kdePackages.okular "okular" "cp -n" [
@@ -79,8 +104,7 @@ in
         pkgs.ocrmypdf
       ]
       # LaTeX stuff
-      ++ lib.optionals (latexSet == "base") latexBase
-      ++ lib.optionals (latexSet == "work") latexWork
+      ++ pkgsLaTeX
       ;
       qtKDEintegration = true;
       printing = true;

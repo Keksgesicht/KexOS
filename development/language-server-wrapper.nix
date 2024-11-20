@@ -10,6 +10,8 @@ let
     jdt-language-server
     # JSON
     jq
+    # LaTeX
+    texlab
     # Markdown
     marksman
     # Nix
