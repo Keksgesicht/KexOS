@@ -1,8 +1,10 @@
 { bindHomeDir, ... }:
-{ pkgs, ... }:
+{ pkgs-latest, ... }:
 
 let
   name = "WebViewer";
+  pkgs = pkgs-latest {};
+
   WVname = "firefox";
   WVpkg = pkgs."${WVname}";
   WVdesk = pkgs.writeTextFile {
@@ -34,6 +36,7 @@ in
         ]; }
       ];
       audio = true;
+      time  = true;
     };
 
     dbus.policies = {

@@ -1,8 +1,9 @@
 { sloth, bindHomeDir, ... }:
-{ pkgs, ... }:
+{ pkgs-latest, ... }:
 
 let
   name = "FireFox";
+  pkgs = pkgs-latest {};
 
   arkenfox-ff = (pkgs.callPackage ../arkenfox-user.js.nix {
     patchSet = "FireFox";

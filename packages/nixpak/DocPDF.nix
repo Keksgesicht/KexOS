@@ -1,11 +1,13 @@
 { sloth, bindHomeDir, myKDEpkg, myKDEmount, ... }:
-{ pkgs, lib, ... }:
+{ pkgs-latest, lib, ... }:
 
 let
   name = "DocPDF";
   latexSet = "work";
 
+  pkgs = pkgs-latest {};
   tl = pkgs.texlive;
+
   pkgsTexLive = (tl.combine ({
     inherit (tl)
       scheme-small
