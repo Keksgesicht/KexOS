@@ -19,6 +19,7 @@
       after = [
         "home-${username}-Documents.mount"
         "home-${username}-Music.mount"
+        "home-${username}-Pictures.mount"
       ];
     };
   };
