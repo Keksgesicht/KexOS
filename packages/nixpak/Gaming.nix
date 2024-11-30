@@ -50,6 +50,7 @@ let
     extraPkgs = (pkgs: ((gameTools pkgs) ++ [
       pkgs.kdePackages.konsole # terminal emulator
       pkgs.kdePackages.qttools # qdbus
+      pkgs.python3 # UMU runtime script
       pkgs.wine
       pkgs.wine64
     ]));
