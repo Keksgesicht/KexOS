@@ -33,18 +33,16 @@ in
 
   nixpkgs.allowUnfreePackages = [ pkgs.corefonts ];
 
-  fonts.packages = [
-    pkgs.noto-fonts
-    pkgs.noto-fonts-cjk-sans
-    pkgs.noto-fonts-color-emoji
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
     # Noto + NerdFont => Noto-Nerdfonts
-    (pkgs.nerdfonts.override {
-      fonts = [ "Noto" ];
-    })
+    nerd-fonts.noto
     # Microsoft TrueType core fonts
-    pkgs.corefonts
+    corefonts
     # fonts I need (idk if duplicate)
-    (pkgs.callPackage ../packages/my-fonts.nix {})
+    (callPackage ../packages/my-fonts.nix {})
   ];
 
   # https://nixos.wiki/wiki/Fonts#Flatpak_applications_can.27t_find_system_fonts
