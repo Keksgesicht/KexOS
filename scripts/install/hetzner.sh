@@ -1,11 +1,41 @@
 #!/usr/bin/env bash
 
 MNT="/mnt/nixos-install"
-HETZ_PART="/dev/sda1"
-BOOT_PART="/dev/sda15"
+DISK_TARGET="/dev/sda"
+HETZ_PART="${DISK_TARGET}1"
+BOOT_PART="${DISK_TARGET}15"
 
 USER="keks"
 PATH_PASSWD='etc/nixos/secrets/keys/passwd'
+
+# create new GPT table
+setup_disk() {
+	(
+		echo d
+		echo 15
+		echo d
+		echo 1
+		sleep 0.25s
+		echo n
+		echo 15
+		echo
+		echo +500M
+		echo N
+		sleep 0.25s
+		echo n
+		echo 1
+		echo
+		echo
+		sleep 0.25s
+		echo t
+		echo 15
+		echo uefi
+		sleep 0.25s
+		echo w
+	) | fdisk "${DISK_TARGET}"
+
+	mkfs.vfat -F32 -n EFI "${BOOT_PART}"
+}
 
 setup_root() {
 	mkfs.btrfs -f -K -L "hetzner-btrfs-root" ${HETZ_PART}
@@ -46,6 +76,7 @@ setup_etc() {
 # stop on any non-zero return
 set -ex
 
+setup_disk
 setup_root
 setup_etc
 
