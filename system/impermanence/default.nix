@@ -134,6 +134,7 @@ in
         "/etc/unCookie"
         "/var/lib/bluetooth"
         "/var/lib/flatpak"
+        "/var/lib/fwupd"
         "/var/lib/rasdaemon"
         "/var/lib/systemd/backlight"
         "/var/lib/systemd/timers"
