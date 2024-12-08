@@ -37,7 +37,7 @@ let
       enable = true;
       wantedBy = [ "timers.target" ];
       timerConfig = {
-        OnCalendar = "*-*-3,6,9,12,15,18,21,24,27,30 08:15:00";
+        OnCalendar = "*-*-* 08:15:00";
         RandomizedDelaySec = "42min";
         AccuracySec = "1min";
         Persistent = "true";
