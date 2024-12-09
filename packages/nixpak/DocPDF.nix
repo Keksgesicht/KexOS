@@ -66,7 +66,7 @@ let
   '');
   pkgsLaTeX = [
     pkgsTexLive
-    (wrapperLaTeX "mklatex"  [ "-synctex=1" "-pdf" "-silent" ])
+    (wrapperLaTeX "latexmk"  [ "-synctex=1" "-pdf" "-silent" ])
     (wrapperLaTeX "lualatex" [ "-synctex=1" "-interaction=nonstopmode" ])
     (wrapperLaTeX "pdflatex" [ "-synctex=1" "-interaction=nonstopmode" ])
     (wrapperLaTeX "xelatex"  [ "-synctex=1" "-interaction=nonstopmode" ])
