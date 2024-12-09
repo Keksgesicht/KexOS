@@ -65,7 +65,7 @@ CONF_FILE="wg.conf"
 
 	echo "[Peer]"
 	echo -n "PresharedKey="; cat shared
-	echo -n "PublicKey="; cat "${PublicDir}"/"${PEER_NAME}";
+	echo -n "PublicKey="; cat "${PublicDir}"/"${HOST}-${PEER_NAME}";
 	echo "Endpoint=${PEER_ADDR}"
 	echo "AllowedIPs=0.0.0.0/0, ::/0"
 } > ${CONF_FILE}

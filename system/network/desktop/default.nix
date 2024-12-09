@@ -173,9 +173,9 @@ with my-functions;
     # Router
     "${lan-subnet-v4}.1" = [ "fritz.box" ];
 
-    # Pihole
-    "${lan-subnet-v4}.23" = [ "rpi.pihole.internal" ];
-    "172.23.53.1"      = [ "docker.pihole.internal" ];
+    # VPN devices
+    "192.168.176.2"   = [ "cookiepi.keksgesicht.internal" ];
+    "192.168.176.103" = [ "rpi.pihole.internal" ];
 
     # LAN devices
     "${lan-subnet-v4}.147" = [ "cookiethinker.${myDomain}" ];

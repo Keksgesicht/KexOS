@@ -61,7 +61,7 @@ Host cookiemailer
 	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host cookiepi
-	HostName cookiepi.keksgesicht.de
+	HostName cookiepi.keksgesicht.internal
 	User keks
 	IdentityFile ~/.secrets/ssh/id_nixos
 
@@ -71,7 +71,7 @@ Host cookiethinker
 	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host pihole
-	HostName rpi.pihole.local
+	HostName rpi.pihole.internal
 	User cookie
 	IdentityFile ~/.secrets/ssh/id_pihole
 

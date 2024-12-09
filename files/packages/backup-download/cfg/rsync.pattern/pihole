@@ -6,11 +6,14 @@
 + /etc/cron*/***
 + /etc/dnsmasq.d/***
 + /etc/hostapd/***
++ /etc/hosts
 + /etc/iptables/***
 + /etc/network/***
 + /etc/pihole/***
 + /etc/rc.local
 + /etc/systemd
++ /etc/systemd/system
++ /etc/systemd/system/my-*.service
 + /etc/systemd/journald.conf
 + /etc/telegram/***
 + /home/***
@@ -19,4 +22,7 @@
 + /var/www/
 + /var/www/html
 + /var/www/html/wol.php
++ /usr
++ /usr/local
++ /usr/local/bin/***
 - /**
