@@ -34,9 +34,11 @@ let
       fontawesome
       forest
       glossaries
+      makecell
       numprint
       pgf-umlsd
       siunitx
+      tabularray
       xmpincl
     ;
   })));
@@ -110,6 +112,10 @@ in
       ;
       qtKDEintegration = true;
       printing = true;
+    };
+
+    dbus.policies = {
+      "io.github.pympress" = "own";
     };
 
     bubblewrap = {
