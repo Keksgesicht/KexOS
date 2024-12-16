@@ -16,7 +16,6 @@ PreviewSize=16
 [General]
 BrowseThroughArchives=false
 CloseActiveSplitView=false
-GlobalViewProps=false
 LockPanels=false
 OpenNewTabAfterLastTab=true
 ShowFullPathInTitlebar=true
