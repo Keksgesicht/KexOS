@@ -1,8 +1,9 @@
 { sloth, bindHomeDir, ... }:
-{ config, pkgs-stable, nvm-mnt, home-dir, username, ... }:
+{ config, pkgs, pkgs-latest, pkgs-stable, nvm-mnt, home-dir, username, ... }:
 
 let
-  pkgs = pkgs-stable { config.allowUnfree = true; };
+  pkgl = pkgs-latest { config.allowUnfree = true; };
+  pkgo = pkgs-stable { config.allowUnfree = true; };
 
   name = "Gaming";
   name-dir = "${home-dir}/.var/app/${name}";
@@ -16,13 +17,13 @@ let
     (sloth.concat' sloth.homeDir dir)
   ]);
 
-  gamescope-wrapper = (n: w:
-    pkgs.writers.writePython3Bin "gamescope-${n}" {
+  gamescope-wrapper = (p: n: w:
+    p.writers.writePython3Bin "gamescope-${n}" {
       libraries = [];
     } (''
       import os
       import sys
-      gsBin = "${pkgs.gamescope}"
+      gsBin = "${p.gamescope}"
       gsBin += "/bin/gamescope"
       gsArgs = [gsBin, "--steam", "-b"]
       gsArgs += ["-W", "${w}", "-H", "1440", "-r", "120", "-o", "30"]
@@ -30,29 +31,29 @@ let
       os.execvp(gsBin, gsArgs)
     '')
   );
-  gameTools = (pkgs: [
-    pkgs.gamemode
-    pkgs.gamescope
-    pkgs.mangohud
+  gameTools = (p: [
+    p.gamemode
+    p.gamescope
+    p.mangohud
     # gamescope aliase
-    (gamescope-wrapper "16" "2560")
-    (gamescope-wrapper "21" "3360")
-    (gamescope-wrapper "32" "4996") # 5120 - 2 * 62
+    (gamescope-wrapper p "16" "2560")
+    (gamescope-wrapper p "21" "3360")
+    (gamescope-wrapper p "32" "4996") # 5120 - 2 * 62
   ]);
-  steamPkg = (pkgs.steam.override {
-    extraPkgs = (pkgs: with pkgs; ((gameTools pkgs) ++ [
+  steamPkg = (pkgl.steam.override {
+    extraPkgs = (p: ((gameTools p) ++ [
       # XWayland of gamescope complains about this missing
-      libkrb5
-      keyutils
+      p.libkrb5
+      p.keyutils
     ]));
   });
-  lutrisPkg = (pkgs.lutris.override {
-    extraPkgs = (pkgs: ((gameTools pkgs) ++ [
-      pkgs.kdePackages.konsole # terminal emulator
-      pkgs.kdePackages.qttools # qdbus
-      pkgs.python3 # UMU runtime script
-      pkgs.wine
-      pkgs.wine64
+  lutrisPkg = (pkgl.lutris.override {
+    extraPkgs = (p: ((gameTools p) ++ [
+      p.kdePackages.konsole # terminal emulator
+      p.kdePackages.qttools # qdbus
+      p.python3 # UMU runtime script
+      p.wine
+      p.wine64
     ]));
   });
 in
@@ -65,15 +66,15 @@ in
         { package = steamPkg; binName = "steam"; appFile = [
           { dst = "com.valvesoftware.Steam"; }
         ]; }
-        pkgs.steamcmd
+        pkgl.steamcmd
 
         # Heroic Games Launcher
-        { package = pkgs.heroic; binName = "heroic"; appFile = [
+        { package = pkgo.heroic; binName = "heroic"; appFile = [
           { src = "com.heroicgameslauncher.hgl"; }
         ]; }
 
         # Minecraft
-        { package = pkgs.prismlauncher; binName = "prismlauncher"; appFile = [
+        { package = pkgo.prismlauncher; binName = "prismlauncher"; appFile = [
           { src = "org.prismlauncher.PrismLauncher"; }
         ]; }
 
@@ -88,11 +89,11 @@ in
         */
 
         # Proton update and configuration
-        { package = pkgs.protonup-qt; binName = "protonup-qt"; }
-        { package = pkgs.protontricks; binName = "protontricks"; }
+        { package = pkgl.protonup-qt; binName = "protonup-qt"; }
+        { package = pkgl.protontricks; binName = "protontricks"; }
       ]
       # additional tools
-      ++ gameTools pkgs
+      ++ gameTools pkgl
       ;
       variables = {
         PULSE_SINK = "recording_out_sink";
@@ -232,7 +233,7 @@ in
   # Enable udev rules for Steam hardware such as the Steam Controller
   # steam-hardware.enable = true;
   services.udev.packages = if gamingPC then [
-    pkgs.steam-unwrapped
+    pkgl.steam-unwrapped
   ] else [];
 
   # optimise system performance on demand
