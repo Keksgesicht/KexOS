@@ -171,6 +171,9 @@ in
         "/run/opengl-driver-32"
 
         (sloth.concat' sloth.xdgConfigHome "/MangoHud")
+
+        # X11 access (gamescope custom workaround)
+        (sloth.env "XAUTHORITY")
       ];
       bind.rw = [
         # Game data
@@ -218,9 +221,13 @@ in
 
         # ProtonUp GUI
         (bindHomeDir name "/.config/pupgui")
+
+        # make X11 temp dir writeable inside sandbox
+        # (gamescope custom workaround)
+        "/tmp/.X11-unix"
       ];
       network = true;
-      sockets.x11 = true;
+      sockets.x11 = false; # gamescope custom workaround
       #shareIpc = true;
     };
   }; } else {};
@@ -245,7 +252,7 @@ in
   } else {};
 
   # helps finding/showing the tray icon
-  systemd.tmpfiles.rules = [
+  systemd.tmpfiles.rules = if gamingPC then [
     "L+ ${home-dir}/.steam             - - - - ${name-dir}/.steam"
     "L+ ${home-dir}/.local/share/Steam - - - - ${name-dir}/.local/share/Steam"
 
@@ -255,5 +262,12 @@ in
     "L  ${name-home}/.steampid   - - - - ${home-dir}/.steam/steam.pid"
     "Z  ${name-home}/.steampath  - ${username} ${username} - -"
     "Z  ${name-home}/.steampid   - ${username} ${username} - -"
-  ];
+  ] else [];
+
+  environment.etc = if gamingPC then {
+    # make X11 temp dir writeable inside sandbox
+    "tmpfiles.d/ZZ-gamescope-X11.conf".text = ''
+      e  /tmp/.X11-unix 1777 ${username} ${username} - -
+    '';
+  } else {};
 }
