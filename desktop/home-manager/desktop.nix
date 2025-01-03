@@ -16,6 +16,7 @@
   systemd.user.services = {
     "app-com.nextcloud.desktopclient.nextcloud@autostart" = {
       overrideStrategy = "asDropin";
+      preStart = "sleep 42s";
       after = [
         "home-${username}-Documents.mount"
         "home-${username}-Music.mount"
