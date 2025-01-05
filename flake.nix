@@ -118,6 +118,8 @@
 
         lan-subnet-v4 = "192.168.178";
         lan-subnet-v6 = "fd00:3581::192:168:178";
+        vpn-subnet-v4 = "192.168.176";
+        vpn-subnet-v6 = "fd00:2307:";
       });
     in
     {

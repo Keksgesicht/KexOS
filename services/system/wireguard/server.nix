@@ -1,4 +1,5 @@
-{ config, pkgs, lib, secrets-pkg, secrets-dir, myDomain, ... }:
+{ config, pkgs, lib, secrets-pkg, secrets-dir
+, myDomain, vpn-subnet-v4, vpn-subnet-v6, ... }:
 
 let
   hn = config.networking.hostName;
@@ -39,8 +40,8 @@ let
     publicKey = (wg-pubkey-path pubKeyName);
     presharedKeyFile = "${wg-path-keys}/shared/${preKeyName}";
     allowedIPs = [
-      "192.168.176.${suf4}/32"
-      "fd00:2307::${suf6}/128"
+      "${vpn-subnet-v4}.${suf4}/32"
+      "${vpn-subnet-v6}:${suf6}/128"
     ];
   });
 
@@ -54,16 +55,16 @@ let
     endpoint = "25.host.${myDomain}:22243";
     dynamicEndpointRefreshSeconds = 1000;
     allowedIPs = [
-      "192.168.176.0/24"
-      "fd00:2307::/64"
+      "${vpn-subnet-v4}.0/24"
+      "${vpn-subnet-v6}:/64"
     ];
   };
   wg-pi-clicker = (wg-client "cookieclicker" "" "cookiepi-cookieclicker" "1" "1");
 
   wg-server = (name: suf4: suf6: iface: listenPort: extPeers:
     let
-      ipv4 = "192.168.176.${suf4}/24";
-      ipv6 = "fd00:2307::${suf6}/64";
+      ipv4 = "${vpn-subnet-v4}.${suf4}/24";
+      ipv6 = "${vpn-subnet-v6}:${suf6}/64";
     in
     {
       "wg-server" = {
@@ -103,6 +104,11 @@ in
     "wireguard-wg-server-peer-cookiepi-refresh" = {
       after = [ "podman-pihole.service" ];
       preStart = "sleep 10s";
+    };
+    "vpn-keep-connectivity" = {
+      after = [ "wireguard-wg-server-peer-cookiepi-refresh.service" ];
+      startAt = "*:0/5";
+      script = "${pkgs.iputils}/bin/ping -c3 -W1 ${vpn-subnet-v4}.2 >/dev/null";
     };
   } else {};
 }

@@ -1,4 +1,5 @@
-{ config, pkgs, lib, myDomain, secrets-pkg, secrets-dir, username, ... }:
+{ config, pkgs, lib, secrets-pkg, secrets-dir, username
+, myDomain, vpn-subnet-v4, vpn-subnet-v6, ... }:
 
 let
   lo = lib.optionals;
@@ -23,8 +24,8 @@ let
     "::/0"
   ];
   dns = [
-    "192.168.176.2"
-    "192.168.176.1"
+    "${vpn-subnet-v4}.2"
+    "${vpn-subnet-v4}.1"
   ];
 in
 {
@@ -72,8 +73,8 @@ in
         autostart = false;
         privateKeyFile = "${wg-path-keys}/private/cookiethinker";
         address = [
-          "192.168.176.102/24"
-          "fd00:2307::10:2/64"
+          "${vpn-subnet-v4}.102/24"
+          "${vpn-subnet-v6}:10:2/64"
         ];
         inherit dns;
         mtu = 1280;

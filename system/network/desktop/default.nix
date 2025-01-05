@@ -1,4 +1,4 @@
-{ config, pkgs, lib, isDesktop, myDomain, lan-subnet-v4, ... }:
+{ config, pkgs, lib, isDesktop, myDomain, lan-subnet-v4, vpn-subnet-v4, ... }:
 
 let
   my-functions = (import ../../../nix/my-functions.nix lib);
@@ -174,8 +174,8 @@ with my-functions;
     "${lan-subnet-v4}.1" = [ "fritz.box" ];
 
     # VPN devices
-    "192.168.176.2"   = [ "cookiepi.keksgesicht.internal" ];
-    "192.168.176.103" = [ "rpi.pihole.internal" ];
+    "${vpn-subnet-v4}.2"   = [ "cookiepi.keksgesicht.internal" ];
+    "${vpn-subnet-v4}.103" = [ "rpi.pihole.internal" ];
 
     # LAN devices
     "${lan-subnet-v4}.147" = [ "cookiethinker.${myDomain}" ];
