@@ -227,14 +227,16 @@ in
 
   hardware = if gamingPC then {
     graphics.enable32Bit = true;
-    pulseaudio.support32Bit = config.hardware.pulseaudio.enable;
   } else {};
 
-  # Enable udev rules for Steam hardware such as the Steam Controller
-  # steam-hardware.enable = true;
-  services.udev.packages = if gamingPC then [
-    pkgl.steam-unwrapped
-  ] else [];
+  services = if gamingPC then {
+    pulseaudio.support32Bit = config.services.pulseaudio.enable;
+    # Enable udev rules for Steam hardware such as the Steam Controller
+    # steam-hardware.enable = true;
+    udev.packages = [
+      pkgl.steam-unwrapped
+    ];
+  } else {};
 
   # optimise system performance on demand
   programs = if gamingPC then {
