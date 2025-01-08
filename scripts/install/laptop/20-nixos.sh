@@ -18,9 +18,5 @@ copy-config "/mnt/etc/nixos"
 nixos-install --root /mnt/root \
 	--flake "${MY_NIX_CFG_DIR}"'#cookiethinker'
 
-# install flatpak packages
-nixos-enter --root /mnt/root \
-	-c '/etc/nixos/scripts/laptop/21-flatpak.sh'
-
 # finish system setup
 mkpasswd > "/mnt/etc/nixos/secrets/keys/passwd/keks"

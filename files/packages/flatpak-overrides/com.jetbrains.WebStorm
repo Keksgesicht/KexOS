@@ -1,6 +1,0 @@
-[Context]
-filesystems=~/git;~/devel
-persistent=.java
-
-[Environment]
-FLATPAK_ENABLE_SDK_EXT=node16

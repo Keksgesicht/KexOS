@@ -20,9 +20,5 @@ copy-config "$(dirname ${TARGET_DIR})/etc/nixos"
 nixos-install --root ${TARGET_DIR} \
 	--flake "${MY_NIX_CFG_DIR}"'#cookieclicker'
 
-# install flatpak packages
-nixos-enter --root ${TARGET_DIR} \
-	-c '/etc/nixos/scripts/desktop/21-flatpak.sh'
-
 # finish system setup
 mkpasswd > "$(dirname ${TARGET_DIR})${PW_FILE}"

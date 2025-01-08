@@ -1,4 +1,0 @@
-[Context]
-shared=network
-sockets=pulseaudio
-filesystems=!xdg-pictures

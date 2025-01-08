@@ -1,5 +1,0 @@
-[Context]
-shared=!ipc
-devices=dri
-filesystems=~/devel;~/git
-persistent=.java

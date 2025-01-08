@@ -1,3 +1,0 @@
-[Context]
-devices=dri
-filesystems=xdg-download;xdg-documents;xdg-config/gtk-3.0:ro
