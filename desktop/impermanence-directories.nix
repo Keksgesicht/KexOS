@@ -126,6 +126,7 @@ with my-functions;
         ]
         ++ secureHomeDir [
           ".config/akonadi"
+          ".config/AusweisApp"
           ".config/gnupg"
           ".config/kdeconnect"
           ".config/keepassxc"
