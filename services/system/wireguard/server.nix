@@ -68,6 +68,7 @@ let
     in
     {
       "wg-server" = {
+        mtu = 1280;
         ips = [ ipv4 ipv6 ];
         privateKeyFile = "${wg-path-keys}/private/${name}";
         postSetup = (wg-nat ipv4 ipv6 iface "-A");
