@@ -1,4 +1,4 @@
-{ system, isDesktop, ... }:
+{ system, ... }:
 
 {
   # set hardware architecture and os platform
@@ -9,15 +9,9 @@
   nix = {
     # https://search.nixos.org/options?query=nix.daemon*
     # make system useable during (re)build
-    daemonCPUSchedPolicy =
-      if (isDesktop) then "idle"
-      else "batch";
-    daemonIOSchedClass =
-      if (isDesktop) then "idle"
-      else "best-effort";
-    daemonIOSchedPriority =
-      if (isDesktop) then 7
-      else 3;
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
+    daemonIOSchedPriority = 7;
 
     # dublicates by creating hardlinks for matching files
     # $AUTH nix-store --optimise
