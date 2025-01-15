@@ -1,5 +1,5 @@
-{ self, config, pkgs, lib, cookie-pkg, ssd-mnt
-, myDomain, lan-subnet-v4, lan-subnet-v6
+{ self, config, pkgs, lib, cookie-pkg, ssd-mnt, myDomain
+, lan-subnet-v4, lan-subnet-v6, pod-subnet-v4, pod-subnet-v6
 , ... }:
 
 let
@@ -103,8 +103,8 @@ with my-functions;
       ];
       extraOptions = [
         "--network" "server"
-        "--ip" "172.23.53.2"
-        "--ip6" "fd00:172:23::aaaa:2"
+        "--ip"  "${pod-subnet-v4}.53.2"
+        "--ip6" "${pod-subnet-v6}:aaaa:2"
         "--dns" "0.0.0.0"
       ];
     };
@@ -121,11 +121,9 @@ with my-functions;
     )));
     myDomainText = myDomainGen [
       { ip4 = "${lan-subnet-v4}.25"; ip6 = "${lan-subnet-v6}:25"; zone = [
-        { name = "cloud.${myDomain}"; type = "static"; }
         { name = "cookiepi.${myDomain}"; type = "redirect"; }
       ]; }
-      { ip4 = "${lan-subnet-v4}.150"; ip6 = "${lan-subnet-v6}:150"; zone = [
-        { name = "games.${myDomain}"; type = "redirect"; }
+      { ip4 = "${lan-subnet-v4}.220"; ip6 = "${lan-subnet-v6}:220"; zone = [
         { name = "cookieclicker.${myDomain}"; type = "redirect"; }
       ]; }
     ];

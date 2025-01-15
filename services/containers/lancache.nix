@@ -1,5 +1,5 @@
-{ config, pkgs, lib, ssd-mnt, nvm-mnt, nvm-name
-, cookie-pkg, lan-subnet-v4
+{ config, pkgs, lib, ssd-mnt, nvm-mnt, nvm-name, cookie-pkg
+, lan-subnet-v4, pod-subnet-v4, pod-subnet-v6, ip-suf
 , ... }:
 
 let
@@ -74,8 +74,8 @@ in
 
       environment = {
         TZ = config.time.timeZone;
-        LANCACHE_IP = "${lan-subnet-v4}.150";
-        UPSTREAM_DNS = "172.23.53.2";
+        LANCACHE_IP = "${lan-subnet-v4}.${ip-suf}";
+        UPSTREAM_DNS = "${pod-subnet-v4}.53.2";
         CACHE_MAX_AGE = "1234d";
         CACHE_MEM_SIZE = "1000m";
         CACHE_DISK_SIZE = "4321g";
@@ -89,10 +89,10 @@ in
       ];
       extraOptions = [
         "--network" "server"
-        "--ip" "172.23.80.4"
-        "--ip6" "fd00:172:23::443:4"
-        "--dns" "172.23.53.2"
-        "--dns" "fd00:172:23::aaaa:2"
+        "--ip"  "${pod-subnet-v4}.80.4"
+        "--ip6" "${pod-subnet-v6}:443:4"
+        "--dns" "${pod-subnet-v4}.53.2"
+        "--dns" "${pod-subnet-v6}:aaaa:2"
       ];
     };
   };

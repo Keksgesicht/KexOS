@@ -1,7 +1,7 @@
-{ self, config, pkgs, myDomain, secrets-dir, lan-subnet-v6, ... }:
+{ specialArgs, self, config, pkgs, myDomain, secrets-dir, ... }:
 
 let
-  ip-vars = (import "${self}/system/network/IPv6/variables.nix" config lan-subnet-v6);
+  ip-vars = (import "${self}/system/network/IPv6/variables.nix" specialArgs config);
   cfgNetName = config.networking.hostName;
 in
 {
@@ -17,9 +17,9 @@ in
           else "1000";
         records =
           if (cfgNetName == "cookieclicker") then
-            "150.host"
+            "tw.host"
           else if (cfgNetName == "cookiepi") then
-            "25.host"
+            "pi.host"
           else "";
         domain = myDomain;
       };

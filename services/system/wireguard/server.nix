@@ -52,7 +52,7 @@ let
   wg-rpi = wg-client "rpi" "" "cookiepi-rpi" "103" "10:3";
 
   wg-clicker-pi = (wg-client "cookiepi" "" "cookiepi-cookieclicker" "2" "2") // {
-    endpoint = "25.host.${myDomain}:22243";
+    endpoint = "pi.host.${myDomain}:22243";
     dynamicEndpointRefreshSeconds = 1000;
     allowedIPs = [
       "${vpn-subnet-v4}.0/24"

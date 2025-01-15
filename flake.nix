@@ -117,9 +117,11 @@
         self = inputs.self;
 
         lan-subnet-v4 = "192.168.178";
-        lan-subnet-v6 = "fd00:3581::192:168:178";
+        lan-subnet-v6 = "fd00:da:b44::192:168:178";
         vpn-subnet-v4 = "192.168.176";
         vpn-subnet-v6 = "fd00:2307:";
+        pod-subnet-v4 = "172.23";
+        pod-subnet-v6 = "fd00:172:23:";
       });
     in
     {
@@ -149,6 +151,7 @@
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           isDesktop = true;
+          ip-suf = "220";
         };
         modules = [
           ./machines/cookieclicker.nix
@@ -173,7 +176,9 @@
 
       "cookiepi" = nixpkgs-stable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system;
+        specialArgs = (myArgs system) // {
+          ip-suf = "25";
+        };
         modules = [
           ./machines/cookiepi.nix
           impermanence.nixosModules.impermanence

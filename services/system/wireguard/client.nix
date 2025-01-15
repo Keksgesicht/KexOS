@@ -87,8 +87,8 @@ in
       });
     in
     {
-      "wg-pi"      = (wgClientCfg  "25.host.${myDomain}:22243" "cookiepi");
-      "wg-clicker" = (wgClientCfg "150.host.${myDomain}:22223" "cookieclicker");
+      "wg-pi"      = (wgClientCfg "pi.host.${myDomain}:22243" "cookiepi");
+      "wg-clicker" = (wgClientCfg "tw.host.${myDomain}:22223" "cookieclicker");
     }
     else {}
   ;

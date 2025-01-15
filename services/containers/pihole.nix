@@ -1,4 +1,4 @@
-{ config, pkgs, lib, cookie-pkg, ssd-mnt, lan-subnet-v4, ... }:
+{ config, pkgs, lib, cookie-pkg, ssd-mnt, lan-subnet-v4, ip-suf, ... }:
 
 let
   cc-dir = "${cookie-pkg}/containers";
@@ -33,12 +33,7 @@ in
       environment = {
         TZ = config.time.timeZone;
         IPv6 = "True";
-        ServerIP =
-          if (cfgNetName == "cookieclicker") then
-            "${lan-subnet-v4}.150"
-          else if (cfgNetName == "cookiepi") then
-            "${lan-subnet-v4}.25"
-          else "0.0.0.0";
+        ServerIP = "${lan-subnet-v4}.${ip-suf}";
         INTERFACE = "eth0";
         WEBUIBOXEDLAYOUT = "boxed";
       };
