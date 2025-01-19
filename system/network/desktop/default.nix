@@ -52,6 +52,12 @@ let
     allowedUDPPortRanges = allowedTCPPortRanges;
   };
 
+  # https://help.steampowered.com/en/faqs/view/46BD-6BA8-B012-CE43
+  allowedPortsSteam = {
+    allowedTCPPorts = [ 27040 ];
+    allowedUDPPortRanges = [ { from = 27031; to = 27036; } ];
+  };
+
   allowedPortsVPNuser = {
     allowedTCPPortRanges = [
       { from = 10000; to = 65535; } # nearly all user ports
@@ -145,11 +151,13 @@ with my-functions;
           allowedPortsCCbase
           allowedPortsCCextra
           allowedPortsKDEconnect
+          allowedPortsSteam
         ];
         "wg-server" = lib.mkMerge [
           allowedPortsCCbase
           allowedPortsCCextra
           allowedPortsKDEconnect
+          allowedPortsSteam
         ];
         "podman-server" = allowedPortsCCbase;
         "enp6s0" = allowedPortsShared;
