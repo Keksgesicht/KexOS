@@ -74,10 +74,10 @@ in
   }
   // (nm-wifi "00" "d6569f91-55ec-44df-80dd-833fe395b601" [ "${lan-subnet-v4}.25" ])
   // (nm-wifi "20" "6da41b6d-f5c0-45cf-87ec-4495c00091f9" [
-    "${lan-subnet-v4}.101" "${lan-subnet-v4}.102"
+    "${lan-subnet-v4}.220" "${lan-subnet-v4}.221"
   ])
   // (nm-wifi "21" "0fc01a29-ffc9-4d13-ba5f-0a52209b01b7" [
-    "${lan-subnet-v4}.101" "${lan-subnet-v4}.102"
+    "${lan-subnet-v4}.220" "${lan-subnet-v4}.221"
   ])
   ;
 }

@@ -1,5 +1,6 @@
 { self, config, pkgs, lib, cookie-pkg, ssd-mnt, myDomain
-, lan-subnet-v4, lan-subnet-v6, pod-subnet-v4, pod-subnet-v6
+, lan-subnet-v4, pod-subnet-v4, vpn-subnet-v4
+, lan-subnet-v6, pod-subnet-v6, vpn-subnet-v6
 , ... }:
 
 let
@@ -120,11 +121,17 @@ with my-functions;
       ''
     )));
     myDomainText = myDomainGen [
-      { ip4 = "${lan-subnet-v4}.25"; ip6 = "${lan-subnet-v6}:25"; zone = [
+      { ip4 = "${vpn-subnet-v4}.2"; ip6 = "${vpn-subnet-v6}:2"; zone = [
         { name = "cookiepi.${myDomain}"; type = "redirect"; }
       ]; }
-      { ip4 = "${lan-subnet-v4}.220"; ip6 = "${lan-subnet-v6}:220"; zone = [
+      { ip4 = "${lan-subnet-v4}.25"; ip6 = "${lan-subnet-v6}:25"; zone = [
+        { name = "nix-serve.cookiepi.${myDomain}"; type = "static"; }
+      ]; }
+      { ip4 = "${vpn-subnet-v4}.1"; ip6 = "${vpn-subnet-v6}:1"; zone = [
         { name = "cookieclicker.${myDomain}"; type = "redirect"; }
+      ]; }
+      { ip4 = "${lan-subnet-v4}.220"; ip6 = "${lan-subnet-v6}:220"; zone = [
+        { name = "nix-serve.cookieclicker.${myDomain}"; type = "static"; }
       ]; }
     ];
     myDomainConf = pkgs.writeText "${myDomain}.conf" (
