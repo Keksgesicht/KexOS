@@ -71,7 +71,7 @@ with my-functions;
 {
   imports = [
     ../.
-    ../IPv6/network-manager.nix
+    ./secrets.nix
   ];
 
   # symlinks for all certificates

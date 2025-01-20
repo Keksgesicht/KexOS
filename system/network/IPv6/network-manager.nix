@@ -34,7 +34,6 @@ in
   systemd = {
     services = {
       "ipv6-prefix-update" = {
-        enable = (config.networking.hostName != "cookiethinker");
         description = "IPv6 prefix check and suffix updater";
         script = pub6script;
         scriptArgs = "${ip-vars.MY_IFLINK} prefix";
@@ -42,7 +41,6 @@ in
     };
     timers = {
       "ipv6-prefix-update" = {
-        enable = (config.networking.hostName != "cookiethinker");
         description = "regular IPv6 prefix update check";
         timerConfig = {
           OnStartupSec = "123sec";

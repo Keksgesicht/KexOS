@@ -22,6 +22,6 @@
     ../system
     ../system/containers/podman.nix
     ../system/network/desktop
-    ../system/network/desktop/secrets.nix
+    ../system/network/IPv6/network-manager.nix
   ];
 }
