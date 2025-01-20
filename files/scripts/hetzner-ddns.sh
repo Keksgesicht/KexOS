@@ -140,8 +140,8 @@ get_my_ip_addr() {
 
     # wierd privacy fix
     ipv6_cur="$(
-        ip addr show "${MY_IFLINK}" 2>/dev/null | \
-        awk '$1 == "inet6" && $2 !~ /^fe80:/ && $2 !~ /^fd00:/ &&
+        ip -6 addr show "${MY_IFLINK}" 2>/dev/null | \
+        awk '$1 == "inet6" && $2 !~ /^fe80:/ && $2 !~ /^f[cd]/ &&
             /'"${MY_IPV6_SUFFIX}"'/ {gsub(/\/.*$/, "", $2); print $2}' | \
         head -1
     )"

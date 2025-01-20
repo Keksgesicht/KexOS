@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PREFIX_LEN='64'
-awk_ipv6_no_local='$1 == "inet6" && $2 !~ /^fe80:/ && $2 !~ /^fd00:/'
+awk_ipv6_no_local='$1 == "inet6" && $2 !~ /^fe80:/ && $2 !~ /^f[cd]/'
 awk_gsub_2='{gsub(/\/.*$/, "", $2); print $2}'
 
 get-existing-static() {
@@ -106,7 +106,7 @@ case "${IFLINK}" in
 			if [ -z "${ipv6_prefix_old}" ]; then
 				set-ipv6-token
 			elif ! ip -6 addr show "${IFLINK}" | awk '/inet6/ {print $2}' | \
-			grep -vE '^(fe80|fd00):' | grep -v "${MY_IPV6_SUFFIX}/${PREFIX_LEN}" | \
+			grep -vE '^(fe80:|f(c|d))' | grep -v "${MY_IPV6_SUFFIX}/${PREFIX_LEN}" | \
 			grep -q "${ipv6_prefix_old}"; then
 				set-ipv6-token
 			fi
