@@ -38,12 +38,7 @@
     # https://nixos.wiki/wiki/Secure_Boot
     # https://github.com/nix-community/lanzaboote
     lanzaboote = {
-      type = "github";
-      owner = "nix-community";
-      repo = "lanzaboote";
-      ref = "master";
-      rev = "e7bd94e0b5ff3c1e686f2101004ebf4fcea9d871";
-
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 

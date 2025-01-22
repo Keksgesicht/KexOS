@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  fc-bin = "${pkgs.lm_sensors}/sbin/fancontrol";
+  fc-bin = "${pkgs.lm_sensors}/bin/fancontrol";
   fc-cfg = (pkgs.callPackage ../../packages/config-fancontrol.nix {});
 in
 {
