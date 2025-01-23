@@ -96,4 +96,23 @@ in
       ];
     };
   };
+
+  systemd.tmpfiles.rules =
+  let
+    json-path = "${ssd-mnt}/appdata/lancache/cache-domains/scripts/config.json";
+    ip-cfg-text = pkgs.writeText "lancache-cache-domain-config.json" ''
+      {
+        "ips": {
+          "generic": "${lan-subnet-v4}.${ip-suf}"
+        },
+        "cache_domains": {
+          "default": "generic"
+        }
+      }
+    '';
+  in
+  [
+    "r  ${json-path} - - - - -"
+    "C+ ${json-path} - - - - ${ip-cfg-text}"
+  ];
 }
