@@ -28,6 +28,8 @@ with my-functions;
       "L+ ${home-dir}/${elem} - - - - ${ssd-mnt}${home-dir}/${elem}"
     ));
     myHomeFiles = [
+      ".config/merkuro.calendarrc"
+      ".config/plasmashellrc"
       ".config/session/dolphin_dolphin_dolphin"
       ".local/state/dolphinstaterc"
     ];
