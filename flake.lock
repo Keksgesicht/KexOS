@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1737535424,
-        "narHash": "sha256-xlUInKoPWYEhY4o4SGlcphlG+cJWzmPrJnMbj70L6Zc=",
+        "lastModified": 1737715044,
+        "narHash": "sha256-+3IjIsbcgP9aDNBmIRMClRoKrub94XughOxgUkxHKSc=",
         "path": "/etc/unCookie",
         "type": "path"
       },
@@ -237,11 +237,11 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1737299813,
-        "narHash": "sha256-Qw2PwmkXDK8sPQ5YQ/y/icbQ+TYgbxfjhgnkNJyT1X8=",
+        "lastModified": 1737672001,
+        "narHash": "sha256-YnHJJ19wqmibLQdUeq9xzE6CjrMA568KN/lFPuSVs4I=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "107d5ef05c0b1119749e381451389eded30fb0d5",
+        "rev": "035f8c0853c2977b24ffc4d0a42c74f00b182cd8",
         "type": "github"
       },
       "original": {
@@ -252,11 +252,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1737469691,
-        "narHash": "sha256-nmKOgAU48S41dTPIXAq0AHZSehWUn6ZPrUKijHAMmIk=",
+        "lastModified": 1737746512,
+        "narHash": "sha256-nU6AezEX4EuahTO1YopzueAXfjFfmCHylYEFCagduHU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9e4d5190a9482a1fb9d18adf0bdb83c6e506eaab",
+        "rev": "825479c345a7f806485b7f00dbe3abb50641b083",
         "type": "github"
       },
       "original": {

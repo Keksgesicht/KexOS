@@ -86,7 +86,6 @@ in
     enable = true;
     interval = "08:15";
     package = pkgs.plocate;
-    localuser = null;
     output = "${ssd-mnt}${locate-path}";
     pruneNames = [
       # NixOS default
