@@ -7,8 +7,7 @@
     ./flatpak.nix
     ./home-manager
     ./home-manager/desktop.nix
-    ./impermanence-directories.nix
-    ./impermanence-files.nix
+    ./impermanence
     ./kde-plasma.nix
     ./my-user.nix
     ./openssh.nix

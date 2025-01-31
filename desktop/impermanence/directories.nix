@@ -1,4 +1,4 @@
-{ lib, username, home-dir, ssd-mnt, hdd-mnt, nvm-mnt, data-dir, ... }:
+{ self, lib, username, home-dir, ssd-mnt, hdd-mnt, nvm-mnt, data-dir, ... }:
 
 let
   bind-opt = [
@@ -20,7 +20,7 @@ let
   trash-dir = "${hdd-mnt}/Trash/1000";
   git-ssd-dir = "${ssd-mnt}${home-dir}/git";
 
-  my-functions = (import ../nix/my-functions.nix lib);
+  my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
 {

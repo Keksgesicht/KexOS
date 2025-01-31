@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, secrets-pkg, username, home-dir, ssd-mnt, ... }:
+{ self, config, pkgs, lib, inputs, secrets-pkg, username, home-dir, ssd-mnt, ... }:
 
 let
   machine-name =
@@ -10,15 +10,15 @@ let
 
   xdgState = "${home-dir}/.local/state";
 
-  my-audio = (pkgs.callPackage ../packages/my-audio.nix {});
-  plasma-config = (pkgs.callPackage ../packages/config-plasma.nix {});
+  my-audio = (pkgs.callPackage "${self}/packages/my-audio.nix" {});
+  plasma-config = (pkgs.callPackage "${self}/packages/config-plasma.nix" {});
 
-  my-functions = (import ../nix/my-functions.nix lib);
+  my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
 {
   imports = [
-    ../nix/secrets-pkg.nix
+    "${self}/nix/secrets-pkg.nix"
   ];
 
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
@@ -77,6 +77,6 @@ with my-functions;
   ++ initPlasmaFiles (machine-name)
   ++ initSecretFiles
   ++ initWireplumberState
-  ++ (cpHomeFile "${home-dir}/Downloads/.directory" ../files/dolphin.directory)
+  ++ (cpHomeFile "${home-dir}/Downloads/.directory" "${self}/files/dolphin.directory")
   ;
 }

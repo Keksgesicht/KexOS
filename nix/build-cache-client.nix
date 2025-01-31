@@ -19,5 +19,8 @@
     # nixos-rebuild failed when a previously online substituters goes offline
     # this reenables local building
     fallback = true;
+    # and reduces the time before aborting the usage of binary cache servers
+    connect-timeout = 3;
+    download-attempts = 2;
   };
 }
