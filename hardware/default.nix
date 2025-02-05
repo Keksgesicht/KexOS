@@ -13,4 +13,10 @@
       pkgs.linuxPackages_latest
     else
       pkgs.linuxPackages;
+
+  specialisation = if (isDesktop) then {
+    "Kernel-LTS".configuration = {
+      boot.kernelPackages = lib.mkForce pkgs.linuxPackages;
+    };
+  } else {};
 }
