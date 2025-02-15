@@ -121,9 +121,10 @@ CommandTitlebarWheel=Raise/Lower
 
 [NightColor]
 Active=true
-LatitudeAuto=50.0000
-LongitudeAuto=8.5000
-NightTemperature=2700
+LatitudeFixed=50
+LongitudeFixed=8.5
+Mode=Location
+NightTemperature=3200
 
 [Plugins]
 Grid_WMEnabled=false
