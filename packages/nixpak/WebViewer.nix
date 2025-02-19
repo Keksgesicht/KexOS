@@ -50,6 +50,14 @@ in
           ("${WVpkg}/lib/${WVname}")
           ("/app/etc/firefox")
         ]
+        # USB Webcam
+        "/sys/class/video4linux"
+        "/sys/devices"
+      ];
+      bind.dev = [
+        # USB Webcam
+        "/dev/video0"
+        "/dev/video1"
       ];
       bind.rw = [
         (bindHomeDir name "/.mozilla")
