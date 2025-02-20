@@ -1,9 +1,23 @@
-{ config, lib, system, ... }:
+{ config, pkgs, lib, system, username, ... }:
 
 # https://nixos.wiki/wiki/Power_Management
 # https://wiki.archlinux.org/title/CPU_frequency_scaling
 let
   mobileSystem = (config.networking.hostName == "cookiethinker");
+
+  cpu-gov-pkg = pkgs.writeShellScriptBin "set-cpu-governor" ''
+    case "$1" in
+      "powersave" | "performance" | "ondemand")
+        for f in $(ls /sys/bus/cpu/devices/cpu*/cpufreq/scaling_governor); do
+          echo "$1" > "$f"
+        done
+      ;;
+      *)
+        echo "\"$1\" currently not allowed!"
+      ;;
+    esac
+  '';
+  cpu-gov-script = "${cpu-gov-pkg}/bin/set-cpu-governor";
 in
 {
   powerManagement = {
@@ -55,4 +69,23 @@ in
     hibernateKeyLongPress = "ignore";
     hibernateKey = "ignore";
   };
+
+  # toggle performance/powersave with privileges
+  security.sudo.extraRules = [ {
+    users = [ username ];
+    commands = [
+      { options = [ "NOPASSWD" ]; command = "${cpu-gov-script} ondemand"; }
+      { options = [ "NOPASSWD" ]; command = "${cpu-gov-script} powersave"; }
+    ];
+  } ];
+  programs.zsh.interactiveShellInit = ''
+    cpu-toggle-governor() {
+      CPUGOV=$(cat /sys/bus/cpu/devices/cpu0/cpufreq/scaling_governor)
+      case "$CPUGOV" in
+        "powersave") sudo ${cpu-gov-script} "ondemand" ;;
+        "ondemand") sudo ${cpu-gov-script} "powersave" ;;
+        *) sudo ${cpu-gov-script} "powersave" ;;
+      esac
+    }
+  '';
 }
