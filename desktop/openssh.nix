@@ -7,6 +7,9 @@ let
       ( sshPubKeyPath + "/${name}" )
     ]
   );
+
+  askpass = pkgs.kdePackages.ksshaskpass;
+
   my-functions = (import ../nix/my-functions.nix lib);
 in
 with my-functions;
@@ -16,12 +19,12 @@ with my-functions;
   ];
 
   environment.sessionVariables = {
-    GIT_ASKPASS = "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
+    GIT_ASKPASS = "${askpass}/bin/ksshaskpass";
   };
 
   programs.ssh = {
     startAgent = true;
-    askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
+    askPassword = pkgs.lib.mkForce "${askpass}/bin/ksshaskpass";
     extraConfig = (builtins.readFile ../files/linux-root/etc/ssh/ssh_config);
 
     knownHostsFiles = [
