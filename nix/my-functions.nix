@@ -1,7 +1,9 @@
 lib:
 rec {
+  lo = lib.optionals;
   fs = lib.filesystem;
-  forEach = lib.lists.forEach;
+  inherit (lib.lists) forEach;
   flatList = lib.lists.flatten;
   listFilesRec = fs.listFilesRecursive;
+  concatStr = lib.strings.concatStrings;
 }

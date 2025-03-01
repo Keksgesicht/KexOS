@@ -101,7 +101,7 @@ case "${IFLINK}" in
 			ipv6_prefix_old="$(
 				ip -6 addr show "${IFLINK}" | \
 				awk '/inet6/ && /'"${MY_IPV6_SUFFIX}\/${PREFIX_LEN}"'/ {print $2}' | \
-				grep -vE '^(fe80|fd00):' | sed -e 's|'"${MY_IPV6_SUFFIX}/${PREFIX_LEN}"'||'
+				grep -vE '^(fe80:|f(c|d))' | sed -e 's|'"${MY_IPV6_SUFFIX}/${PREFIX_LEN}"'||'
 			)"
 			if [ -z "${ipv6_prefix_old}" ]; then
 				set-ipv6-token
