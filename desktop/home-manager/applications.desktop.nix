@@ -76,6 +76,15 @@ in
 
     # desktop entries for common applications
 
+    "tastenbrett" = {
+      exec = "${pkgs.kdePackages.plasma-desktop}/bin/tastenbrett";
+      name = "Keyboard Preview";
+      icon = "xorg";
+      categories = [ "Settings" ];
+      settings.Keywords = (lib.concatStringsSep ";" [
+        "Settings" "Keyboard" "tastenbrett"
+      ]);
+    };
     "Vivado" = {
       exec = "${pkgs.bash}/bin/bash -c \"source /opt/cad/Xilinx/Vivado/2019.1/settings64.sh && exec vivado\"";
       name = "Vivado";
