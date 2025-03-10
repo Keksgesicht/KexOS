@@ -9,15 +9,15 @@
         fileMode = false;
         #autocrlf = true;
       };
-      init = {
-        defaultBranch = "main";
-      };
       color = {
         ui = true;
         diff = "auto";
         status = "auto";
         branch = "auto";
       };
+      init.defaultBranch = "main";
+      push.autoSetupRemote = true;
+      lfs.cachecredentials = true;
       alias = {
         reorder = "!GIT_SEQUENCE_EDITOR=\"sed -i -n 'h;1n;2p;g;p'\" git rebase -i HEAD~2";
         lg = ''!f() { \
@@ -35,9 +35,6 @@
         }; f'';
         resign = "commit --amend --no-edit -n -S";
         resign-all = "rebase --exec 'git commit --amend --no-edit -n -S' -i";
-      };
-      push = {
-        autoSetupRemote = true;
       };
     } ];
   };
