@@ -8,4 +8,10 @@
     randomizedDelaySec = "15min";
     options = "--delete-older-than 23d";
   };
+
+  systemd.services."nix-gc".serviceConfig = {
+    CPUSchedulingPolicy = "idle";
+    IOSchedulingClass = "idle";
+    IOSchedulingPriority = 7;
+  };
 }
