@@ -16,6 +16,7 @@
     ../nix/version-23-05.nix
     ../services/containers/mailcow.nix
     ../services/system/backup-snapshot.nix
+    ../services/system/wireguard/server.nix
     ../system
     ../system/impermanence
     ../system/impermanence/server.nix

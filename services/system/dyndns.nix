@@ -2,24 +2,19 @@
 
 let
   ip-vars = (import "${self}/system/network/IPv6/variables.nix" specialArgs config);
-  cfgNetName = config.networking.hostName;
+  hn = config.networking.hostName;
 in
 {
   systemd = {
     services."hetzner-ddns" = {
-      path = with pkgs; [
-        bash curl gawk gnused iproute2 jq util-linux
-      ];
+      path = with pkgs; [ bash curl gawk gnused iproute2 jq util-linux ];
       environment = ip-vars // {
         TTL =
-          if (cfgNetName == "cookieclicker") then
-            "300"
+          if (hn == "cookieclicker") then "300"
           else "1000";
         records =
-          if (cfgNetName == "cookieclicker") then
-            "tw.host"
-          else if (cfgNetName == "cookiepi") then
-            "pi.host"
+          if (hn == "cookieclicker") then "tw.host"
+          else if (hn == "cookieflyer") then "pi.host"
           else "";
         domain = myDomain;
       };

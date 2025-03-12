@@ -7,23 +7,23 @@ LUKS_NAME="nixos-install"
 # create new GPT table
 disk_gpt() {
 	(
-	echo g
-	echo w
+		echo g
+		echo w
 	) | fdisk "${DISK_TARGET}"
 }
 
 # create EFI partition
 disk_efi() {
 	(
-	echo n
-	echo 3
-	echo
-	echo
-	echo t
-	echo 3
-	echo uefi
-	sleep 1s
-	echo w
+		echo n
+		echo 3
+		echo
+		echo
+		echo t
+		echo 3
+		echo uefi
+		sleep 1s
+		echo w
 	) | fdisk "${DISK_TARGET}"
 
 	part_target=$(fdisk -l "${DISK_TARGET}" | grep "^${DISK_TARGET}" | awk '{print $1}')
@@ -35,19 +35,19 @@ disk_efi() {
 # create root partition and 8G swap partition
 disk_root_plus_swap() {
 	(
-	echo n
-	echo 1
-	echo 2048
-	echo -9G
-	echo n
-	echo 2
-	echo
-	echo -1G
-	echo t
-	echo 2
-	echo swap
-	sleep 1s
-	echo w
+		echo n
+		echo 1
+		echo 2048
+		echo -9G
+		echo n
+		echo 2
+		echo
+		echo -1G
+		echo t
+		echo 2
+		echo swap
+		sleep 1s
+		echo w
 	) | fdisk "${DISK_TARGET}"
 
 	part_target=$(fdisk -l "${DISK_TARGET}" | grep "^${DISK_TARGET}" | awk '{print $1}')
@@ -145,4 +145,4 @@ set +ex
 lsblk -f
 exit 0
 
-# "4EFC-A800" "867c7b32-c672-4660-aa54-57262ff3ebdf" cookiepi
+# "4EFC-A800" "867c7b32-c672-4660-aa54-57262ff3ebdf" cookieflyer

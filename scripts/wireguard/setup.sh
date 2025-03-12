@@ -20,17 +20,17 @@ wg "genpsk" > shared
 
 umask 022
 
-mkdir -p ${SecretsDir}/private
+mkdir -p ${SecretsDir}
 mkdir -p ${SecretsDir}/shared
 mkdir -p "${PublicDir}"
 
-mv private ${SecretsDir}/private/"${HOST}"
+mv private ${SecretsDir}/private
 mv shared  ${SecretsDir}/shared/"${HOST}"
 mv public "${PublicDir}"/"${HOST}"
 
 chown -R ${UserName}:${UserName} "$(dirname "${PublicDir}")"
 chmod 644 "${PublicDir}"/"${HOST}"
 
-ls -l ${SecretsDir}/private/"${HOST}"
+ls -l ${SecretsDir}/private
 ls -l ${SecretsDir}/shared/"${HOST}"
 ls -l "${PublicDir}"/"${HOST}"

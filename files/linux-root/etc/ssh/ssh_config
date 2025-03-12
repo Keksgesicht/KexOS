@@ -56,12 +56,12 @@ Host cookieclicker
 	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host cookiemailer
-	HostName mail.keksgesicht.de
+	HostName cookiemailer.keksgesicht.de
 	User keks
 	IdentityFile ~/.secrets/ssh/id_nixos
 
-Host cookiepi
-	HostName cookiepi.keksgesicht.internal
+Host cookieflyer
+	HostName cookieflyer.keksgesicht.de
 	User keks
 	IdentityFile ~/.secrets/ssh/id_nixos
 

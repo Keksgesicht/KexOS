@@ -2,7 +2,7 @@
 
 {
   # Define your hostname
-  networking.hostName = "cookiepi";
+  networking.hostName = "cookieflyer";
 
   imports = [
     ../desktop/environment.nix

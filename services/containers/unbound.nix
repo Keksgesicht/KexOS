@@ -122,16 +122,19 @@ with my-functions;
     )));
     myDomainText = myDomainGen [
       { ip4 = "${vpn-subnet-v4}.2"; ip6 = "${vpn-subnet-v6}:2"; zone = [
-        { name = "cookiepi.${myDomain}"; type = "redirect"; }
+        { name = "cookieflyer.${myDomain}"; type = "redirect"; }
       ]; }
       { ip4 = "${lan-subnet-v4}.25"; ip6 = "${lan-subnet-v6}:25"; zone = [
-        { name = "nix-serve.cookiepi.${myDomain}"; type = "static"; }
+        { name = "nix-serve.cookieflyer.${myDomain}"; type = "static"; }
       ]; }
       { ip4 = "${vpn-subnet-v4}.1"; ip6 = "${vpn-subnet-v6}:1"; zone = [
         { name = "cookieclicker.${myDomain}"; type = "redirect"; }
       ]; }
       { ip4 = "${lan-subnet-v4}.220"; ip6 = "${lan-subnet-v6}:220"; zone = [
         { name = "nix-serve.cookieclicker.${myDomain}"; type = "static"; }
+      ]; }
+      { ip4 = "${vpn-subnet-v4}.3"; ip6 = "${vpn-subnet-v6}:3"; zone = [
+        { name = "cookiemailer.${myDomain}"; type = "redirect"; }
       ]; }
     ];
     myDomainConf = pkgs.writeText "${myDomain}.conf" (

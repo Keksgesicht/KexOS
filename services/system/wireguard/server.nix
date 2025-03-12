@@ -51,41 +51,45 @@ let
   });
 
   # handy
-  wg-client-handy = (host: wg-client "handy" "handy-${host}" "" "101" "10:1");
+  wg-client-handy = wg-client "handy" "handy-${hn}" "handy" "101" "10:1";
 
   # laptop
   wg-client-laptop = wg-client "cookiethinker" "" "" "102" "10:2";
 
   # rpi
-  wg-clicker-pihole = (wg-client "rpi" "" "cookieclicker-rpi" "103" "10:3")
-    // (cli-end "ub" "22263");
-  wg-rpi = wg-client "rpi" "" "cookiepi-rpi" "103" "10:3";
+  wg-rpi = wg-client "rpi" "" "" "103" "10:3";
+  wg-rpi-click = wg-rpi // (cli-end "ub" "22263");
 
-  # cookiepi
-  wg-clicker-pi = (wg-client "cookiepi" "" "cookiepi-cookieclicker" "2" "2")
-   // (cli-end "pi" "22243");
+  # server
+  wg-srv = (name: suf: wg-client name "" "" suf suf);
+  wg-click = wg-srv "cookieclicker" "1";
+  wg-mail = (wg-srv "cookiemailer" "3") // (cli-end "ma" "22301");
+  wg-fly = wg-srv "cookieflyer" "2";
 
-  # cookieclicker
-  wg-pi-clicker = (wg-client "cookieclicker" "" "cookiepi-cookieclicker" "1" "1");
+  hncc = hn != "cookieclicker";
+  wg-fly-click = wg-fly // (cli-end "pi" "22243");
 
   # self
-  wg-server = (name: suf4: suf6: iface: listenPort: extPeers:
+  wg-server = (suf: iface: listenPort: extPeers:
     let
-      ipv4 = "${vpn-subnet-v4}.${suf4}/24";
-      ipv6 = "${vpn-subnet-v6}:${suf6}/64";
+      ipv4 = "${vpn-subnet-v4}.${suf}/24";
+      ipv6 = "${vpn-subnet-v6}:${suf}/64";
     in
     {
       "wg-server" = {
         mtu = 1280;
         ips = [ ipv4 ipv6 ];
-        privateKeyFile = "${wg-path-keys}/private/${name}";
+        privateKeyFile = "${wg-path-keys}/private";
         postSetup = (wg-nat ipv4 ipv6 iface "-A");
         postShutdown = (wg-nat ipv4 ipv6 iface "-D");
         inherit listenPort;
-        peers = [
-          (wg-client-handy name)
-          wg-client-laptop
-        ] ++ extPeers;
+        peers = []
+          ++ (lib.optionals (hn != "cookiemailer") [ wg-mail wg-client-handy ])
+          ++ (lib.optionals (hncc) [ wg-click ])
+          ++ (lib.optionals (hncc && hn != "cookieflyer" ) [ wg-fly ])
+          ++ (lib.optionals (hncc && hn != "cookiepi" ) [ wg-rpi ])
+          ++ [ wg-client-laptop ]
+          ++ extPeers;
       };
     }
   );
@@ -106,17 +110,10 @@ in
 
   networking.wireguard.interfaces =
     if (hn == "cookieclicker") then
-      wg-server "cookieclicker" "1" "1" "enp4s0" 22223 [
-        wg-clicker-pi
-        wg-clicker-pihole
-      ]
-    else if (hn == "cookiepi") then
-      wg-server "cookiepi" "2" "2" "enp0s31f6" 22243 [
-        wg-pi-clicker
-        wg-rpi
-      ]
-    else {}
-  ;
+      wg-server "1" "enp4s0" 22223 [ wg-fly-click wg-rpi-click ]
+    else if (hn == "cookieflyer")  then (wg-server "2" "enp0s31f6" 22243 [])
+    else if (hn == "cookiemailer") then (wg-server "3" "invalid"   22301 [])
+    else {};
 
   systemd.services =
   let
@@ -129,17 +126,23 @@ in
       ${pkgs.iputils}/bin/ping -c3 -W1 ${vpn-subnet-v4}.${suf} >/dev/null || true
     '');
     wg-refresh = (name: "wireguard-${wg-name}-peer-${name}-refresh");
+
+    listRefresh = (pl: builtins.listToAttrs (map (e: {
+      name = "${wg-refresh e}";
+      value = vpn-dns-delay;
+    }) pl ));
+    listCheck = (pl: al: {
+      "vpn-check-connectivity" = {
+        after = lib.lists.forEach pl (e: "${wg-refresh e}.service");
+        startAt = "*:0/5";
+        script = lib.strings.concatStrings (lib.lists.forEach al (e: vpn-ping e));
+      };
+    });
   in
-  if (hn == "cookieclicker") then {
-    "${wg-refresh "cookiepi"}" = vpn-dns-delay;
-    "${wg-refresh "rpi"}" = vpn-dns-delay;
-    "vpn-check-connectivity" = {
-      after = [
-        "${wg-refresh "cookiepi"}.service"
-        "${wg-refresh "rpi"}.service"
-      ];
-      startAt = "*:0/5";
-      script = (vpn-ping "2") + (vpn-ping "103");
-    };
-  } else {};
+  if (hn == "cookieclicker") then
+     (listRefresh [ "cookieflyer" "cookiemailer" "rpi" ])
+    // (listCheck [ "cookieflyer" "cookiemailer" "rpi" ] [ "2" "3" "103" ])
+  else if (hn == "cookieflyer") then
+    (listCheck [ "cookiemailer" ] [ "3" ])
+  else {};
 }

@@ -65,23 +65,23 @@ let
     esac
   '');
 
-  peerList = [
-    {
+  peerList = [ {
       name = "cookieclicker";
       suf4 = "1";  suf6 = "1";
       ep = "tw.host.${myDomain}:22223";
-    }
-    {
-      name = "cookiepi";
+    } {
+      name = "cookieflyer";
       suf4 = "2"; suf6 = "2";
       ep = "pi.host.${myDomain}:22243";
-    }
-    {
+    } {
+      name = "cookiemailer";
+      suf4 = "3"; suf6 = "3";
+      ep = "ma.host.${myDomain}:22301";
+    } {
       name = "rpi";
       suf4 = "103"; suf6 = "10:3";
       ep = "ub.host.${myDomain}:22263";
-    }
-  ];
+  } ];
 
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
@@ -107,7 +107,7 @@ with my-functions;
       name = pKey;
       endpoint = ep;
       publicKey = (wg-pubkey pKey);
-      presharedKeyFile = "${wg-path-keys}/shared/cookiethinker";
+      presharedKeyFile = "${wg-path-keys}/shared/${pKey}";
       dynamicEndpointRefreshSeconds = 300;
       allowedIPs = [
         "${vpn-subnet-v4}.${suf4}/32"
@@ -123,7 +123,7 @@ with my-functions;
   in
   {
     "wg-${wg-name}" = {
-      privateKeyFile = "${wg-path-keys}/private/cookiethinker";
+      privateKeyFile = "${wg-path-keys}/private";
       ips = [
         "${vpn-subnet-v4}.102/24"
         "${vpn-subnet-v6}:10:2/64"
@@ -172,4 +172,7 @@ with my-functions;
       script = concatStr (forEach peerList (e: vpn-ping e.suf4));
     };
   };
+  powerManagement.resumeCommands = concatStr (forEach peerList (e: ''
+    /run/current-system/systemd/bin/systemctl --no-block restart "wireguard-${wg-name}-peer-${e.name}-refresh"
+  ''));
 }

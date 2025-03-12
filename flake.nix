@@ -169,14 +169,14 @@
         ];
       };
 
-      "cookiepi" = nixpkgs-stable.lib.nixosSystem rec {
+      "cookieflyer" = nixpkgs-stable.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           lan-subnet-v6 = "fd00:da:c54::192:168:178";
           ip-suf = "25";
         };
         modules = [
-          ./machines/cookiepi.nix
+          ./machines/cookieflyer.nix
           impermanence.nixosModules.impermanence
           lanzaboote.nixosModules.lanzaboote
         ];

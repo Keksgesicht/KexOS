@@ -3,6 +3,8 @@
 let
   cc-dir = "${cookie-pkg}/containers";
   bind-path = "${ssd-mnt}/appdata/swag";
+
+  hn = config.networking.hostName;
   my-functions = (import "${inputs.self}/nix/my-functions.nix" lib);
 in
 with my-functions;
@@ -60,10 +62,10 @@ with my-functions;
         URL = myDomain;
         EMAIL = "certbot@${myDomain}";
         SUBDOMAINS =
-          if (config.networking.hostName == "cookieclicker") then
+          if (hn == "cookieclicker") then
             "wildcard,*.cookieclicker"
-          else if (config.networking.hostName == "cookiepi") then
-            "wildcard,*.cookiepi,cloud,tandoor.tb"
+          else if (hn == "cookieflyer") then
+            "wildcard,*.cookieflyer,cloud,tandoor.tb"
           else "";
         ONLY_SUBDOMAINS = "true";
         VALIDATION = "dns";

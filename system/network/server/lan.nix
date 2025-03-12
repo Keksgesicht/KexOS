@@ -1,4 +1,4 @@
-{ config, pkgs, lan-subnet-v4, ... }:
+{ pkgs, lan-subnet-v4, ip-suf, ... }:
 
 let
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
@@ -19,12 +19,11 @@ in
 
   environment.etc = {
     "NetworkManager/system-connections/lan.nmconnection" = {
-      enable = (config.networking.hostName == "cookiepi");
       mode = "0600";
       source = pkgs.substituteAll {
         src       =  ../../../files + "/${nmsc-path}/server-lan.nmconnection";
-        dnsserver = "${lan-subnet-v4}.25;172.23.53.1;";
-        ipaddr    = "${lan-subnet-v4}.25/24,${lan-subnet-v4}.1";
+        dnsserver = "${lan-subnet-v4}.${ip-suf};172.23.53.1;";
+        ipaddr    = "${lan-subnet-v4}.${ip-suf}/24,${lan-subnet-v4}.1";
       };
     };
   };

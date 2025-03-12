@@ -4,16 +4,9 @@ let
   bd-pkg = (pkgs.callPackage ../../packages/backup-download.nix {});
 
   bd-units = (sn: th: {
-    tmpfiles.rules = [
-      "d  ${hdd-mnt}/machines/${sn}"
-    ];
+    tmpfiles.rules = [ "d  ${hdd-mnt}/machines/${sn}" ];
     services."backup-download@${sn}" = {
-      path = [
-        pkgs.gnutar
-        pkgs.gzip
-        pkgs.openssh
-        pkgs.rsync
-      ];
+      path = with pkgs; [ gnutar gzip openssh rsync ];
       description = "Generates Backups from different Remote Systems";
       serviceConfig = {
         Type      = "oneshot";
@@ -27,9 +20,7 @@ let
 
         ReadOnlyPaths = "/";
         TemporaryFileSystem = "/etc:ro";
-        BindReadOnlyPaths = [
-          "/etc/ssh/ssh_config"
-        ];
+        BindReadOnlyPaths = "/etc/ssh/ssh_config";
         ReadWritePaths = "${hdd-mnt}/machines/${sn}";
       };
     };
@@ -50,7 +41,7 @@ in
     ({ tmpfiles.rules = [
       "q  ${hdd-mnt}/machines"
     ]; })
-    (bd-units "cookiepi" "cookiepi.keksgesicht.internal")
+    (bd-units "cookieflyer" "cookieflyer.keksgesicht.de")
     (bd-units "cookiemailer" "mail.keksgesicht.de")
     (bd-units "pihole" "rpi.pihole.internal")
   ];

@@ -178,15 +178,12 @@ with my-functions;
     "ff02::1" = [ "ip6-allnodes" ];
     "ff02::2" = [ "ip6-allrouters" ];
 
-    # Router
-    "${lan-subnet-v4}.1" = [ "fritz.box" ];
-
     # VPN devices
-    "${vpn-subnet-v4}.2"   = [ "cookiepi.keksgesicht.internal" ];
+    "${vpn-subnet-v4}.102" = [ "cookiethinker.${myDomain}" ];
     "${vpn-subnet-v4}.103" = [ "rpi.pihole.internal" ];
 
     # LAN devices
-    "${lan-subnet-v4}.147" = [ "cookiethinker.${myDomain}" ];
+    "${lan-subnet-v4}.1"   = [ "fritz.box" ]; # Router
     "${lan-subnet-v4}.230" = [ "temp.host.internal" ];
 
     # TUDa ESA-Infrastruktur (sshuttle)
