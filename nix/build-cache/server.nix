@@ -9,4 +9,9 @@
     openFirewall = false;
     secretKeyFile = "/etc/nix-serve/secret-key.pem";
   };
+
+  # mkdir -p /etc/nix-serve
+  # nix-store --generate-binary-cache-key nix-serve.<hostname>.${myDomain} \
+  #   /etc/nix-serve/secret-key.pem /etc/nix-serve/public-key.pem
+  # chmod 600 /etc/nix-serve/secret-key.pem
 }

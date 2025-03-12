@@ -1,4 +1,4 @@
-{ ssd-mnt, ... }:
+{ lib, ssd-mnt, vpn-subnet-v4, ... }:
 
 {
   # Define your hostname
@@ -12,6 +12,7 @@
     ../hardware/hetzner.nix
     ../development/base-devel.nix
     ../nix
+    ../nix/build-cache
     ../nix/secrets-pkg.nix
     ../nix/version-23-05.nix
     ../services/containers/mailcow.nix
@@ -30,4 +31,6 @@
     options = [ "nofail" ];
     size = 4096;
   } ];
+
+  services.nix-serve.bindAddress = lib.mkForce "${vpn-subnet-v4}.3";
 }
