@@ -142,7 +142,6 @@ in
         "/var/log"
       ];
       files = [
-        "/etc/machine-id"
         "/etc/nix-serve/public-key.pem"
         "/etc/nix-serve/secret-key.pem"
         "/etc/ssh/ssh_host_ed25519_key"
@@ -159,6 +158,12 @@ in
         "/root/.secrets/ssh"
       ];
     };
+  };
+
+  # systemd-machine-id-commit fails on every rebuild without this workaround
+  environment.etc."machine-id" = {
+    source = "${ssd-mnt}/etc/machine-id";
+    mode = "direct-symlink";
   };
 
   systemd.tmpfiles.rules = [
@@ -202,8 +207,4 @@ in
   [
     "C  ${nm-state-file} - - - - ${inputs.self}/files/linux-root${nm-state-file}"
   ];
-
-  # /etc/machine-id is hopefully mounted by above settings
-  # https://www.freedesktop.org/software/systemd/man/latest/systemd-machine-id-commit.service.html
-  systemd.services."systemd-machine-id-commit".enable = false;
 }
