@@ -2,8 +2,10 @@
     {
         "data": [
             {
+                "allowSdrSoftwareBrightness": true,
                 "autoRotation": "InTabletMode",
                 "brightness": 1,
+                "colorPowerTradeoff": "PreferEfficiency",
                 "colorProfileSource": "sRGB",
                 "connectorName": "DP-1",
                 "edidHash": "4d3bcdd3043252b92e611f65e5ddb739",
@@ -25,8 +27,10 @@
                 "wideColorGamut": false
             },
             {
+                "allowSdrSoftwareBrightness": true,
                 "autoRotation": "InTabletMode",
                 "brightness": 1,
+                "colorPowerTradeoff": "PreferEfficiency",
                 "colorProfileSource": "sRGB",
                 "connectorName": "HDMI-A-1",
                 "edidHash": "afe7407879b8791cc909f40c925d59c2",

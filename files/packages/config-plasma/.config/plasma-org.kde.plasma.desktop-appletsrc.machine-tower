@@ -51,6 +51,7 @@ wallpaperplugin=org.kde.slideshow
 ToolBoxButtonState=topcenter
 ToolBoxButtonX=2032
 locked=true
+positions={"5120x1440":[]}
 
 [Containments][1][Wallpaper][org.kde.slideshow][General]
 FillMode=0
@@ -71,6 +72,7 @@ wallpaperplugin=org.kde.slideshow
 [Containments][2][General]
 ToolBoxButtonState=topcenter
 ToolBoxButtonX=1392
+positions={"3840x2160":[]}
 
 [Containments][2][Wallpaper][org.kde.slideshow][General]
 FillMode=0
