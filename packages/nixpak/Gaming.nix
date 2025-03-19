@@ -2,14 +2,27 @@
 { config, pkgs, pkgs-latest, pkgs-stable, nvm-mnt, home-dir, username, ... }:
 
 let
-  pkgl = pkgs-latest { config.allowUnfree = true; };
-  pkgo = pkgs-stable { config.allowUnfree = true; };
+  gamingPC = (config.networking.hostName == "cookieclicker");
 
   name = "Gaming";
   name-dir = "${home-dir}/.var/app/${name}";
   name-home = "${home-dir}/.var/home/${name}";
 
-  gamingPC = (config.networking.hostName == "cookieclicker");
+  pkgl = pkgs-latest { config.allowUnfree = true; };
+  pkgo = pkgs-stable { config.allowUnfree = true; };
+
+  pkgMachineID = pkgs.writeText "${name}-machine-id" ''
+    1337deadbeef42bad0815ccc4711da69
+  '';
+  pkgPasswd = pkgs.writeText "${name}-passwd" ''
+    ${username}:x:1000:1000:Karl Keksgesicht:${home-dir}:${pkgs.zsh}/bin/zsh
+    nfsnobody:x:65534:65534:Unmapped user:/:${pkgs.util-linux}/bin/nologin
+  '';
+  pkgGroup = pkgs.writeText "${name}-group" ''
+    ${username}:x:1000:${username}
+    nfsnobody:x:65534:
+  '';
+
   bindGamingHome = (dir: [
     (sloth.mkdir (sloth.concat [
       sloth.homeDir "/.var/app/GamingHome" dir
@@ -125,6 +138,8 @@ in
       "com.feralinteractive.GameMode" = "talk";
     };
 
+    gpu.enable = true;
+
     bubblewrap = {
       bind.dev = [
         # XBox Controller Support
@@ -137,26 +152,10 @@ in
         # host system information
         "/etc/lsb-release"
         "/etc/os-release"
-        [
-          (pkgs.writeText "${name}-machine-id" ''
-            1337deadbeef42bad0815ccc4711da69
-          '')
-          "/etc/machine-id"
-        ]
-        [
-          (pkgs.writeText "${name}-passwd" ''
-            ${username}:x:1000:1000:Karl Keksgesicht:${home-dir}:${pkgs.zsh}/bin/zsh
-            nfsnobody:x:65534:65534:Unmapped user:/:${pkgs.util-linux}/bin/nologin
-          '')
-          "/etc/passwd"
-        ]
-        [
-          (pkgs.writeText "${name}-group" ''
-            ${username}:x:1000:${username}
-            nfsnobody:x:65534:
-          '')
-          "/etc/group"
-        ]
+
+        [ "${pkgMachineID}" "/etc/machine-id" ]
+        [ "${pkgPasswd}" "/etc/passwd" ]
+        [ "${pkgGroup}" "/etc/group" ]
 
         # hardware information
         # sensor reading (e.g. MangoHud)

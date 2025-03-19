@@ -32,6 +32,8 @@ in
       "org.kde.StatusNotifierWatcher" = "talk"; # tray icon on KDE Plasma
     };
 
+    gpu.enable = true;
+
     bubblewrap = {
       bind.rw = [
         (bindHomeDir name "/.config/obs-studio")

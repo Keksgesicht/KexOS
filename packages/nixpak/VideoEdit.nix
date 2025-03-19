@@ -41,6 +41,8 @@ in
       "org.kde.kdenlive.*" = "own";
     };
 
+    gpu.enable = true;
+
     bubblewrap = {
       bind.ro = [
         [

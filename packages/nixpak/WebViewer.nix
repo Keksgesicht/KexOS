@@ -44,6 +44,8 @@ in
       "org.mpris.MediaPlayer2.firefox.*" = "own";
     };
 
+    gpu.enable = true;
+
     bubblewrap = {
       bind.ro = [
         [

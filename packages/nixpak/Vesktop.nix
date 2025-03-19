@@ -25,6 +25,8 @@ in
       "org.freedesktop.PowerManagement.Inhibit" = "talk";
     };
 
+    gpu.enable = true;
+
     bubblewrap = {
       bind.rw = [
         (bindHomeDir name "/.config/VencordDesktop")

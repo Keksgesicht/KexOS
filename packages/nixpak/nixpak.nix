@@ -121,6 +121,10 @@ let
         type = types.attrs;
         default = {};
       };
+      gpu = lib.mkOption {
+        type = types.attrs;
+        default = {};
+      };
       etc = lib.mkOption {
         type = types.attrs;
         default = {};
@@ -177,9 +181,8 @@ let
       };
       output.env    = (mkNixPakPkg name config "env");
       output.script = (mkNixPakPkg name config "script");
-      bubblewrap = {
-        network = false;
-      };
+      bubblewrap.network = false;
+      gpu.enable = false;
     };
   };
 
@@ -317,6 +320,8 @@ let
             })
             value.dbus
           ];
+
+          gpu = value.gpu;
 
           etc = lib.mkMerge [
             ({

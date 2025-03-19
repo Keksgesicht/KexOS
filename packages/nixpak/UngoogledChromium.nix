@@ -13,7 +13,6 @@ in
           { src = "chromium-browser"; args.extra = [
             "--enable-features=UseOzonePlatform" "--ozone-platform-hint=auto"
             "--force-dark-mode" "--enable-features=WebUIDarkMode"
-            "--incognito"
           ]; }
         ]; }
       ];
@@ -25,6 +24,8 @@ in
     dbus.policies = {
       "org.mpris.MediaPlayer2.chromium.*" = "own";
     };
+
+    gpu.enable = true;
 
     bubblewrap = {
       bind.rw = [

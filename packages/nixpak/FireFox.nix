@@ -27,7 +27,7 @@ in
           ("/app/etc/firefox")
         ]
         [
-          (arkenfox-ff)
+          "${arkenfox-ff}"
           (sloth.concat' sloth.homeDir "/.mozilla/user.js")
         ]
       ];

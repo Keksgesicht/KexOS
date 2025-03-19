@@ -14,6 +14,8 @@ in
       ];
     };
 
+    gpu.enable = false;
+
     bubblewrap = {
       bind.ro = [
         ("/etc/nix/nix.conf")

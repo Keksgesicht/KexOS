@@ -23,6 +23,8 @@ in
       "org.mpris.MediaPlayer2.vlc" = "own";
     };
 
+    gpu.enable = true;
+
     bubblewrap = {
       bind.ro = [
         (sloth.concat' sloth.homeDir "/git")

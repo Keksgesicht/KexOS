@@ -32,7 +32,7 @@ in
           ("/app/etc/firefox")
         ]
         [
-          (arkenfox-lw)
+          "${arkenfox-lw}"
           (sloth.concat' sloth.homeDir "/.librewolf/user.js")
         ]
         (sloth.mkdir (sloth.concat' sloth.homeDir "/Downloads/read-only"))
