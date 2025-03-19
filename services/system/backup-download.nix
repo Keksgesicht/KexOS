@@ -1,4 +1,4 @@
-{ pkgs, lib, hdd-mnt, ...}:
+{ pkgs, lib, hdd-mnt, myDomain, ... }:
 
 let
   bd-pkg = (pkgs.callPackage ../../packages/backup-download.nix {});
@@ -38,11 +38,9 @@ let
 in
 {
   systemd = lib.mkMerge [
-    ({ tmpfiles.rules = [
-      "q  ${hdd-mnt}/machines"
-    ]; })
-    (bd-units "cookieflyer" "cookieflyer.keksgesicht.de")
-    (bd-units "cookiemailer" "mail.keksgesicht.de")
+    ({ tmpfiles.rules = [ "q  ${hdd-mnt}/machines" ]; })
+    (bd-units "cookieflyer"   "cookieflyer.${myDomain}")
+    (bd-units "cookiemailer" "cookiemailer.${myDomain}")
     (bd-units "pihole" "rpi.pihole.internal")
   ];
 

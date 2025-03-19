@@ -43,3 +43,5 @@ else
 	pattern_file="default"
 	download-snapshot
 fi
+
+touch "${DATA_DIR}"
