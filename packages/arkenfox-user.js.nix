@@ -1,9 +1,9 @@
 { lib, stdenv, fetchFromGitHub, patchSet ? "" }:
 
 let
-  pkgver  = "119.0";
-  commit  = "fd72683abe15de5cf57574125b64879e809cf5c4";
-  nixhash = "sha256-MAerYaRbaQBqS8WJ3eaq6uxVqQg8diymPbLCU72nDjM=";
+  pkgver  = "v135";
+  commit  = "3d76c74c80485931425464fec0e59d6cb461677a";
+  nixhash = "sha256-21DoV4SMueMFRHMsvfsPfQIOtsvRWNY06rE4gB7xFnc=";
 
   patchDir = ../files/packages/arkenfox-user.js;
   jsFile = "user.js";
@@ -11,14 +11,14 @@ in
 stdenv.mkDerivation {
   pname = "arkenfox-user.js";
   name = "arkenfox user.js";
-  version = "${pkgver}";
+  version = pkgver;
 
   # https://github.com/arkenfox/user.js
   src = fetchFromGitHub {
     owner = "arkenfox";
     repo = "user.js";
-    rev = "${commit}";
-    sha256 = "${nixhash}";
+    rev = commit;
+    sha256 = nixhash;
   };
 
   phases = [ "unpackPhase" "buildPhase" "installPhase" ];

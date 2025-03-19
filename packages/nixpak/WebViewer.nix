@@ -40,6 +40,7 @@ in
     };
 
     dbus.policies = {
+      "org.mozilla.firefox.*" = "own";
       "org.mpris.MediaPlayer2.firefox.*" = "own";
     };
 

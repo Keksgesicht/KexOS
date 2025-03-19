@@ -16,11 +16,11 @@ in
         { package = pkgs.librewolf; binName = "librewolf"; }
       ];
       audio = true;
+      time  = true;
     };
 
     dbus.policies = {
-      "io.gitlab.librewolf.*" = "own";
-      "org.mozilla.firefox.*" = "own";
+      "io.gitlab.firefox.*" = "own";
       "org.mpris.MediaPlayer2.firefox.*" = "own";
     };
 
