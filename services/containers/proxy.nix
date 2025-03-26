@@ -39,6 +39,7 @@ with my-functions;
         enable = true;
         overrideStrategy = "asDropin";
         wantedBy = [ "timers.target" ];
+        after = [ "podman-proxy.service" ];
         timerConfig = {
           OnCalendar = "Wed *-*-* 20:20:00";
           RandomizedDelaySec = "5min";

@@ -41,6 +41,9 @@ let
           ${sc-cmd-stop wg-name e.name e.suf4 e.suf6}
           ${pkgs.systemd}/bin/systemctl start "${wg-srv e}.service"
         ;;
+        refresh)
+          ${pkgs.systemd}/bin/systemctl restart "${wg-srv e}.service"
+        ;;
       esac
     ;;
   '');
