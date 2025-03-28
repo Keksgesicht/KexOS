@@ -1,5 +1,5 @@
 { config, pkgs, lib, ssd-mnt, nvm-mnt, nvm-name, cookie-pkg
-, lan-subnet-v4, pod-subnet-v4, pod-subnet-v6, ip-suf
+, lan-subnet-v4, pod-subnet-v4, pod-subnet-v6, lan-ip-suf
 , ... }:
 
 let
@@ -74,7 +74,7 @@ in
 
       environment = {
         TZ = config.time.timeZone;
-        LANCACHE_IP = "${lan-subnet-v4}.${ip-suf}";
+        LANCACHE_IP = "${lan-subnet-v4}.${lan-ip-suf}";
         UPSTREAM_DNS = "${pod-subnet-v4}.53.2";
         CACHE_MAX_AGE = "1234d";
         CACHE_MEM_SIZE = "1000m";
@@ -103,7 +103,7 @@ in
     ip-cfg-text = pkgs.writeText "lancache-cache-domain-config.json" ''
       {
         "ips": {
-          "generic": "${lan-subnet-v4}.${ip-suf}"
+          "generic": "${lan-subnet-v4}.${lan-ip-suf}"
         },
         "cache_domains": {
           "default": "generic"

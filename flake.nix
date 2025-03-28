@@ -146,7 +146,8 @@
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           isDesktop = true;
-          ip-suf = "220";
+          lan-ip-suf = "220";
+          vpn-ip-suf = "1";
         };
         modules = [
           ./machines/cookieclicker.nix
@@ -173,7 +174,8 @@
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           lan-subnet-v6 = "fd00:da:c54::192:168:178";
-          ip-suf = "25";
+          lan-ip-suf = "25";
+          vpn-ip-suf = "2";
         };
         modules = [
           ./machines/cookieflyer.nix

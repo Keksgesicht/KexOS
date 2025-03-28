@@ -1,9 +1,23 @@
-{ config, pkgs, lib, cookie-pkg, ssd-mnt, lan-subnet-v4, ip-suf, ... }:
+{ self, config, pkgs, lib, cookie-pkg, ssd-mnt
+, lan-subnet-v4, lan-ip-suf, vpn-subnet-v4, vpn-ip-suf
+, ... }:
 
 let
   cc-dir = "${cookie-pkg}/containers";
   cfgNetName = config.networking.hostName;
+
+  local-ips = [
+    "${lan-subnet-v4}.${lan-ip-suf}"
+    "${vpn-subnet-v4}.${vpn-ip-suf}"
+  ];
+  local-ports = [
+    "53:53/tcp"
+    "53:53/udp"
+  ];
+
+  my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
+with my-functions;
 {
   imports = [
     ../../system/containers/podman.nix
@@ -26,14 +40,13 @@ in
         builtins.fromJSON (builtins.readFile "${cc-dir}/pihole.json")
       );
 
-      ports = [
-        "53:53/tcp"
-        "53:53/udp"
-      ];
+      ports = flatList (forEach local-ips (li: forEach local-ports (lp:
+        "${li}:${lp}"
+      )));
       environment = {
         TZ = config.time.timeZone;
         IPv6 = "True";
-        ServerIP = "${lan-subnet-v4}.${ip-suf}";
+        ServerIP = "172.23.53.1";
         INTERFACE = "eth0";
         WEBUIBOXEDLAYOUT = "boxed";
       };

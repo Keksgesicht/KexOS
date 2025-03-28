@@ -1,5 +1,5 @@
 { self, config, pkgs, lib, secrets-pkg, username
-, lan-subnet-v4, pod-subnet-v4, ip-suf, ... }:
+, lan-subnet-v4, pod-subnet-v4, lan-ip-suf, ... }:
 
 let
   cfgNetName = config.networking.hostName;
@@ -52,7 +52,7 @@ in
       mode = "0600";
       source = nm-sub "home" ({
         dnsserver = "${pod-subnet-v4}.53.1";
-        ipaddr    = "${lan-subnet-v4}.${ip-suf}/24,${lan-subnet-v4}.1";
+        ipaddr    = "${lan-subnet-v4}.${lan-ip-suf}/24,${lan-subnet-v4}.1";
         macaddr   = nm-rf "cookieclicker-home-macaddr";
       });
     };
