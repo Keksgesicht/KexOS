@@ -54,7 +54,7 @@ locked=true
 
 [Containments][1][Wallpaper][org.kde.slideshow][General]
 FillMode=0
-SlideInterval=300
+SlideInterval=120
 SlidePaths=/home/keks/background/landscape/
 
 [Containments][29]
@@ -82,7 +82,9 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][29][Applets][104][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=85
+PreloadWeight=90
+popupHeight=238
+popupWidth=240
 
 [Containments][29][Applets][104][Configuration][Appearance]
 chartFace=org.kde.ksysguard.linechart
@@ -106,8 +108,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][29][Applets][30][Configuration]
 PreloadWeight=100
-popupHeight=512
-popupWidth=663
+popupHeight=523
+popupWidth=674
 
 [Containments][29][Applets][30][Configuration][General]
 favoritesPortedToKAstats=true
@@ -128,7 +130,9 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][29][Applets][32][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=65
+PreloadWeight=70
+popupHeight=238
+popupWidth=156
 
 [Containments][29][Applets][32][Configuration][Appearance]
 chartFace=org.kde.ksysguard.linechart
@@ -150,7 +154,9 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][29][Applets][33][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=70
+PreloadWeight=75
+popupHeight=278
+popupWidth=233
 
 [Containments][29][Applets][33][Configuration][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -299,9 +305,9 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][35][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,ibus-ui-gtk3
+extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
 hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3
-knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
+knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
 shownItems=org.kde.plasma.bluetooth,org.kde.plasma.nightcolorcontrol,org.kde.plasma.mediacontroller
 
 [ScreenMapping]
