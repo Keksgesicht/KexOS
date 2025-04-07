@@ -1,0 +1,12 @@
+[connection]
+id=home_lan
+uuid=caa924b4-12ad-46fc-922a-28970a5725dd
+type=ethernet
+controller=85fd4d4d-73fd-4375-82c4-130e05ace48e
+port-type=bridge
+
+[ethernet]
+cloned-mac-address=@macaddr@
+mac-address=@macaddr@
+
+[bridge-port]

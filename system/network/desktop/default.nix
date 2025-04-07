@@ -131,7 +131,7 @@ with my-functions;
 
     interfaces =
       if (config.networking.hostName == "cookieclicker") then {
-        "${ifLan}" = lib.mkMerge [
+        "br-home" = lib.mkMerge [
           allowedPortsCCbase
           allowedPortsCCextra
           allowedPortsKDEconnect

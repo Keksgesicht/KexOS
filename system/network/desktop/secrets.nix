@@ -16,7 +16,7 @@ let
       mode = "0600";
       enable = (cfgNetName == "cookiethinker");
       source = pkgs.substituteAll {
-        src = "${self}/files/${nmsc-path}/home_wlan.nmconnection";
+        src = "${self}/files/${nmsc-path}/my_wlan.nmconnection";
         inherit uuid;
         user = username;
         nmid = nm-rf "wlan${no}-ssid";
@@ -36,9 +36,7 @@ in
     # network connections on all systems
     "NetworkManager/system-connections/TU_Darmstadt.nmconnection" = {
       mode = "0600";
-      source = nm-sub "TU_Darmstadt" ({
-        username = nm-rf "TU_Darmstadt-username";
-      });
+      source = nm-sub "TU_Darmstadt" ({ username = nm-rf "TU_Darmstadt-username"; });
     };
 
     # network connections on tower
@@ -47,14 +45,19 @@ in
       mode = "0600";
       source = nm-sub "dmz" ({ macaddr = nm-rf "cookieclicker-dmz-macaddr"; });
     };
-    "NetworkManager/system-connections/home.nmconnection" = {
+    "NetworkManager/system-connections/home_bridge.nmconnection" = {
       enable = (cfgNetName == "cookieclicker");
       mode = "0600";
-      source = nm-sub "home" ({
+      source = nm-sub "home_bridge" ({
         dnsserver = "${pod-subnet-v4}.53.1";
-        ipaddr    = "${lan-subnet-v4}.${lan-ip-suf}/24,${lan-subnet-v4}.1";
-        macaddr   = nm-rf "cookieclicker-home-macaddr";
+        ipaddr    = "${lan-subnet-v4}.${lan-ip-suf}/24";
+        gateway   = "${lan-subnet-v4}.1";
       });
+    };
+    "NetworkManager/system-connections/home_lan.nmconnection" = {
+      enable = (cfgNetName == "cookieclicker");
+      mode = "0600";
+      source = nm-sub "home_lan" ({ macaddr = nm-rf "cookieclicker-home-macaddr"; });
     };
 
     # network connections on laptop

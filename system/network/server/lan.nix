@@ -20,14 +20,14 @@ in
     "NetworkManager/system-connections/lan.nmconnection" = {
       mode = "0600";
       source = pkgs.substituteAll {
-        src       =  ../../../files + "/${nmsc-path}/server-lan.nmconnection";
+        src       =  ../../../files + "/${nmsc-path}/server_lan.nmconnection";
         dnsserver = "${lan-subnet-v4}.${lan-ip-suf};172.23.53.1;";
         ipaddr    = "${lan-subnet-v4}.${lan-ip-suf}/24,${lan-subnet-v4}.1";
       };
     };
   };
 
-  networking.firewall = {
+  networking.firewall = rec {
     enable = true;
     allowedTCPPorts = [
          22 # OpenSSH
@@ -41,12 +41,8 @@ in
         443 # HTTP3 (swag)
        2053 # DNS (unbound)
     ];
-    allowedTCPPortRanges = [
-      { from = 22200; to = 22299; }
-    ];
-    allowedUDPPortRanges = [
-      { from = 22200; to = 22299; }
-    ];
+    allowedTCPPortRanges = [ { from = 22200; to = 22299; } ];
+    allowedUDPPortRanges = allowedTCPPortRanges;
   };
 
   networking.hosts = {

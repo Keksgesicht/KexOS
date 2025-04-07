@@ -1,20 +1,23 @@
 [connection]
-id=home
-uuid=9e886eca-36dd-464f-a95b-67ca0d6ff3e7
-type=ethernet
-zone=home
+id=home_bridge
+uuid=85fd4d4d-73fd-4375-82c4-130e05ace48e
+type=bridge
+interface-name=br-home
 
 [ethernet]
-auto-negotiate=true
-cloned-mac-address=@macaddr@
-mac-address=@macaddr@
+
+[bridge]
 
 [ipv4]
 address1=@ipaddr@
 dns=@dnsserver@
+gateway=@gateway@
+may-fail=false
 method=manual
 
 [ipv6]
 addr-gen-mode=stable-privacy
 ip6-privacy=0
 method=link-local
+
+[proxy]
