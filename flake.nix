@@ -148,6 +148,8 @@
           isDesktop = true;
           lan-ip-suf = "220";
           vpn-ip-suf = "1";
+          ifLan = "enp4s0";
+          ifWlan = "wlp5s0";
         };
         modules = [
           ./machines/cookieclicker.nix
@@ -161,6 +163,8 @@
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           isDesktop = true;
+          ifLan = "enp2s0";
+          ifWlan = "wlo1";
         };
         modules = [
           ./machines/cookiethinker.nix
@@ -176,6 +180,7 @@
           lan-subnet-v6 = "fd00:da:c54::192:168:178";
           lan-ip-suf = "25";
           vpn-ip-suf = "2";
+          ifLan = "enp0s31f6";
         };
         modules = [
           ./machines/cookieflyer.nix

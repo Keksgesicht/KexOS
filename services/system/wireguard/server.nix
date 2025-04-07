@@ -1,5 +1,5 @@
 { config, pkgs, lib, secrets-pkg, secrets-dir, username
-, myDomain, vpn-subnet-v4, vpn-subnet-v6, ... }:
+, myDomain, vpn-subnet-v4, vpn-subnet-v6, ifLan, ... }:
 
 let
   wg-name = "wg-server";
@@ -110,9 +110,9 @@ in
 
   networking.wireguard.interfaces =
     if (hn == "cookieclicker") then
-      wg-server "1" "enp4s0" 22223 [ wg-fly-click wg-rpi-click ]
-    else if (hn == "cookieflyer")  then (wg-server "2" "enp0s31f6" 22243 [])
-    else if (hn == "cookiemailer") then (wg-server "3" "invalid"   22301 [])
+      wg-server "1" ifLan 22223 [ wg-fly-click wg-rpi-click ]
+    else if (hn == "cookieflyer")  then (wg-server "2" "${ifLan}" 22243 [])
+    else if (hn == "cookiemailer") then (wg-server "3" "invalid"  22301 [])
     else {};
 
   systemd.services =

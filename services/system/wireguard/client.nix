@@ -1,5 +1,5 @@
-{ self, pkgs, lib, secrets-pkg, secrets-dir, username
-, myDomain, vpn-subnet-v4, vpn-subnet-v6, ... }:
+{ self, pkgs, lib, secrets-pkg, secrets-dir, username, myDomain
+, lan-subnet-v4, vpn-subnet-v4, vpn-subnet-v6, ... }:
 
 let
   wg-name = "laptop";
@@ -118,8 +118,8 @@ with my-functions;
       ];
     });
     wgDNScfg = pkgs.writeText "wg-laptop-resolv.conf" (''
-      nameserver 192.168.176.2
-      nameserver 192.168.176.103
+      nameserver ${vpn-subnet-v4}.2
+      nameserver ${vpn-subnet-v4}.103
       options timeout:2
       options attempts:2
     '');
@@ -141,8 +141,8 @@ with my-functions;
   systemd.services =
   let
     vpn-dns-cfg = pkgs.writeText "wg-refresh-resolv.conf" ''
-      nameserver 192.168.178.220
-      nameserver 192.168.178.221
+      nameserver ${lan-subnet-v4}.220
+      nameserver ${lan-subnet-v4}.221
       nameserver 9.9.9.9
       options timeout:3
       options attempts:1

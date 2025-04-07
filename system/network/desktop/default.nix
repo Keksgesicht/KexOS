@@ -1,4 +1,5 @@
-{ config, pkgs, lib, isDesktop, myDomain, lan-subnet-v4, vpn-subnet-v4, ... }:
+{ config, pkgs, lib, myDomain, lan-subnet-v4, vpn-subnet-v4
+, ifLan, ifWlan, ... }:
 
 let
   my-functions = (import ../../../nix/my-functions.nix lib);
@@ -41,12 +42,6 @@ let
     ];
   };
 
-  allowedPortsSSH = {
-    allowedTCPPorts = if config.services.openssh.enable
-      then [ 22 ]
-      else [];
-  };
-
   allowedPortsKDEconnect = rec {
     allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
     allowedUDPPortRanges = allowedTCPPortRanges;
@@ -58,13 +53,9 @@ let
     allowedUDPPortRanges = [ { from = 27031; to = 27036; } ];
   };
 
-  allowedPortsVPNuser = {
-    allowedTCPPortRanges = [
-      { from = 10000; to = 65535; } # nearly all user ports
-    ];
-    allowedUDPPortRanges = [
-      { from = 10000; to = 65535; } # nearly all user ports
-    ];
+  allowedPortsVPNuser = rec { # nearly all user ports
+    allowedTCPPortRanges = [ { from = 10000; to = 65535; } ];
+    allowedUDPPortRanges = allowedTCPPortRanges;
   };
 in
 with my-functions;
@@ -125,15 +116,8 @@ with my-functions;
       } ];
   };
 
-  systemd = {
-    services = {
-      "NetworkManager-wait-online" =
-        # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
-        if (isDesktop) then
-          { enable = lib.mkForce false; }
-        else {};
-    };
-  };
+  # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
+  systemd.services."NetworkManager-wait-online".enable = false;
 
   # enable mDNS responder
   services.avahi = {
@@ -147,7 +131,7 @@ with my-functions;
 
     interfaces =
       if (config.networking.hostName == "cookieclicker") then {
-        "enp4s0" = lib.mkMerge [
+        "${ifLan}" = lib.mkMerge [
           allowedPortsCCbase
           allowedPortsCCextra
           allowedPortsKDEconnect
@@ -161,14 +145,12 @@ with my-functions;
         ];
         "podman-server" = allowedPortsCCbase;
         "enp6s0" = allowedPortsShared;
-        "wlp5s0" = allowedPortsShared;
+        "${ifWlan}" = allowedPortsShared;
         #"tap0" = allowedPortsVPNuser;
       }
       else if (config.networking.hostName == "cookiethinker") then {
-        "enp2s0" = allowedPortsShared;
-        "wlo1" = {
-          allowedUDPPorts = [ 5353 ];
-        } // allowedPortsSSH;
+        "${ifLan}" = allowedPortsShared;
+        #"${ifWlan}" = { allowedUDPPorts = [ 5353 ]; };
       }
       else {};
   };

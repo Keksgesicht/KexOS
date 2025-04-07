@@ -11,11 +11,10 @@ in
 
   networking.networkmanager.enable = true;
 
-  systemd.services = {
-    "NetworkManager-wait-online" = {
-      environment.NM_ONLINE_TIMEOUT = "15";
-    };
-  };
+  # Just excluding wireguard interfaces does not work with NetworkManager.
+  # Thus, we disable it completly as our servers are locally self-contained.
+  # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
+  systemd.services."NetworkManager-wait-online".enable = false;
 
   environment.etc = {
     "NetworkManager/system-connections/lan.nmconnection" = {
