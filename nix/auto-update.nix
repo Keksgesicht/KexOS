@@ -1,4 +1,4 @@
-{ self, config, isDesktop, holidayMode, home-dir, username, ... }:
+{ self, isDesktop, holidayMode, home-dir, username, ... }:
 
 let
   current-system = "/nix/var/nix/profiles/system";
@@ -6,11 +6,7 @@ let
   lock-file-latest = "${current-system}${lock-file-symlink}";
 
   srvNameCopy = "copy-latest-lock-file";
-  netName = config.networking.hostName;
-  localCfgDir =
-    if (netName == "cookieclicker" || netName == "cookiethinker")
-    then "${home-dir}/git/hdd/nix/config/nixos"
-    else "${home-dir}/nixos-config";
+  localCfgDir = "${home-dir}/nixos-config";
 in
 {
   environment.etc = {

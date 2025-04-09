@@ -85,7 +85,7 @@ set +ex
 MY_NIX_CFG_DIR="$(realpath "$(dirname "$0")/../..")"
 
 echo ""
-echo rsync -avHAXze ssh --delete '~/git/hdd/nix/config/nixos/' 'nixos@<serverIP>:nixos-config/' --exclude=\'result\' --rsync-path='$(which rsync)'
+echo rsync -avHAXze ssh --delete '~/nixos-config/' 'nixos@<serverIP>:nixos-config/' --exclude=\'result\' --rsync-path='$(which rsync)'
 
 echo ""
 echo 'nix-shell -p git rsync'
