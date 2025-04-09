@@ -1,9 +1,8 @@
-# https://wiki.archlinux.org/title/sysctl
-# https://man7.org/linux/man-pages/man5/proc.5.html
-
-{ config, ... }:
+{ ... }:
 
 {
+  # https://wiki.archlinux.org/title/sysctl
+  # https://man7.org/linux/man-pages/man5/proc.5.html
   boot.kernel.sysctl = {
     # reboot on panic after x seconds
     "kernel.panic" = 42;
@@ -24,10 +23,5 @@
     # use `sudo` when using `-p` with `strace`
     # https://man7.org/linux/man-pages/man2/ptrace.2.html
     #"sys.kernel.yama.ptrace_scope" = 1;
-
-    # enable router advertisement on LAN network adapter
-    # combined with /etc/NetworkManager/dispatcher.d/50-public-ipv6
-    # https://unix.stackexchange.com/questions/61641/how-can-i-disable-automatic-ipv6-neighbor-route-advertisement-on-a-router
-    #"net.ipv6.conf.enp4s0.accept_ra" = 2;
   };
 }

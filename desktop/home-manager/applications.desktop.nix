@@ -55,7 +55,7 @@ in
     };
     "rfkill-wlan" = {
       exec = "${nm-wifi}";
-      name = "Enable/Disable Bluetooth Device";
+      name = "Enable/Disable WLAN Device";
       type = "Application";
       noDisplay = true;
       startupNotify = false;
