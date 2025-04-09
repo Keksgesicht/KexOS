@@ -22,5 +22,6 @@
     ../system/containers/podman.nix
     ../system/network/desktop
     ../system/network/IPv6/network-manager.nix
+    ../system/network/wireless.nix
   ];
 }
