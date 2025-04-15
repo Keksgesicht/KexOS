@@ -58,6 +58,12 @@ let
     "echo ${e.name}; "
   )) + ''
       ;;
+      up)
+        ${pkgs.systemd}/bin/systemctl start "wireguard-wg-${wg-name}.service"
+      ;;
+      down)
+        ${pkgs.systemd}/bin/systemctl stop "wireguard-wg-${wg-name}.service"
+      ;;
       show)
         ${wg-cmd wg-name}
       ;;
