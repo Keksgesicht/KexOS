@@ -30,6 +30,7 @@ let
     (sloth.concat' sloth.homeDir dir)
   ]);
 
+  # https://github.com/ValveSoftware/gamescope
   gamescope-wrapper = (p: n: w:
     p.writers.writePython3Bin "gamescope-${n}" {
       libraries = [];
@@ -38,7 +39,7 @@ let
       import sys
       gsBin = "${p.gamescope}"
       gsBin += "/bin/gamescope"
-      gsArgs = [gsBin, "--steam", "-b"]
+      gsArgs = [gsBin, "-b"]
       gsArgs += ["-W", "${w}", "-H", "1440", "-r", "120", "-o", "30"]
       gsArgs += ["--adaptive-sync"] + sys.argv[1:]
       os.execvp(gsBin, gsArgs)
@@ -194,6 +195,8 @@ in
 
         # Steam, Heroic extra dirs
         (bindHomeDir name "/.pki")
+        (bindGamingHome "/.cache/mesa_shader_cache_db")
+        (bindGamingHome "/.cache/radv_builtin_shaders")
         (bindGamingHome "/.config/cef_user_data")
         (bindGamingHome "/.config/unity3d")
         (bindGamingHome "/.local/share")
