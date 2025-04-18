@@ -1,11 +1,14 @@
 { holidayMode, ... }:
 
+let
+  delay = "15min";
+in
 {
   nix.gc = {
     automatic = !holidayMode;
     persistent = true;
     dates = "*-*-3/6 01:23:45";
-    randomizedDelaySec = "15min";
+    randomizedDelaySec = delay;
     options = "--delete-older-than 23d";
   };
 
@@ -13,5 +16,8 @@
     CPUSchedulingPolicy = "idle";
     IOSchedulingClass = "idle";
     IOSchedulingPriority = 7;
+  };
+  systemd.timers."nix-gc".timerConfig = {
+    OnBootSec = delay;
   };
 }
