@@ -3,20 +3,21 @@
 
 let
   name = "Office";
+  args = { remove = "%U"; extra = "%U"; };
 in
 {
   nixpak."${name}" = {
     wrapper = {
       packages = [
         { package = pkgs.libreoffice; binName = "libreoffice"; appFile = [
-          { src = "base"; args.remove = "%U"; args.extra = "%U"; }
-          { src = "calc"; args.remove = "%U"; args.extra = "%U"; }
-          { src = "draw"; args.remove = "%U"; args.extra = "%U"; }
-          { src = "impress"; args.remove = "%U"; args.extra = "%U"; }
-          { src = "math"; args.remove = "%U"; args.extra = "%U"; }
-          { src = "startcenter"; args.remove = "%U"; args.extra = "%U"; }
-          { src = "writer"; args.remove = "%U"; args.extra = "%U"; }
-          { src = "xsltfilter"; args.remove = "%U"; args.extra = "%U"; }
+          { inherit args; src = "base"; }
+          { inherit args; src = "calc"; }
+          { inherit args; src = "draw"; }
+          { inherit args; src = "impress"; }
+          { inherit args; src = "math"; }
+          { inherit args; src = "startcenter"; }
+          { inherit args; src = "writer"; }
+          { inherit args; src = "xsltfilter"; }
         ]; }
       ];
       printing = true;

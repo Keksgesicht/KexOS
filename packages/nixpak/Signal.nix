@@ -3,6 +3,7 @@
 
 let
   name = "Signal";
+  pkg-name = "signal-desktop";
 in
 {
   services.pipewire.alsa.enable = true;
@@ -10,10 +11,8 @@ in
   nixpak."${name}" = {
     wrapper = {
       packages = [
-        { package = pkgs.signal-desktop; binName = "signal-desktop"; appFile = [
-          { args.remove = "--use-tray-icon"; args.extra = [
-            #"--enable-features=UseOzonePlatform" "--ozone-platform-hint=auto"
-          ]; }
+        { package = pkgs."${pkg-name}"; binName = "signal-desktop"; appFile = [
+          { src = pkg-name; args.remove = "--use-tray-icon"; }
         ]; }
         pkgs.qt6.qtbase
       ];

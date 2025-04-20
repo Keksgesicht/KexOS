@@ -11,8 +11,10 @@ in
       packages = [
         { package = pkgs.ungoogled-chromium; binName = "chromium"; appFile = [
           { src = "chromium-browser"; args.extra = [
-            "--enable-features=UseOzonePlatform" "--ozone-platform-hint=auto"
-            "--force-dark-mode" "--enable-features=WebUIDarkMode"
+            "--password-store=basic" # aggressivly tries to open KDE Wallet
+            "--disable-gpu" # even outside the sandbox GPU process crashes and falls back
+            # https://github.com/NixOS/nixpkgs/issues/249152
+            # https://github.com/NixOS/nixpkgs/issues/299773
           ]; }
         ]; }
       ];
