@@ -9,7 +9,7 @@
     ../development
     ../hardware
     ../hardware/laptop
-    ../hardware/office
+    ../hardware/office/scanner.nix
     ../hardware/services/baremetal.nix
     ../hardware/x86_64/desktop.nix
     ../nix

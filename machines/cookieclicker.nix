@@ -9,7 +9,6 @@
     ../desktop/gaming.nix
     ../development
     ../hardware
-    ../hardware/office
     ../hardware/tower
     ../hardware/services/baremetal.nix
     ../hardware/x86_64/desktop.nix
