@@ -1,11 +1,11 @@
 { sloth, bindHomeDir, myKDEpkg, myKDEmount, ... }:
-{ pkgs-latest, lib, ... }:
+{ pkgs, pkgs-stable, lib, ... }:
 
 let
   name = "DocPDF";
   latexSet = "work";
 
-  pkgs = pkgs-latest {};
+  pkgs-sta = pkgs-stable {};
   tl = pkgs.texlive;
 
   pkgsTexLive = (tl.combine ({
@@ -92,7 +92,7 @@ in
           { src = "com.github.jeromerobert.pdfarranger";
             args.remove = "%U"; args.extra = "%U"; }
         ]; }
-        { package = pkgs.pympress; binName = "pympress"; appFile = [
+        { package = pkgs-sta.pympress; binName = "pympress"; appFile = [
           { src = "io.github.pympress"; }
         ]; }
         { package = pkgs.texstudio; binName = "texstudio"; appFile = [
