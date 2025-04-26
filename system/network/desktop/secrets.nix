@@ -4,28 +4,36 @@
 let
   cfgNetName = config.networking.hostName;
 
+  nmsc-root = ../../../files;
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
   nmsc-data = "${secrets-pkg}/${nmsc-path}";
 
   nm-rf = (name: builtins.readFile "${nmsc-data}/${name}");
-  nm-sub = (name: nm-cfg: pkgs.substituteAll ({
-    src = "${self}/files/${nmsc-path}/${name}.nmconnection";
-  } // nm-cfg));
-  nm-wifi = (no: uuid: dns: {
-    "NetworkManager/system-connections/wlan${no}.nmconnection" = {
-      mode = "0600";
-      enable = (cfgNetName == "cookiethinker");
-      source = pkgs.substituteAll {
-        src = "${self}/files/${nmsc-path}/my_wlan.nmconnection";
-        inherit uuid;
-        user = username;
-        nmid = nm-rf "wlan${no}-ssid";
-        ssid = nm-rf "wlan${no}-ssid";
-        dns4 = (lib.strings.concatStringsSep ";" dns) + ";";
-        wifi_sec = nm-rf "wlan${no}-wifi-sec";
+  nm-sub = (name: nm-cfg:
+    let
+      nm-src-path = nmsc-root + "/${nmsc-path}/${name}.nmconnection";
+    in
+    pkgs.replaceVars nm-src-path nm-cfg
+  );
+  nm-wifi = (no: uuid: dns:
+    let
+      nm-src-path = nmsc-root + "/${nmsc-path}/my_wlan.nmconnection";
+    in
+    {
+      "NetworkManager/system-connections/wlan${no}.nmconnection" = {
+        mode = "0600";
+        enable = (cfgNetName == "cookiethinker");
+        source = pkgs.replaceVars nm-src-path {
+          inherit uuid;
+          user = username;
+          nmid = nm-rf "wlan${no}-ssid";
+          ssid = nm-rf "wlan${no}-ssid";
+          dns4 = (lib.strings.concatStringsSep ";" dns) + ";";
+          wifi_sec = nm-rf "wlan${no}-wifi-sec";
+        };
       };
-    };
-  });
+    }
+  );
 in
 {
   imports = [

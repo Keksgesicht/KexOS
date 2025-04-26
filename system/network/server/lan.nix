@@ -1,6 +1,7 @@
 { pkgs, lan-subnet-v4, lan-ip-suf, ... }:
 
 let
+  lan-nm-conf = ../../../files + "/${nmsc-path}/server_lan.nmconnection";
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
 in
 {
@@ -19,8 +20,7 @@ in
   environment.etc = {
     "NetworkManager/system-connections/lan.nmconnection" = {
       mode = "0600";
-      source = pkgs.substituteAll {
-        src       =  ../../../files + "/${nmsc-path}/server_lan.nmconnection";
+      source = pkgs.replaceVars lan-nm-conf {
         dnsserver = "${lan-subnet-v4}.${lan-ip-suf};172.23.53.1;";
         ipaddr    = "${lan-subnet-v4}.${lan-ip-suf}/24,${lan-subnet-v4}.1";
       };
