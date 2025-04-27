@@ -6,7 +6,9 @@ game_dir=$(echo "${HOME}/Games" | sed -e 's|/|[\/]|g')
 wine_dir=$(echo "${HOME}/WinePrefixes" | sed -e 's|/|[\/]|g')
 
 include_filter="${game_dir}|${wine_dir}|PrismLauncher"
-exclude_filter="bwrap|grep|konsole|dolphin|d3ddriverquery64.exe|fossilize_replay|legendary(-wrapped)* install"
+exclude_filter="bwrap|grep|konsole|dolphin|d3ddriverquery64.exe"
+exclude_filter+="|fossilize_replay|legendary(-wrapped)* install|gamescopereaper"
+exclude_filter+="|regenerate-ld.so-cache"
 
 run_stop() {
 	nohup bash -c "${EXEC_FILE} stop 2>&1 | logger -t obs-studio-gaming.stopper" >/dev/null &
@@ -65,25 +67,24 @@ run_obs() {
 	echo "OBS Studio exited with error code $?"
 }
 
-
 case ${EXEC_MODE} in
-	"start")
-		while ! check_games_running; do
-			sleep 47s
-		done
-		run_obs
+"start")
+	while ! check_games_running; do
+		sleep 47s
+	done
+	run_obs
 	;;
-	"stop")
-		sleep 13s
-		while true; do
-			while check_games_running; do
-				sleep 69s
-			done
-			sleep 42s
-			if ! check_games_running; then
-				break
-			fi
+"stop")
+	sleep 13s
+	while true; do
+		while check_games_running; do
+			sleep 69s
 		done
-		kill $(pgrep '.obs-wrapped')
+		sleep 42s
+		if ! check_games_running; then
+			break
+		fi
+	done
+	kill $(pgrep '.obs-wrapped')
 	;;
 esac
