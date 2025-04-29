@@ -6,7 +6,9 @@ let
   plasma = "plasma6";
   qt-ver = "6";
 
-  lsp-wrapper = (import ../development/language-server-wrapper.nix);
+  lsp-wrap-cfg = (import ../development/language-server-wrapper.nix);
+  lsp-kate = (lsp-wrap-cfg pkgs lib libKDE.kate "kate");
+
   my-functions = (import ../nix/my-functions.nix lib);
 in
 with my-functions;
@@ -40,7 +42,7 @@ with my-functions;
     pkgs.candy-icons
     libKDE.discover
     libKDE.kruler
-    (lsp-wrapper pkgs lib libKDE.kate "kate")
+    lsp-kate.ide
     # use digital clock with PIM plugin
     libKDE.akonadi-calendar
     libKDE.merkuro
@@ -59,7 +61,9 @@ with my-functions;
     # https://github.com/NixOS/nixpkgs/issues/143272
     # https://bugs.kde.org/show_bug.cgi?id=400451
     # https://invent.kde.org/plasma/plasma-workspace/-/blob/4df78f841cc16a61d862b5b183e773e9f66436b8/ktimezoned/ktimezoned.cpp#L124
-    "L+ /usr/share/zoneinfo - - - - ${pkgs.tzdata}/share/zoneinfo"
+    "L+ /usr/share/zoneinfo  - - - - ${pkgs.tzdata}/share/zoneinfo"
+    # dedicated path for lsp servers
+    "L+ ${lsp-kate.lsp-path} - - - - ${lsp-kate.lsp}"
   ];
 
   systemd.user.services = {

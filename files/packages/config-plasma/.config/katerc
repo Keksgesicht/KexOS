@@ -1,3 +1,10 @@
+[ColoredBrackets]
+color1=#1275ef
+color2=#f83c1f
+color3=#9dba1e
+color4=#e219e2
+color5=#37d21c
+
 [Desktop Entry]
 DefaultProfile=Breath2.profile
 
@@ -7,9 +14,12 @@ Auto Hide Tabs=false
 Close After Last=true
 Close documents with window=true
 Config Revision=10
+Cycle To First Tab=true
 Days Meta Infos=100
+Diagnostics Limit=12000
 Diff Show Style=0
 Elide Tab Text=false
+Enable Context ToolView=false
 Expand Tabs=false
 Icon size for left and right sidebar buttons=32
 Last Session=default
@@ -18,6 +28,7 @@ Mouse back button action=0
 Mouse forward button action=0
 Open New Tab To The Right Of Current=false
 Output History Limit=100
+Output With Date=false
 Quickopen Filter Mode=0
 Quickopen List Mode=true
 Recent File List Entry Count=10
@@ -164,6 +175,7 @@ Word Completion Remove Tail=true
 
 [Konsole]
 AutoSyncronize=false
+AutoSyncronizeMode=0
 KonsoleEscKeyBehaviour=true
 KonsoleEscKeyExceptions=vi,vim,nvim
 RemoveExtension=false
@@ -172,10 +184,15 @@ SetEditor=true
 
 [MainWindow]
 MenuBar=Disabled
-ToolBarsMovable=Disabled
 
 [Notification Messages]
 katesessionmanager_switch_instance=true
+
+[PluginSymbolViewer]
+ExpandTree=false
+SortSymbols=false
+TreeView=false
+ViewTypes=false
 
 [Printing][HeaderFooter]
 FooterBackground=211,211,211
@@ -216,6 +233,7 @@ toolbar actions=back,forward,up,bookmarks,sync_dir,configure
 [filetree]
 editShade=179,218,246
 listMode=false
+middleClickToClose=true
 shadingEnabled=true
 showCloseButton=true
 showFullPathOnRoots=true
@@ -224,7 +242,7 @@ sortRole=0
 viewShade=193,208,209
 
 [lspclient]
-AllowedServerCommandLines=
+AllowedServerCommandLines=/usr/local/lsp/bin/bash-language-server start,/usr/local/lsp/bin/clangd -log=error --background-index --limit-results=500 --completion-style=bundled,/usr/local/lsp/bin/jdtls,/usr/local/lsp/bin/lemminx,/usr/local/lsp/bin/marksman server,/usr/local/lsp/bin/nil,/usr/local/lsp/bin/pylsp --check-parent-process,/usr/local/lsp/bin/texlab,/usr/local/lsp/bin/yaml-language-server --stdio
 AutoHover=true
 AutoImport=true
 BlockedServerCommandLines=
@@ -234,13 +252,14 @@ Diagnostics=true
 FormatOnSave=false
 HighlightGoto=true
 IncrementalSync=false
-InlayHints=false
+InlayHints=true
 Messages=true
 ReferencesDeclaration=true
 SemanticHighlighting=true
 ServerConfiguration=
+ShowCompletions=true
 SignatureHelp=true
-SymbolDetails=false
+SymbolDetails=true
 SymbolExpand=true
 SymbolSort=false
 SymbolTree=true

@@ -23,23 +23,27 @@ let
     lemminx
     libxml2
     # YAML
+    yaml-language-server
     yamlfmt
   ];
-  lsp-string = lib.strings.concatStringsSep ":" (lib.lists.forEach lsp-pkgs (p:
-    "${p}/bin"
-  ));
 
+  lsp-path = "/usr/local/lsp";
   ide-wrapper = pkgs.writeShellScriptBin "${n}" ''
-    export PATH=$PATH:"${lsp-string}"
+    export PATH=$PATH:${lsp-path}/bin
     exec ${p}/bin/${n} $@
   '';
-  ide-merged = pkgs.symlinkJoin {
-    pname = "${n}-lsp";
-    name = "${n}-with-language-server";
-    paths = [
-      ide-wrapper
-      p
-    ];
+
+  lsp-data = {
+    inherit lsp-path;
+    lsp = pkgs.symlinkJoin {
+      name = "lsp-pkgs-joined";
+      paths = lsp-pkgs;
+    };
+    ide = pkgs.symlinkJoin {
+      pname = "${n}-lsp";
+      name = "${n}-with-language-server";
+      paths = [ ide-wrapper p ];
+    };
   };
 in
-ide-merged
+lsp-data
