@@ -16,6 +16,7 @@
           ''~kdeconnect\.core: CompositeUploadJob::startListening\(\) - Error opening a port in range 1739 - 1764''
           ''~kwin_scene_opengl: 0x[0-9]: GL_INVALID_OPERATION in glDrawBuffers\(unsupported buffer GL_BACK_LEFT\)''
           # Gaming
+          ''~[gamescope] [Warn]  xwm: got the same buffer committed twice, ignoring\.''
           ''~wine: using kernel write watches, use_kernel_writewatch 1\.''
           ''~ERROR: ld\.so: object 'libgamemodeauto\.so\.0' from LD_PRELOAD cannot be preloaded \(cannot open shared object file\): ignored\.''
         ];
