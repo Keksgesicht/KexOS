@@ -51,10 +51,14 @@ in
     '';
   };
 
-  users.users."${username}".packages = if isDesktop then [
-    (pkgs.writeShellScriptBin "KexOS-sync" ''
+  users.users."${username}".packages = [
+    (pkgs.writeShellScriptBin "KexOS-sync" (''
       usage() {
-        echo "$0 <remote-host> [up|down]"
+    '' + (if isDesktop
+      then ''echo "$0 [up|down|etc] <remote-host>"''
+      else ''echo "$0 etc"''
+    ) + ''
+
         exit 1
       }
       kex-sync() {
@@ -62,19 +66,31 @@ in
         rsync -avHAXze ssh --delete --exclude='result' --exclude='flake.lock' $@
       }
 
-      [ $# -ne 3 ] || usage
-      host="$1"
+    '' + (if isDesktop
+      then "[ $# -ne 3 ] || usage"
+      else "[ $# -ne 2 ] || usage"
+    ) + ''
+
+      host="$2"
       dir="nixos-config"
 
-      case "$2" in
+      case "$1" in
+    '' + (if isDesktop then ''
         up)
           kex-sync ~/''${dir}/ ''${host}:''${dir}/
         ;;
         down)
           kex-sync ''${host}:''${dir}/ ~/''${dir}/
         ;;
+    '' else "") + ''
+        etc)
+          set -x
+          $AUTH rsync -rlptv --delete \
+            --exclude='/secrets/keys' --exclude='result' \
+            ~/''${dir}/ /etc/nixos/
+        ;;
         *) usage ;;
       esac
-    '')
-  ] else [];
+    ''))
+  ];
 }
