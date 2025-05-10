@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, username, isDesktop, ... }:
 
 {
   imports = [
@@ -27,5 +27,26 @@
     strace
     unixtools.xxd
     unzip
+  ] ++ lib.optionals isDesktop [
+    (pkgs.writeShellScriptBin "KexDevShell" ''
+      usage() {
+        echo "$0 path [--suffix=name] args.."
+      }
+
+      myOpts=""
+      if [ -d "$1" ]; then
+        myDir="$1"
+        shift
+      fi
+      if [ "$1" = "--suffix" ]; then
+        shift
+        myOpts+=" --profile "result-$1""
+        shift
+      fi
+      myOpts+=" $@"
+
+      exec -a nix \
+        nix develop ''${myDir} ''${myOpts} --command zsh
+    '')
   ];
 }
