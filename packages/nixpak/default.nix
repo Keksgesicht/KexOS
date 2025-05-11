@@ -49,6 +49,7 @@ let
 
   appCfgList = [
     ./BilderAnguck.nix
+    ./Chromium.nix
     ./DevShell.nix
     ./DocPDF.nix
     ./Ferdium.nix
@@ -64,7 +65,6 @@ let
     ./Signal.nix
     #./SIP.nix
     ./ThunderBird.nix
-    ./UngoogledChromium.nix
     ./Vesktop.nix
     #./VideoEdit.nix
     ./WebViewer.nix
