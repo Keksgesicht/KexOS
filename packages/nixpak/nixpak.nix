@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, username, ... }:
+{ config, pkgs, lib, inputs, username, home-dir, ... }:
 
 let
   inherit (lib) types;
@@ -188,11 +188,27 @@ let
 
   mkNixPakPkg = (name: value: out:
     let
+      pkgHostname = pkgs.writeText "${name}-hostname" ''${name}'';
+
       wrapNPscript = (writePyBin "${name}-ns-exec" {
         libraries = [];
       } (''
         import os
         import sys
+
+        myName = "${name}"
+        myHome = "${home-dir}"
+
+        os.makedirs(myHome + "/.var/app", exist_ok=True)
+        myLink = myHome + "/.var/app/" + myName
+        if not os.path.exists(myLink):
+            os.symlink(myHome, myLink)
+
+        os.makedirs(myHome + "/.var/home", exist_ok=True)
+        myLink = myHome + "/.var/home/" + myName
+        if not os.path.exists(myLink):
+            os.symlink(myHome, myLink)
+
         os.system("truncate -s 0 ~/.zshrc")
         os.execvp(sys.argv[1], sys.argv[1:])
       ''
@@ -219,14 +235,11 @@ let
                 "/sys/devices/pci0000:40"
 
                 # POSIX compliance
-                [
-                  "${pkgs.bashInteractive}/bin/sh"
-                  "/bin/sh"
-                ]
-                [
-                  "${pkgs.coreutils}/bin/env"
-                  "/usr/bin/env"
-                ]
+                [ "${pkgs.bashInteractive}/bin/sh" "/bin/sh" ]
+                [ "${pkgs.coreutils}/bin/env" "/usr/bin/env" ]
+
+                # system information
+                [ "${pkgHostname}" "/etc/hostname" ]
 
                 # fonts
                 "/etc/fonts"
