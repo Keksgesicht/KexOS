@@ -195,6 +195,7 @@ in
 
         # Steam, Heroic extra dirs
         (bindHomeDir name "/.pki")
+        (bindGamingHome "/.cache/mesa_shader_cache")
         (bindGamingHome "/.cache/mesa_shader_cache_db")
         (bindGamingHome "/.cache/radv_builtin_shaders")
         (bindGamingHome "/.config/cef_user_data")

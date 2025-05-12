@@ -474,8 +474,8 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][35][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.merkuro.contact.applet
-hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3,org.kde.merkuro.contact.applet
+extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.merkuro.contact.applet,Wallet Manager
+hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3,org.kde.merkuro.contact.applet,Wallet Manager
 knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.merkuro.contact.applet
 shownItems=org.kde.plasma.bluetooth,org.kde.plasma.nightcolorcontrol,org.kde.plasma.mediacontroller
 
@@ -590,8 +590,8 @@ PreloadWeight=95
 SystrayContainmentId=60
 
 [Containments][54][Applets][59][Configuration][General]
-extraItems=org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.devicenotifier,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.kscreen,org.kde.plasma.wacomtablet
-hiddenItems=firewall-applet,MSM Notifier for Plasma5,org.kde.plasma.keyboardlayout
+extraItems=org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.devicenotifier,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.kscreen,org.kde.plasma.wacomtablet,Wallet Manager
+hiddenItems=firewall-applet,MSM Notifier for Plasma5,org.kde.plasma.keyboardlayout,Wallet Manager
 knownItems=org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.printmanager,org.kde.plasma.volume
 shownItems=org.kde.plasma.mediacontroller,org.kde.plasma.bluetooth,org.kde.plasma.nightcolorcontrol
 
@@ -713,8 +713,8 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][60][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
-hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3
+extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,Wallet Manager
+hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3,Wallet Manager
 knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.merkuro.contact.applet
 shownItems=org.kde.plasma.bluetooth,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol
 
@@ -809,8 +809,8 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][9][General]
-extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator
-hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3
+extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,Wallet Manager
+hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3,Wallet Manager
 knownItems=org.kde.plasma.battery,org.kde.plasma.clipboard,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.merkuro.contact.applet
 pin=true
 shownItems=org.kde.plasma.bluetooth,org.kde.plasma.mediacontroller,org.kde.plasma.nightcolorcontrol
