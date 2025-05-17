@@ -11,8 +11,8 @@ in
   nixpak."${name}" = {
     wrapper = {
       packages = [
-        { package = pkgs."${pkg-name}"; binName = "signal-desktop"; appFile = [
-          { src = pkg-name; args.remove = "--use-tray-icon"; }
+        { package = pkgs."${pkg-name}"; binName = pkg-name; appFile = [
+          { src = "signal"; args.remove = "--use-tray-icon"; }
         ]; }
         pkgs.qt6.qtbase
       ];
