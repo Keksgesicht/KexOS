@@ -83,7 +83,7 @@ in
         pkgl.steamcmd
 
         # Heroic Games Launcher
-        { package = pkgo.heroic; binName = "heroic"; appFile = [
+        { package = pkgl.heroic; binName = "heroic"; appFile = [
           { src = "com.heroicgameslauncher.hgl"; }
         ]; }
 
