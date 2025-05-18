@@ -3,6 +3,10 @@
 OLDIFS=${IFS}
 
 
+### remove forgotten persistent nix garbage link
+rm /home/keks/nixos-config/result
+
+
 ### only keep last 3 lines of DDNS log
 if [ -d "/mnt/main/appdata/ddns" ]; then
 	ddns_file="/mnt/main/appdata/ddns/v4/cf-ddns-updates.json"
