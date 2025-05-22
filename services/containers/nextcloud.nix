@@ -13,6 +13,7 @@ in
     "nextcloud" = {
       upstream.host = "lscr.io";
       upstream.name = "linuxserver/nextcloud";
+      final.name = "linuxserver-nextcloud";
       final.tag = "stable";
     };
     "nextcloud-db" = {
@@ -54,9 +55,21 @@ in
       ];
 
       image = "localhost/nextcloud:stable";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/nextcloud.json")
-      );
+      imageFile = pkgs.dockerTools.buildImage {
+        name = "localhost/nextcloud";
+        tag = "stable";
+        fromImage = pkgs.dockerTools.pullImage (
+          builtins.fromJSON (builtins.readFile "${cc-dir}/linuxserver-nextcloud.json")
+        );
+        copyToRoot = pkgs.buildEnv {
+          name = "nextcloud-image-root";
+          paths = [ pkgs.ocrmypdf ] ++ pkgs.ocrmypdf.propagatedBuildInputs;
+        };
+        config = {
+          Env = [ "LD_PRELOAD=" ];
+          Cmd = [ "/init" ];
+        };
+      };
 
       environment = {
         TZ = config.time.timeZone;
@@ -65,6 +78,7 @@ in
       volumes = [
         "${ssd-mnt}/appdata/nextcloud:/config"
         "${hdd-mnt}/appdata2/nextcloud:/data"
+        "${pkgs.ocrmypdf}/bin/ocrmypdf:/usr/local/bin/ocrmypdf:ro"
       ];
       extraOptions = [
         "--network" "server"

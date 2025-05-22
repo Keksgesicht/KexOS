@@ -71,13 +71,11 @@ with my-functions;
       imageFile = pkgs.dockerTools.buildImage {
         name = "localhost/unbound";
         tag = "latest";
-
         fromImage = pkgs.dockerTools.pullImage (
           builtins.fromJSON (builtins.readFile "${cc-dir}/alpinelinux-unbound.json")
         );
-
         copyToRoot = pkgs.buildEnv {
-          name = "image-root";
+          name = "unbound-image-root";
           paths = [
             (pkgs.callPackage ../../packages/containers/unbound.nix {
               inherit cookie-pkg;
