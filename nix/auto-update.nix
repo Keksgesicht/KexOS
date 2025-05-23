@@ -41,7 +41,14 @@ in
   };
 
   systemd.services = {
-    "nixos-upgrade".onSuccess = [ "${srvNameCopy}.service" ];
+    "nixos-upgrade" = {
+      onSuccess = [ "${srvNameCopy}.service" ];
+      serviceConfig = {
+        CPUSchedulingPolicy = "idle";
+        IOSchedulingClass = "idle";
+        IOSchedulingPriority = 7;
+      };
+    };
     "${srvNameCopy}".script = ''
       LOCK_FILE="${localCfgDir}/flake.lock"
       rm "$LOCK_FILE"

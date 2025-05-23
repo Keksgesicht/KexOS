@@ -7,5 +7,6 @@
     ./extra-options.nix
     ./flake-registry.nix
     ./garbage-collect.nix
+    ./tmp.nix
   ];
 }
