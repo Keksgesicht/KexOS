@@ -1,4 +1,4 @@
-{ lib, ssd-mnt, vpn-subnet-v4, ... }:
+{ lib, ssd-mnt, vpn-subnet-v4, vpn-ip-suf, ... }:
 
 {
   # Define your hostname
@@ -32,5 +32,5 @@
     size = 4096;
   } ];
 
-  services.nix-serve.bindAddress = lib.mkForce "${vpn-subnet-v4}.3";
+  services.nix-serve.bindAddress = lib.mkForce "${vpn-subnet-v4}.${vpn-ip-suf}";
 }

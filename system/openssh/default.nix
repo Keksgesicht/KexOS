@@ -1,18 +1,16 @@
-{ config, lib, ...}:
+{ lib, isDesktop, vpn-subnet-v4, vpn-ip-suf, lan-subnet-v4, lan-ip-suf, ... }:
 
+let
+  port = 22;
+in
 {
   # Enable the OpenSSH daemon.
   services.openssh = {
-    enable =
-      if (config.networking.hostName != "cookiethinker")
-      then lib.mkForce true
-      else lib.mkForce false;
+    enable = true;
     openFirewall = false;
     listenAddresses = [
-      {
-        addr = "0.0.0.0";
-        port = 22;
-      }
+      { inherit port; addr = "${vpn-subnet-v4}.${vpn-ip-suf}"; }
+      { inherit port; addr = "${lan-subnet-v4}.${lan-ip-suf}"; }
     ];
     settings = {
       LogLevel = "INFO";
@@ -21,12 +19,15 @@
       PasswordAuthentication = false;
       PermitEmptyPasswords = false;
       PermitRootLogin =
-        if (config.networking.hostName == "cookieclicker"
-         || config.networking.hostName == "cookiethinker")
+        if (isDesktop)
         then lib.mkForce "no"
         else lib.mkForce "yes";
+
       PubkeyAuthentication = true;
-      AuthorizedKeysFile = "%h/.config/ssh/authorized_keys /etc/ssh/authorized_keys.d/%u";
+      AuthorizedKeysFile = lib.strings.concatStringsSep " " [
+        "%h/.config/ssh/authorized_keys"
+        "/etc/ssh/authorized_keys.d/%u"
+      ];
 
       LoginGraceTime = "42s";
       StrictModes = true;

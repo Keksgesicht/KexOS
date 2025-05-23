@@ -163,6 +163,8 @@
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           isDesktop = true;
+          vpn-ip-suf = "102";
+          lan-ip-suf = "1";
           ifLan = "enp2s0";
           ifWlan = "wlo1";
         };
@@ -191,7 +193,10 @@
 
       "cookiemailer" = nixpkgs-stable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system;
+        specialArgs = (myArgs system) // {
+          vpn-ip-suf = "3";
+          lan-ip-suf = "1";
+        };
         modules = [
           ./machines/cookiemailer.nix
           impermanence.nixosModules.impermanence

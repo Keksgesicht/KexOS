@@ -1,95 +1,13 @@
-{ config, pkgs, lib, myDomain, lan-subnet-v4, vpn-subnet-v4
-, ifLan, ifWlan, ... }:
+{ config, pkgs, lib, ... }:
 
-let
-  my-functions = (import ../../../nix/my-functions.nix lib);
-
-  allowedPortsShared = {
-    allowedTCPPorts = [
-          53 # DNS
-    ];
-    allowedUDPPorts = [
-          53 # DNS
-          67 # DHCP server
-        5353 # mDNS by avahi
-    ];
-  };
-  allowedPortsCCbase = {
-    allowedTCPPorts = [
-         53 # DNS (Pihole)
-         80 # HTTP (swag / lancache)
-        443 # HTTPS (swag)
-    ];
-    allowedUDPPorts = [
-         53 # DNS (Pihole)
-        443 # HTTP3 (swag)
-       5353 # mDNS by avahi
-    ];
-    allowedTCPPortRanges = [
-      { from = 22200; to = 22299; } # free choice
-    ];
-    allowedUDPPortRanges = [
-      { from = 22200; to = 22299; } # free choice
-    ];
-  };
-  allowedPortsCCextra = {
-    allowedTCPPorts = [
-         22 # OpenSSH
-       2053 # DNS (unbound)
-    ];
-    allowedUDPPorts = [
-       2053 # DNS (unbound)
-    ];
-  };
-
-  allowedPortsKDEconnect = rec {
-    allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
-    allowedUDPPortRanges = allowedTCPPortRanges;
-  };
-
-  # https://help.steampowered.com/en/faqs/view/46BD-6BA8-B012-CE43
-  allowedPortsSteam = {
-    allowedTCPPorts = [ 27040 ];
-    allowedUDPPortRanges = [ { from = 27031; to = 27036; } ];
-  };
-
-  allowedPortsVPNuser = rec { # nearly all user ports
-    allowedTCPPortRanges = [ { from = 10000; to = 65535; } ];
-    allowedUDPPortRanges = allowedTCPPortRanges;
-  };
-in
-with my-functions;
 {
   imports = [
     ../.
+    ./certs.nix
+    ./firewall.nix
+    ./hosts.nix
     ./secrets.nix
   ];
-
-  # symlinks for all certificates
-  environment.etc =
-  let
-    cert-dir = "ssl/certs";
-    cacert-dir = "${pkgs.cacert.unbundled}/etc/${cert-dir}";
-    cert-set = builtins.listToAttrs
-    ( map
-      ( e:
-        let
-          eCert = lib.removePrefix "${cacert-dir}/" e;
-          certName = builtins.head (builtins.split ":" eCert) + ".crt";
-        in
-        {
-          name = "${cert-dir}/unbundled/${certName}";
-          value = {
-            source = e;
-          };
-        }
-      )
-      (listFilesRec cacert-dir)
-    );
-  in
-  cert-set // {
-    "ssl/certs/cacert-unbundled".source = cacert-dir;
-  };
 
   # Enable networking via NetworkManager
   networking.networkmanager = {
@@ -118,57 +36,4 @@ with my-functions;
 
   # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
   systemd.services."NetworkManager-wait-online".enable = false;
-
-  # enable mDNS responder
-  services.avahi = {
-    enable = true;
-    openFirewall = false;
-  };
-
-  # firewall
-  networking.firewall = {
-    enable = true;
-
-    interfaces =
-      if (config.networking.hostName == "cookieclicker") then {
-        "br-home" = lib.mkMerge [
-          allowedPortsCCbase
-          allowedPortsCCextra
-          allowedPortsKDEconnect
-          allowedPortsSteam
-        ];
-        "wg-server" = lib.mkMerge [
-          allowedPortsCCbase
-          allowedPortsCCextra
-          allowedPortsKDEconnect
-          allowedPortsSteam
-        ];
-        "podman-server" = allowedPortsCCbase;
-        "enp6s0" = allowedPortsShared;
-        "${ifWlan}" = allowedPortsShared;
-        #"tap0" = allowedPortsVPNuser;
-      }
-      else if (config.networking.hostName == "cookiethinker") then {
-        "${ifLan}" = allowedPortsShared;
-        #"${ifWlan}" = { allowedUDPPorts = [ 5353 ]; };
-      }
-      else {};
-  };
-
-  networking.hosts = {
-    # multicast (from Fedora)
-    "ff02::1" = [ "ip6-allnodes" ];
-    "ff02::2" = [ "ip6-allrouters" ];
-
-    # VPN devices
-    "${vpn-subnet-v4}.102" = [ "cookiethinker.${myDomain}" ];
-    "${vpn-subnet-v4}.103" = [ "rpi.pihole.internal" ];
-
-    # LAN devices
-    "${lan-subnet-v4}.1"   = [ "fritz.box" ]; # Router
-    "${lan-subnet-v4}.230" = [ "temp.host.internal" ];
-
-    # TUDa ESA-Infrastruktur (sshuttle)
-    "10.5.0.38" = [ "gitlab.esa.informatik.tu-darmstadt.de" ];
-  };
 }
