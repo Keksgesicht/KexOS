@@ -92,6 +92,11 @@ let
       ep = "ub.host.${myDomain}:22263";
   } ];
 
+  sysd-restart = (e:
+    "/run/current-system/systemd/bin/systemctl " +
+    "--no-block restart \"wireguard-${wg-name}-peer-${e.name}-refresh\""
+  );
+
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
@@ -153,10 +158,7 @@ with my-functions;
       options timeout:3
       options attempts:1
     '';
-    vpn-net-delay = {
-      # VPN should wait for WiFi connectivity
-      after = [ "user@1000.service" ];
-      preStart = "sleep 15s";
+    vpn-srv-dns = {
       serviceConfig = {
         # force the usage of DNS servers defined in the unit scope
         TemporaryFileSystem = "/var/run/nscd";
@@ -164,24 +166,42 @@ with my-functions;
       };
     };
     vpn-ping = (suf: ''
-      ${pkgs.iputils}/bin/ping -c3 -W1 ${vpn-subnet-v4}.${suf} >/dev/null || true
+      ${pkgs.iputils}/bin/ping -c1 -W1 ${vpn-subnet-v4}.${suf} >/dev/null || true
     '');
   in
   builtins.listToAttrs (map (e: {
     name = wg-srv e;
-    value = vpn-net-delay;
+    value = vpn-srv-dns;
   }) peerList) // {
     "wireguard-wg-${wg-name}" = {
       path = [ pkgs.openresolv ];
       serviceConfig.PrivateTmp = true;
     };
     "vpn-check-connectivity" = {
+      wantedBy = [ "default.target" ];
       after = forEach peerList (e: "${wg-srv e}.service");
-      startAt = "*:0/5";
-      script = concatStr (forEach peerList (e: vpn-ping e.suf4));
+      script = ''
+        while true; do
+      '' + concatStr (forEach peerList (e: vpn-ping e.suf4)) + ''
+          sleep 60s
+        done
+      '';
+    };
+    "vpn-net-delay" = {
+      # VPN should retry after WiFi connectivity
+      after = [ "user@1000.service" ];
+      wantedBy = [ "user@1000.service" ];
+      preStart = "sleep 5s";
+      script = concatStr (forEach peerList (e: ''
+        ${sysd-restart e} || true
+      ''));
     };
   };
-  powerManagement.resumeCommands = concatStr (forEach peerList (e: ''
-    /run/current-system/systemd/bin/systemctl --no-block restart "wireguard-${wg-name}-peer-${e.name}-refresh"
-  ''));
+
+  powerManagement.resumeCommands = lib.mkAfter (''
+      sleep 5s
+    '' + concatStr (forEach peerList (e: ''
+      ${sysd-restart e} || true
+    ''))
+  );
 }

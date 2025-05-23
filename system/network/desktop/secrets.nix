@@ -69,6 +69,11 @@ in
     };
 
     # network connections on laptop
+    "NetworkManager/system-connections/ethernet_dhcp.nmconnection" = {
+      enable = (cfgNetName == "cookiethinker");
+      mode = "0600";
+      source = nm-sub "ethernet_dhcp" {};
+    };
     "NetworkManager/system-connections/eduroam.nmconnection" = {
       enable = (cfgNetName == "cookiethinker");
       mode = "0600";

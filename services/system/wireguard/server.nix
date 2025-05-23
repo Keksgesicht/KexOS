@@ -123,7 +123,7 @@ in
       preStart = "sleep 10s";
     };
     vpn-ping = (suf: ''
-      ${pkgs.iputils}/bin/ping -c3 -W1 ${vpn-subnet-v4}.${suf} >/dev/null || true
+      ${pkgs.iputils}/bin/ping -c1 -W1 ${vpn-subnet-v4}.${suf} >/dev/null || true
     '');
     wg-refresh = (name: "wireguard-${wg-name}-peer-${name}-refresh");
 
@@ -133,9 +133,14 @@ in
     }) pl ));
     listCheck = (pl: al: {
       "vpn-check-connectivity" = {
+        wantedBy = [ "default.target" ];
         after = lib.lists.forEach pl (e: "${wg-refresh e}.service");
-        startAt = "*:0/5";
-        script = lib.strings.concatStrings (lib.lists.forEach al (e: vpn-ping e));
+        script = ''
+          while true; do
+        '' + lib.strings.concatStrings (lib.lists.forEach al (e: vpn-ping e)) + ''
+            sleep 60s
+          done
+        '';
       };
     });
   in
