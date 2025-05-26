@@ -174,7 +174,7 @@ padding=2
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.42083333333333395},{"layoutDirection":"vertical","tiles":[{"height":0.604629629629629},{"height":0.39537037037037104,"layoutDirection":"horizontal","tiles":[{"width":0.3273437499999964},{"width":0.25182291666666645}]}],"width":0.5791666666666628}]}
 
 [Tiling][f26a36a3-f492-5288-b036-00ed4887b735]
-tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3437499999999985},{"width":0.4371093750000015},{"width":0.21914062499999998}]}
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.32929687500000004},{"width":0.4515625},{"width":0.21914062499999998}]}
 
 [TouchEdges]
 Bottom=KRunner
