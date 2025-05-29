@@ -1,55 +1,45 @@
-# file: system/environment.nix
-# desc: time, locale, env vars, etc.
-{ config, pkgs, ...}:
+{ ...}:
 
+let
+  lc_deu = "de_DE.UTF-8";
+  lc_eng = "en_US.UTF-8";
+in
 {
-  # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-  # Select internationalisation properties.
+  # https://nixos.wiki/wiki/Locales
   i18n = {
-    defaultLocale = "en_US.utf8";
+    defaultLocale = lc_eng;
     extraLocaleSettings = {
       LANGUAGE   = "en_US:en:C";
-      LC_COLLATE = "en_US.utf8";
-      LC_CTYPE   = "en_US.utf8";
-      LC_ADDRESS        = "de_DE.utf8";
-      LC_IDENTIFICATION = "de_DE.utf8";
-      LC_MEASUREMENT    = "de_DE.utf8";
-      LC_MONETARY       = "de_DE.utf8";
-      LC_MESSAGES       = "en_US.utf8";
-      LC_NAME           = "de_DE.utf8";
-      LC_NUMERIC        = "de_DE.utf8";
-      LC_PAPER          = "de_DE.utf8";
-      LC_TELEPHONE      = "de_DE.utf8";
-      LC_TIME           = "de_DE.utf8";
+      LC_COLLATE = lc_eng;
+      LC_CTYPE   = lc_eng;
+      LC_ADDRESS        = lc_deu;
+      LC_IDENTIFICATION = lc_deu;
+      LC_MEASUREMENT    = lc_deu;
+      LC_MONETARY       = lc_deu;
+      LC_MESSAGES       = lc_eng;
+      LC_NAME           = lc_deu;
+      LC_NUMERIC        = lc_deu;
+      LC_PAPER          = lc_deu;
+      LC_TELEPHONE      = lc_deu;
+      LC_TIME           = lc_deu;
     };
   };
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "altgr-weur";
     model = "pc104";
+    layout = "altgr-weur";
     variant = "altgr-weur";
-    # disable caps-lock key
-    options = "compose:menu,caps:none";
+    options = "compose:menu,caps:none"; # disable caps-lock key
     extraLayouts."altgr-weur" = {
-      description  = "English (Western European AltGr dead keys)";
+      description = "English (Western European AltGr dead keys)";
       # US-Layout with typical European characters on AltGr combinations
       # file has been downloaded from https://altgr-weur.eu/
-      symbolsFile  = ../files/linux-root/etc/X11/xkb/symbols/altgr-weur;
-      languages    = [
-        "dan"
-        "nld"
-        "eng"
-        "fin"
-        "fra"
-        "deu"
-        "ita"
-        "nor"
-        "por"
-        "spa"
-        "swe"
+      symbolsFile = ../files/linux-root/etc/X11/xkb/symbols/altgr-weur;
+      languages = [
+        "dan" "deu" "eng" "fin" "fra" "ita" "nld" "nor" "por" "spa" "swe"
       ];
     };
   };
