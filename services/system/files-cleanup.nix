@@ -1,4 +1,4 @@
-{ pkgs, data-dir, ssd-mnt, ssd-name, hdd-mnt, hdd-name, ...}:
+{ pkgs, data-dir, ssd-mnt, ssd-name, hdd-mnt, hdd-name, home-dir, ... }:
 
 let
   locate-path = "/var/cache/locatedb";
@@ -14,17 +14,6 @@ in
           pkgs.plocate
           pkgs.podman
         ];
-        wants = [
-          "update-locatedb.service"
-        ];
-        after = [
-          "update-locatedb.service"
-          "podman-nextcloud.service"
-          "mnt-${ssd-name}.mount"
-          "mnt-${hdd-name}.mount"
-          "backup-snapshot@${ssd-name}.service"
-          "backup-snapshot@${hdd-name}.service"
-        ];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.callPackage ../../packages/files-cleanup.nix {}}/bin/cleanup.sh";
@@ -38,6 +27,7 @@ in
           #ExecPaths = "/usr/bin";
 
           ReadWritePaths = [
+            "${home-dir}/nixos-config"
             "${data-dir}"
 
             "-${hdd-mnt}/appdata2/nextcloud/janb/files/.Calendar-Backup"
@@ -62,6 +52,17 @@ in
     timers = {
       # cleanup after boot and repeat after 24h (if still running)
       "files-cleanup" = {
+        wants = [
+          "update-locatedb.service"
+        ];
+        after = [
+          "update-locatedb.service"
+          "podman-nextcloud.service"
+          "mnt-${ssd-name}.mount"
+          "mnt-${hdd-name}.mount"
+          "backup-snapshot@${ssd-name}.service"
+          "backup-snapshot@${hdd-name}.service"
+        ];
         description = "unCookie Cleanup Timer";
         timerConfig = {
           OnBootSec         = "13s";
