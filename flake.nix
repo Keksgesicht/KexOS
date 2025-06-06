@@ -1,5 +1,11 @@
 {
   inputs = {
+    # prevent flake from downloading registry on every command excution
+    flake-registry = {
+      url = "github:nixos/flake-registry";
+      flake = false;
+    };
+
     # https://github.com/NixOS/nixpkgs
     # update nixpkgs every couple of days
     nixpkgs-stable.url = "nixpkgs/nixos-24.11";
@@ -67,11 +73,9 @@
   };
 
   outputs = {
-    self,
-    nixpkgs-stable,
-    nixpkgs-unstable,
-    cookie-pkg,
-    secrets-pkg,
+    self, flake-registry,
+    nixpkgs-stable, nixpkgs-unstable,
+    cookie-pkg, secrets-pkg,
     home-manager,
     impermanence,
     lanzaboote,

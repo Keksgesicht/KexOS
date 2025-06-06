@@ -32,6 +32,7 @@ in
 
     flake = self.outPath;
     flags = [
+      "--update-input" "flake-registry"
       "--update-input" "nixpkgs-stable"
       "--update-input" "nixpkgs-unstable"
       "--update-input" "cookie-pkg"
