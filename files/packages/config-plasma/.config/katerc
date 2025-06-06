@@ -82,7 +82,7 @@ On-The-Fly Spellcheck=false
 Overwrite Mode=false
 PageUp/PageDown Moves Cursor=false
 Remove Spaces=1
-ReplaceTabsDyn=false
+ReplaceTabsDyn=true
 Show Spaces=1
 Show Tabs=true
 Smart Home=true
@@ -92,6 +92,7 @@ Swap Sync Interval=100
 Tab Handling=2
 Tab Width=4
 Trailing Marker Size=3
+Use Editor Config=true
 Word Wrap=false
 Word Wrap Column=80
 
