@@ -29,6 +29,8 @@ in
       qtKDEintegration = true;
     };
 
+    gpu.enable = true;
+
     bubblewrap = {
       bind.ro =
       [
