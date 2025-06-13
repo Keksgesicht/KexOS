@@ -31,4 +31,16 @@ in
   # prevent flake from downloading registry on every command excution
   # https://discourse.nixos.org/t/how-to-prevent-flake-from-downloading-registry-at-every-flake-command/32003/2
   nix.settings.flake-registry = "${inputs.flake-registry}/flake-registry.json";
+
+  # Don't garbage collect flakes sources
+  # https://github.com/NixOS/nix/issues/3995
+  system.extraDependencies =
+  let
+    collectFlakeInputs = (input:
+      [ input ] ++ builtins.concatMap collectFlakeInputs (
+        builtins.attrValues (input.inputs or {})
+      )
+    );
+  in
+  builtins.concatMap collectFlakeInputs (builtins.attrValues inputs);
 }
