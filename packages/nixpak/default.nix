@@ -62,6 +62,7 @@ let
     ./Mousai.nix
     ./OBS-Studio.nix
     ./Office.nix
+    ./PlayGround.nix
     ./Signal.nix
     #./SIP.nix
     ./ThunderBird.nix
