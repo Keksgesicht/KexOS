@@ -188,8 +188,6 @@ let
 
   mkNixPakPkg = (name: value: out:
     let
-      pkgHostname = pkgs.writeText "${name}-hostname" ''${name}'';
-
       wrapNPscript = (writePyBin "${name}-ns-exec" {
         libraries = [];
       } (''
@@ -237,9 +235,6 @@ let
                 # POSIX compliance
                 [ "${pkgs.bashInteractive}/bin/sh" "/bin/sh" ]
                 [ "${pkgs.coreutils}/bin/env" "/usr/bin/env" ]
-
-                # system information
-                [ "${pkgHostname}" "/etc/hostname" ]
 
                 # fonts
                 "/etc/fonts"

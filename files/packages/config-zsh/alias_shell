@@ -58,7 +58,6 @@ elif (( $+commands[sudo] )); then
 fi
 
 alias ip='ip -c'
-alias sct='ssh cookieclicker'
 
 # XDG Home
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
@@ -84,13 +83,13 @@ rng() {
 		echo "$1 is not a positive number!"
 		return 0
 	fi
-	echo $(( ${RANDOM} % $1 + 1 ))
+	echo $((${RANDOM} % $1 + 1))
 }
 
 # # ex - archive extractor
 # # usage: ex <file>
-ex () {
-	if [ -f $1 ] ; then
+ex() {
+	if [ -f $1 ]; then
 		case $1 in
 			*.tar.bz2)   tar xjf $1    ;;
 			*.tar.gz)    tar xzf $1    ;;
@@ -143,7 +142,6 @@ gwtc() {
 	git clone --bare "${1}" $(basename -s .git "${1}")/.git
 }
 
-
 ssh-wayland() {
 	XEPHYR_SCREEN_ID=42
 	XEPHYR_SCREEN_SIZE="1x1"
@@ -164,11 +162,11 @@ find-same-file() {
 	EC=0
 	if ! [ -e ${SDIR} ]; then
 		echo "No such file or directory: \"${SDIR}\""
-		EC=$(( ${EC} + 1 ))
+		EC=$((${EC} + 1))
 	fi
 	if ! [ -e ${FILE} ]; then
 		echo "No such file or directory: \"${FILE}\""
-		EC=$(( ${EC} + 1 ))
+		EC=$((${EC} + 1))
 	fi
 	if [ ${EC} != 0 ]; then
 		return ${EC}
