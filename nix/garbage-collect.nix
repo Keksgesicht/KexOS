@@ -7,9 +7,9 @@ in
   nix.gc = {
     automatic = !holidayMode;
     persistent = true;
-    dates = "*-*-3/6 01:23:45";
+    dates = "Sat *-*-* 01:23:45";
     randomizedDelaySec = delay;
-    options = "--delete-older-than 23d";
+    options = "--delete-older-than 32d";
   };
 
   systemd.services."nix-gc".serviceConfig = {

@@ -25,10 +25,15 @@ in
     inherit MAILCOW_BACKUP_LOCATION;
   };
 
+  systemd.timers = {
+    "mailcow-update" = {
+      timerConfig.RandomizedDelaySec = "42min";
+    };
+  };
   systemd.services = {
     "mailcow-update" = mailcow-srv-cfg // {
       enable = !holidayMode;
-      startAt = "Sat *-*-* 01:12:35";
+      startAt = "Thu *-*-* 01:12:35";
       path = with pkgs; [
         bash curl docker gawk git iptables systemd
       ];
