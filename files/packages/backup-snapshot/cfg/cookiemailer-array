@@ -1,0 +1,8 @@
+hourly=0
+daily=5
+weekly=3
+monthly=1
+
+source="/mnt/array"
+backup="$source/backup_array"
+shares="appdata2"
