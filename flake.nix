@@ -8,7 +8,7 @@
 
     # https://github.com/NixOS/nixpkgs
     # update nixpkgs every couple of days
-    nixpkgs-stable.url = "nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
     # system state
