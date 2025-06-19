@@ -4,6 +4,7 @@ cfg_dir=$(realpath "$(dirname "$0")/../cfg")
 system_name=$1
 target_host=$2
 
+SSH_SOCKET_DIR="/root/.cache/ssh/sockets"
 TARGET_DIR="/mnt/array/machines"
 DATA_DIR="${TARGET_DIR}/${system_name}"
 
@@ -32,6 +33,7 @@ download-snapshot() {
 	done < "${cfg_dir}/snapshot/${pattern_file}"
 }
 
+mkdir -p "${SSH_SOCKET_DIR}"
 realpath "${cfg_dir}"/*/"${system_name}"
 
 if [ -f "${cfg_dir}/rsync.pattern/${system_name}" ]; then
@@ -43,5 +45,8 @@ else
 	pattern_file="default"
 	download-snapshot
 fi
+
+# make sockets unusable after backup
+ssh -O exit "${target_host}"
 
 touch "${DATA_DIR}"

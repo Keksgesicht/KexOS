@@ -12,14 +12,16 @@ let
         Type      = "oneshot";
         ExecStart = "${bd-pkg}/bin/backup-download.sh ${sn} ${th}";
 
-        ProtectHome    = "read-only";
         ProtectProc    = "invisible";
         PrivateTmp     = "yes";
         ProtectClock   = "yes";
         PrivateDevices = "yes";
 
         ReadOnlyPaths = "/";
-        TemporaryFileSystem = "/etc:ro";
+        TemporaryFileSystem = [
+          "/etc:ro"
+          "/root/.cache"
+        ];
         BindReadOnlyPaths = "/etc/ssh/ssh_config";
         ReadWritePaths = "${hdd-mnt}/machines/${sn}";
       };

@@ -16,7 +16,7 @@
 # ssh_config(5) man page.
 
 Host *
-#	Port 22
+	Port 22
 	AddressFamily any
 	ConnectTimeout 23s
 	ServerAliveInterval 20
@@ -24,26 +24,21 @@ Host *
 	AddKeysToAgent yes
 	UserKnownHostsFile ~/.config/ssh/known_hosts
 	StrictHostKeyChecking ask
-#	StrictHostKeyChecking accept-new
 	CheckHostIP yes
 	VisualHostKey yes
 	Compression yes
-#	ControlPath ~/.config/ssh/sockets/ssh_mux_%h_%p_%r
-#	ControlMaster auto
-#	ControlPersist 321s
+	ControlMaster auto
+	ControlPersist 321s
+	ControlPath ~/.cache/ssh/sockets/%h_%p_%r
 	TCPKeepAlive yes
 	PreferredAuthentications publickey,password
 	PKCS11Provider /run/current-system/sw/lib/libtpm2_pkcs11.so
 	RekeyLimit 1G 1h
+	EscapeChar ~
+	ForwardX11 no
 #	ForwardX11Trusted no
-#   ForwardX11 no
-#   IdentityFile ~/.config/ssh/id_rsa
-#   IdentityFile ~/.config/ssh/id_dsa
-#   IdentityFile ~/.config/ssh/id_ecdsa
-#   IdentityFile ~/.config/ssh/id_ed25519
-#   EscapeChar ~
-#   Tunnel no
-#   TunnelDevice any:any
+#	Tunnel no
+#	TunnelDevice any:any
 
 Host nixos-installer
 	HostName temp.host.internal

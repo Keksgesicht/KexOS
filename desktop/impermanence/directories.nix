@@ -191,6 +191,8 @@ with my-functions;
   ++ secureUserDir [
     "${trash-dir}"
     "${ssd-mnt}/root${home-dir}/.cache"
+    "${ssd-mnt}/root${home-dir}/.cache/ssh"
+    "${ssd-mnt}/root${home-dir}/.cache/ssh/sockets"
     "${ssd-mnt}/root${home-dir}/.cache/thumbnails"
     "${ssd-mnt}/root${home-dir}/.local/share"
   ] ++ [
