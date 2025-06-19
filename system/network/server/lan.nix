@@ -27,6 +27,10 @@ in
     };
   };
 
+  services.openssh.listenAddresses = [
+    { addr = "[::]"; port = 22; }
+  ];
+
   networking.firewall = rec {
     enable = true;
     allowedTCPPorts = [
