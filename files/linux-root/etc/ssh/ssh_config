@@ -19,6 +19,8 @@ Host *
 #	Port 22
 	AddressFamily any
 	ConnectTimeout 23s
+	ServerAliveInterval 20
+	ServerAliveCountMax 3
 	AddKeysToAgent yes
 	UserKnownHostsFile ~/.config/ssh/known_hosts
 	StrictHostKeyChecking ask
