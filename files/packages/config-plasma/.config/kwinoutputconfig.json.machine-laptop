@@ -2,14 +2,20 @@
     {
         "data": [
             {
+                "allowDdcCi": true,
+                "allowSdrSoftwareBrightness": false,
                 "autoRotation": "InTabletMode",
-                "brightness": 0.05,
+                "brightness": 0.04330708661417323,
+                "colorPowerTradeoff": "PreferEfficiency",
                 "colorProfileSource": "sRGB",
                 "connectorName": "eDP-1",
+                "detectedDdcCi": false,
                 "edidHash": "0e4b7ed9a65ba090c5c7d54a91f926cd",
                 "edidIdentifier": "CMN 5622 0 17 2017 0",
+                "edrPolicy": "always",
                 "highDynamicRange": false,
                 "iccProfilePath": "",
+                "maxBitsPerColor": 0,
                 "mode": {
                     "height": 1080,
                     "refreshRate": 40005,
@@ -21,6 +27,7 @@
                 "sdrBrightness": 200,
                 "sdrGamutWideness": 0,
                 "transform": "Normal",
+                "uuid": "5b03c092-8096-471e-87cd-8fbda26019c3",
                 "vrrPolicy": "Never",
                 "wideColorGamut": false
             }
@@ -39,7 +46,8 @@
                             "x": 0,
                             "y": 0
                         },
-                        "priority": 0
+                        "priority": 0,
+                        "replicationSource": ""
                     }
                 ]
             }

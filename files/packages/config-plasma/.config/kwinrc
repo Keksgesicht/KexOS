@@ -170,10 +170,10 @@ LayoutName=flipswitch
 [Tiling]
 padding=2
 
-[Tiling][7960895e-b31c-53ae-8249-127db39b6938]
+[Tiling][e134cfca-0b72-44b8-b120-0870feec7d94][6c22c19e-08b0-410b-8d96-750662f82757]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.42083333333333395},{"layoutDirection":"vertical","tiles":[{"height":0.604629629629629},{"height":0.39537037037037104,"layoutDirection":"horizontal","tiles":[{"width":0.3273437499999964},{"width":0.25182291666666645}]}],"width":0.5791666666666628}]}
 
-[Tiling][f26a36a3-f492-5288-b036-00ed4887b735]
+[Tiling][e134cfca-0b72-44b8-b120-0870feec7d94][4e46882a-e325-4556-b6b7-5236f684265e]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.32929687500000004},{"width":0.4515625},{"width":0.21914062499999998}]}
 
 [TouchEdges]
