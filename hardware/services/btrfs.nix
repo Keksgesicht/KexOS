@@ -19,7 +19,7 @@ in
     enable = true;
     # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/tasks/filesystems/btrfs.nix
     # the above says the timer is "Persistent".
-    interval = "*-2/3-13 04:20:42";
+    interval = "*-1/2-13 04:20:42";
     fileSystems =
       if (hn == "cookieclicker") then
         [
