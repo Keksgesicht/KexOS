@@ -1,3 +1,6 @@
+hdmi_desktop="alsa_output.pci-0000_44_00.1.pro-output"
+usb_dock="usb-GeneralPlus_USB_Audio_Device-00"
+
 my_mic_list=""
 my_mic_list+=" alsa_input.usb-Auna_Mic_CM900_Auna_Mic_CM900-00.mono-fallback"
 my_mic_list+=" bluez_input.00:25:BB:03:70:3D"
@@ -10,7 +13,6 @@ else
 fi
 central_sink='echo_out_sink'
 scatter_source='echo_out_source'
-
 
 link_ports() {
 	pw-link "$1" "$2"
@@ -45,7 +47,6 @@ link_nodes() {
 		link_mono "$node_left_out" "$2"
 	done
 }
-
 
 unlink_inputs() {
 	for id in $(pw-link -I -l | grep '|->' | awk '/'"$1"'/ {print $1}'); do

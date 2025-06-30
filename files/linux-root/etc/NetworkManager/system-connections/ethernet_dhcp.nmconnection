@@ -1,5 +1,5 @@
 [connection]
-id=Wired connection 1
+id=LAN_DHCP
 uuid=561f41d1-b656-39e6-bc46-b8ad2cfc311f
 type=ethernet
 autoconnect-priority=-100

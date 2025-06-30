@@ -3,3 +3,5 @@ alsa_card.pci-0000_0a_00.3:output:analog-output-lineout={"latencyOffsetNsec":0, 
 alsa_card.pci-0000_0a_00.3:profile:output:analog-surround-40=["analog-output-lineout"]
 alsa_card.usb-Auna_Mic_CM900_Auna_Mic_CM900-00:input:analog-input-mic={"latencyOffsetNsec":0, "mute":false, "channelMap":["MONO"], "channelVolumes":[0.884755]}
 alsa_card.usb-Auna_Mic_CM900_Auna_Mic_CM900-00:profile:input:mono-fallback=["analog-input-mic"]
+alsa_card.usb-GeneralPlus_USB_Audio_Device-00:output:iec958-stereo-output={"channelMap":["FL", "FR"], "channelVolumes":[1.000000, 1.000000], "iec958Codecs":[], "mute":false, "latencyOffsetNsec":0}
+alsa_card.usb-GeneralPlus_USB_Audio_Device-00:profile:output:iec958-stereo=["iec958-stereo-output"]

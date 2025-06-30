@@ -5,6 +5,7 @@
     ../../system/impermanence
     ../filesystem-single-disk.nix
     ./tuxedo.nix
+    ./usb-docking-station.nix
   ];
 
   # filesystem extras

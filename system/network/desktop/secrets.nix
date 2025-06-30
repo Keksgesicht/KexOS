@@ -2,7 +2,8 @@
 , lan-subnet-v4, pod-subnet-v4, lan-ip-suf, ... }:
 
 let
-  cfgNetName = config.networking.hostName;
+  hn = config.networking.hostName;
+  mode = "0600";
 
   nmsc-root = ../../../files;
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
@@ -21,8 +22,8 @@ let
     in
     {
       "NetworkManager/system-connections/wlan${no}.nmconnection" = {
-        mode = "0600";
-        enable = (cfgNetName == "cookiethinker");
+        inherit mode;
+        enable = (hn == "cookiethinker");
         source = pkgs.replaceVars nm-src-path {
           inherit uuid;
           user = username;
@@ -43,19 +44,38 @@ in
   environment.etc = {
     # network connections on all systems
     "NetworkManager/system-connections/TU_Darmstadt.nmconnection" = {
-      mode = "0600";
+      inherit mode;
       source = nm-sub "TU_Darmstadt" ({ username = nm-rf "TU_Darmstadt-username"; });
     };
 
     # network connections on tower
+    "NetworkManager/system-connections/usb_docking_station.nmconnection" = {
+      inherit mode;
+      source = nm-sub "usb_docking_station" ({
+        macaddr = nm-rf "usb-01-macaddr";
+        meth4 = if (hn != "cookiethinker")
+          then "disabled"
+          else "manual";
+        meth6 = if (hn != "cookiethinker")
+          then "disabled"
+          else "auto";
+        ip4 = if (hn != "cookiethinker") then ""
+          else ''
+            address1=${lan-subnet-v4}.210/24
+            gateway=${lan-subnet-v4}.1
+            dns=${lan-subnet-v4}.221;
+            ignore-auto-dns=true
+          '';
+      });
+    };
     "NetworkManager/system-connections/dmz.nmconnection" = {
-      enable = (cfgNetName == "cookieclicker");
-      mode = "0600";
+      enable = (hn == "cookieclicker");
+      inherit mode;
       source = nm-sub "dmz" ({ macaddr = nm-rf "cookieclicker-dmz-macaddr"; });
     };
     "NetworkManager/system-connections/home_bridge.nmconnection" = {
-      enable = (cfgNetName == "cookieclicker");
-      mode = "0600";
+      enable = (hn == "cookieclicker");
+      inherit mode;
       source = nm-sub "home_bridge" ({
         dnsserver = "${pod-subnet-v4}.53.1";
         ipaddr    = "${lan-subnet-v4}.${lan-ip-suf}/24";
@@ -63,25 +83,25 @@ in
       });
     };
     "NetworkManager/system-connections/home_lan.nmconnection" = {
-      enable = (cfgNetName == "cookieclicker");
-      mode = "0600";
+      enable = (hn == "cookieclicker");
+      inherit mode;
       source = nm-sub "home_lan" ({ macaddr = nm-rf "cookieclicker-home-macaddr"; });
     };
 
     # network connections on laptop
     "NetworkManager/system-connections/ethernet_dhcp.nmconnection" = {
-      enable = (cfgNetName == "cookiethinker");
-      mode = "0600";
+      enable = (hn == "cookiethinker");
+      inherit mode;
       source = nm-sub "ethernet_dhcp" {};
     };
     "NetworkManager/system-connections/eduroam.nmconnection" = {
-      enable = (cfgNetName == "cookiethinker");
-      mode = "0600";
+      enable = (hn == "cookiethinker");
+      inherit mode;
       source = nm-sub "eduroam" ({ username = nm-rf "eduroam-username"; });
     };
     "NetworkManager/system-connections/nach_Hause_telefonieren.nmconnection" = {
-      enable = (cfgNetName == "cookiethinker");
-      mode = "0600";
+      enable = (hn == "cookiethinker");
+      inherit mode;
       source = nm-sub "nach_Hause_telefonieren" ({
         hostname = nm-rf "vpn-nachHause-host";
         username = nm-rf "vpn-nachHause-user";

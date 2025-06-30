@@ -38,6 +38,7 @@ RightButton;NoModifier=org.kde.contextmenu
 
 [Containments][1]
 ItemGeometries-1920x1080=
+ItemGeometries-3840x2160=
 ItemGeometriesHorizontal=
 activityId=ed353e5a-8fcc-48ba-a2e0-c308d96fdb9d
 formfactor=0
@@ -51,9 +52,37 @@ wallpaperplugin=org.kde.slideshow
 ToolBoxButtonState=topcenter
 ToolBoxButtonX=549
 locked=true
-positions={"1920x1080":[]}
+positions={"1920x1080":[],"3840x2160":[]}
 
 [Containments][1][Wallpaper][org.kde.slideshow][General]
+FillMode=0
+SlideInterval=120
+SlidePaths=/home/keks/background/landscape/
+
+[Containments][107]
+activityId=ed353e5a-8fcc-48ba-a2e0-c308d96fdb9d
+formfactor=0
+immutability=1
+lastScreen=1
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.slideshow
+
+[Containments][107][Wallpaper][org.kde.slideshow][General]
+FillMode=0
+SlideInterval=120
+SlidePaths=/home/keks/background/landscape/
+
+[Containments][109]
+activityId=ed353e5a-8fcc-48ba-a2e0-c308d96fdb9d
+formfactor=0
+immutability=1
+lastScreen=2
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.slideshow
+
+[Containments][109][Wallpaper][org.kde.slideshow][General]
 FillMode=0
 SlideInterval=120
 SlidePaths=/home/keks/background/landscape/
@@ -109,8 +138,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][29][Applets][30][Configuration]
 PreloadWeight=100
-popupHeight=545
-popupWidth=696
+popupHeight=578
+popupWidth=729
 
 [Containments][29][Applets][30][Configuration][General]
 favoritesPortedToKAstats=true
@@ -180,8 +209,8 @@ immutability=1
 lastScreen=0
 location=6
 plugin=org.kde.plasma.systemtray
-popupHeight=454
-popupWidth=454
+popupHeight=476
+popupWidth=476
 wallpaperplugin=org.kde.image
 
 [Containments][29][Applets][34][Applets][105]
@@ -272,8 +301,8 @@ plugin=org.kde.plasma.digitalclock
 
 [Containments][29][Applets][47][Configuration]
 PreloadWeight=95
-popupHeight=450
-popupWidth=810
+popupHeight=461
+popupWidth=821
 
 [Containments][29][Applets][47][Configuration][Appearance]
 customDateFormat=dddd dd.MM.yy

@@ -8,7 +8,6 @@ UseProfileSpecificKeyboardBrightness=true
 
 [AC][SuspendAndShutdown]
 AutoSuspendIdleTimeoutSec=1920
-InhibitLidActionWhenExternalMonitorPresent=false
 LidAction=32
 PowerButtonAction=1
 
@@ -27,7 +26,6 @@ UseProfileSpecificKeyboardBrightness=true
 
 [Battery][SuspendAndShutdown]
 AutoSuspendIdleTimeoutSec=780
-InhibitLidActionWhenExternalMonitorPresent=false
 LidAction=1
 PowerButtonAction=1
 
