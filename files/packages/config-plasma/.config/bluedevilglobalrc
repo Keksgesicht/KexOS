@@ -1,5 +1,8 @@
 [Devices]
 connectedDevices=
 
+[General]
+launchState=disable
+
 [Global]
 bluetoothBlocked=true
