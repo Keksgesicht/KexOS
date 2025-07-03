@@ -6,10 +6,11 @@
     efibootmgr
     e2fsprogs
     gptfdisk
-    (hwloc.override {
+    (hwloc.override { # lstopo
       x11Support = isDesktop;
     })
     iftop
+    inxi
     iotop
     i2c-tools # https://superuser.com/questions/519822/how-to-check-ram-timings-in-linux#answer-1499521
     /*
