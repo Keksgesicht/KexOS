@@ -96,6 +96,9 @@ case "${IFLINK}" in
 	;;
 	prefix)
 		if ip addr show "${IFLINK}" | grep -q 'deprecated'; then
+			for my6 in $(ip addr show "${IFLINK}" | awk '/deprecated/ {print $2}'); do
+				ip addr del "${my6}" dev "${IFLINK}"
+			done
 			set-ipv6-token
 		else
 			ipv6_prefix_old="$(
