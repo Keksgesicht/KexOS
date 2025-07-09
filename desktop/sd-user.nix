@@ -25,6 +25,7 @@
           ''~ATTENTION: default value of option vk_xwayland_wait_ready overridden by environment\.''
           ''~ERROR: ld\.so: object 'libgamemodeauto\.so\.0' from LD_PRELOAD cannot be preloaded \(cannot open shared object file\): ignored\.''
           ''~ERROR: ld\.so: object '/home/keks/\.local/share/Steam/ubuntu12_32/gameoverlayrenderer\.so' from LD_PRELOAD cannot be preloaded \(wrong ELF class: ELFCLASS32\): ignored.''
+          ''~got the same buffer committed twice'' # [gamescope] [Warn]  xwm: got the same buffer committed twice, ignoring.
         ];
       };
     };
