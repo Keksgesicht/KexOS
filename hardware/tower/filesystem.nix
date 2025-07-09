@@ -1,4 +1,4 @@
-{ lib, ssd-mnt, ssd-name, hdd-mnt, hdd-name, nvm-mnt, nvm-name, ... }:
+{ pkgs, lib, ssd-mnt, ssd-name, hdd-mnt, hdd-name, nvm-mnt, nvm-name, ... }:
 
 let
   ssd-numbers = [ 1 2 ];
@@ -34,6 +34,8 @@ let
     in
     "${name}${n}  ${label}${n}  ${keyfile}  ${opts}"
   ));
+
+  backup-boot = "/mnt/backup/boot";
 in
 {
   /*
@@ -107,6 +109,11 @@ in
       ] ++ crypt-req nvm-name nvm-numbers;
     };
 
+    "${backup-boot}" = { # other NVMe (see /boot)
+      device = "/dev/disk/by-uuid/AD3C-E855";
+      fsType = "vfat";
+      options = fat-opts;
+    };
     "/mnt/backup/USB/data" = {
       device = "/dev/mapper/usb-backup";
       fsType = "btrfs";
@@ -123,4 +130,18 @@ in
       options = [ "nofail" ];
     }
   ];
+
+  systemd.services = {
+    "backup-boot" = {
+      wantedBy = [ "user@1000.service" ];
+      after = [ "user@1000.service" ];
+      unitConfig.RequiresMountsFor = backup-boot;
+      serviceConfig.RemainAfterExit = true;
+      script = ''
+        ${pkgs.coreutils}/bin/sleep 666s
+        ${pkgs.rsync}/bin/rsync -rltv --delete /boot/ ${backup-boot}/
+        ${pkgs.util-linux}/bin/umount ${backup-boot}
+      '';
+    };
+  };
 }
