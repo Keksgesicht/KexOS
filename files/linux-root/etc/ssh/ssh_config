@@ -28,7 +28,7 @@ Host *
 	VisualHostKey yes
 	Compression yes
 	ControlMaster auto
-	ControlPersist 321s
+	ControlPersist 1234s
 	ControlPath ~/.cache/ssh/sockets/%h_%p_%r
 	TCPKeepAlive yes
 	PreferredAuthentications publickey,password
