@@ -56,7 +56,7 @@ in
       ];
       environment = {
         BACK_PARAMS = "backup all";
-        BACK_OPTS = "--delete-days 3";
+        BACK_OPTS = "--delete-days 1";
         inherit MAILCOW_BACKUP_LOCATION;
       };
       script = ''
