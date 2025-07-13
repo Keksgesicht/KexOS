@@ -50,12 +50,7 @@
 
     # https://github.com/nixpak/nixpak
     nixpak = {
-      type = "github";
-      owner = "Keksgesicht";
-      repo = "nixpak";
-      ref = "dbus-instance";
-      rev = "960898f79e83aa68c75876794450019ddfdb9157";
-
+      url = "github:nixpak/nixpak";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
