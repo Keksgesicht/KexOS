@@ -32,6 +32,10 @@
           export PATH=$PATH
         '' + (builtins.readFile ../../../files/linux-root/etc/NetworkManager/dispatcher.d/50-no-ddns-vpn));
       } ];
+
+    plugins = [
+      pkgs.networkmanager-openconnect # VPN to university
+    ];
   };
 
   # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
