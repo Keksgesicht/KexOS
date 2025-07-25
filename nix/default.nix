@@ -7,6 +7,7 @@
     ./extra-options.nix
     ./flake-registry.nix
     ./garbage-collect.nix
+    ./KexOS.nix
     ./tmp.nix
   ];
 }

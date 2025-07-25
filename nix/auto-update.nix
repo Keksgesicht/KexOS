@@ -1,4 +1,4 @@
-{ self, pkgs, isDesktop, holidayMode, home-dir, username, ... }:
+{ self, isDesktop, holidayMode, home-dir, username, ... }:
 
 let
   current-system = "/nix/var/nix/profiles/system";
@@ -58,47 +58,4 @@ in
       chmod 644 "$LOCK_FILE"
     '';
   };
-
-  users.users."${username}".packages = [
-    (pkgs.writeShellScriptBin "KexOS-sync" (''
-      usage() {
-    '' + (if isDesktop
-      then ''echo "$0 [up|down|etc] <remote-host>"''
-      else ''echo "$0 etc"''
-    ) + ''
-
-        exit 1
-      }
-      kex-sync() {
-        set -x
-        rsync -avHAXze ssh --delete --exclude='result' --exclude='flake.lock' $@
-      }
-
-    '' + (if isDesktop
-      then "[ $# -ne 3 ] || usage"
-      else "[ $# -ne 2 ] || usage"
-    ) + ''
-
-      host="$2"
-      dir="nixos-config"
-
-      case "$1" in
-    '' + (if isDesktop then ''
-        up)
-          kex-sync ~/''${dir}/ ''${host}:''${dir}/
-        ;;
-        down)
-          kex-sync ''${host}:''${dir}/ ~/''${dir}/
-        ;;
-    '' else "") + ''
-        etc)
-          set -x
-          $AUTH rsync -rlptv --delete \
-            --exclude='/secrets/keys' --exclude='result' \
-            ~/''${dir}/ /etc/nixos/
-        ;;
-        *) usage ;;
-      esac
-    ''))
-  ];
 }
