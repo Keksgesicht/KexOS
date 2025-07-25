@@ -63,7 +63,7 @@ in
       }
       kex-sync() {
         set -x
-        rsync -avHAXze ssh --delete --exclude='result' --exclude='flake.lock' $@
+        rsync -avHAXze ssh --delete --exclude='result' $@
       }
 
     '' + (if isDesktop
