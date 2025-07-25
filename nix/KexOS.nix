@@ -5,6 +5,15 @@ let
 in
 {
   users.users."${username}".packages = [
+    (pkgs.writeShellScriptBin "KexOS" (''
+      if [ $# -lt 1 ]; then
+        echo "Missing parameter!"
+        exit 1
+      fi
+      cmd="KexOS-$1"
+      shift
+      exec -a "$cmd" $cmd $@
+    ''))
     (pkgs.writeShellScriptBin "KexOS-rebuild" (''
       usage() {
         echo "$0 [boot|build|repl|test|switch]"

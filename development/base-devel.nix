@@ -28,7 +28,7 @@
     unixtools.xxd
     unzip
   ] ++ lib.optionals isDesktop [
-    (pkgs.writeShellScriptBin "KexDevShell" ''
+    (pkgs.writeShellScriptBin "KexOS-DevShell" ''
       usage() {
         echo "$0 path [--suffix=name] args.."
       }
