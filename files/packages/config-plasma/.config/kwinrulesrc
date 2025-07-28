@@ -55,7 +55,6 @@ wmclass=ferdium
 [4]
 Description=Window settings for vlc
 clientmachine=localhost
-desktops=\\0
 ignoregeometry=true
 ignoregeometryrule=2
 maximizehorizrule=3
@@ -73,8 +72,6 @@ wmclassmatch=1
 
 [5]
 Description=Window settings for firefox
-desktops=e134cfca-0b72-44b8-b120-0870feec7d94
-desktopsrule=3
 ignoregeometry=true
 ignoregeometryrule=2
 noborder=true
@@ -103,7 +100,6 @@ wmclassmatch=1
 [7]
 Description=Window settings for org.kde.kate
 clientmachine=localhost
-desktops=e134cfca-0b72-44b8-b120-0870feec7d94
 ignoregeometry=true
 ignoregeometryrule=2
 maximizevert=true
