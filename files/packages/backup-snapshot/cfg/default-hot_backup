@@ -1,0 +1,8 @@
+hourly=0
+daily=2
+weekly=1
+monthly=0
+
+source="/mnt/hot_backup"
+backup="$source/backup_hot_backup"
+shares="data"

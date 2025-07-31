@@ -23,6 +23,7 @@
     ../services/containers/proxy.nix
     ../services/containers/tandoor.nix
     ../services/containers/unbound.nix
+    ../services/system/backup-hot.nix
     ../services/system/backup-snapshot.nix
     ../services/system/dyndns.nix
     ../services/system/wireguard/server.nix

@@ -22,11 +22,9 @@ in
     interval = "*-1/2-13 04:20:42";
     fileSystems =
       if (hn == "cookieclicker") then
-        [
-          "${ssd-mnt}"
-          "${hdd-mnt}"
-          "${nvm-mnt}"
-        ]
+        [ "${ssd-mnt}" "${hdd-mnt}" "${nvm-mnt}" ]
+      else if (hn == "cookieflyer") then
+        [ "${ssd-mnt}" "/mnt/hot_backup" ]
       else [ "/" ];
   };
 
