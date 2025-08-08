@@ -47,40 +47,28 @@ Host nixos-installer
 	StrictHostKeyChecking no
 	UserKnownHostsFile /dev/null
 
-Host cookieclicker
-	HostName cookieclicker.keksgesicht.de
+Host cookie*
 	User keks
 	IdentityFile ~/.secrets/ssh/id_nixos
+
+Host cookieclicker
+	HostName cookieclicker.keksgesicht.de
 
 Host cookiemailer
 	HostName cookiemailer.keksgesicht.de
-	User keks
-	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host cookieflyer
 	HostName cookieflyer.keksgesicht.de
-	User keks
-	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host cookiethinker
 	HostName cookiethinker.keksgesicht.de
-	User keks
-	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host pihole
 	HostName rpi.pihole.internal
 	User cookie
 	IdentityFile ~/.secrets/ssh/id_pihole
 
-Host github.com
-	User git
-	IdentityFile ~/.secrets/ssh/id_git
-
-Host gitlab.com
-	User git
-	IdentityFile ~/.secrets/ssh/id_git
-
-Host git.rwth-aachen.de
+Host git*
 	User git
 	IdentityFile ~/.secrets/ssh/id_git
 
@@ -92,6 +80,4 @@ Host lcluster*.hrz.tu-darmstadt.de
 	ForwardX11 yes
 
 Host gitlab.esa.informatik.tu-darmstadt.de
-	User git
 	ProxyJump erebor.esa.informatik.tu-darmstadt.de
-	IdentityFile ~/.secrets/ssh/id_git
