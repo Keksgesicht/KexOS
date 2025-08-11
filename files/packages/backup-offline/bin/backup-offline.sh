@@ -1,24 +1,27 @@
 #!/bin/bash
 
-back_dir="/mnt/backup/$1"
-conf_dir="$(realpath $(dirname $0)/../cfg)"
+mode="usb"
+conf_dir="$(realpath "$(dirname "$0")/../cfg")"
+
+back_dir="/mnt/backup/${mode}"
 
 sleep 3s
 mountpoint ${back_dir}/data || exit 1
 chown root:root ${back_dir}
 chmod 700 ${back_dir}
 
-for dir in $(cat ${conf_dir}/_shares); do
-	sync_vars=""
+while read -r dir; do
 	source="/mnt/user/${dir}/.backup/latest"
 	dest="${back_dir}/data/${dir}"
 
-	[ -f ${conf_dir}/${dir}.pattern ] && \
-		sync_vars+=" --include-from=${conf_dir}/${dir}.pattern"
+	sync_vars=""
+	if [ -f "${conf_dir}/${dir}.pattern" ]; then
+		sync_vars="--include-from=${conf_dir}/${dir}.pattern"
+	fi
 
-#	rsync -avcHAX --delete --delete-excluded ${sync_vars} ${source}/ ${dest}/
-	rsync -avHAX --delete --delete-excluded ${sync_vars} ${source}/ ${dest}/
+	rsync -avHAX --delete --delete-excluded "${sync_vars}" \
+		"${source}/" "${dest}/"
 
-	touch ${dest}
+	touch "${dest}"
 	echo "${dir} completed"
-done
+done <"${conf_dir}/_shares.${mode}"

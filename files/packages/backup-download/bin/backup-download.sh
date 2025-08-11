@@ -11,7 +11,7 @@ DATA_DIR="${TARGET_DIR}/${system_name}"
 download() {
 	set -ex
 	rsync -avHA \
-		-e "ssh -i /root/.secrets/ssh/id_backup" \
+		-ze "ssh -i /root/.secrets/ssh/id_backup" \
 		--delete --delete-excluded \
 		"$@"
 	set +ex
@@ -30,7 +30,7 @@ download-snapshot() {
 		download \
 			"root@${target_host}":"${line}/.backup/latest/" \
 			"${DATA_DIR}${line}/"
-	done < "${cfg_dir}/snapshot/${pattern_file}"
+	done <"${cfg_dir}/snapshot/${pattern_file}"
 }
 
 mkdir -p "${SSH_SOCKET_DIR}"

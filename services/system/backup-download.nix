@@ -1,4 +1,4 @@
-{ pkgs, lib, hdd-mnt, myDomain, ... }:
+{ pkgs, lib, myDomain, hdd-mnt, hdd-name, ... }:
 
 let
   bd-pkg = (pkgs.callPackage ../../packages/backup-download.nix {});
@@ -7,6 +7,7 @@ let
     tmpfiles.rules = [ "d  ${hdd-mnt}/machines/${sn}" ];
     services."backup-download@${sn}" = {
       path = with pkgs; [ gnutar gzip openssh rsync ];
+      requires = [ "mnt-${hdd-name}.mount" ];
       description = "Generates Backups from different Remote Systems";
       serviceConfig = {
         Type      = "oneshot";
@@ -18,12 +19,12 @@ let
         PrivateDevices = "yes";
 
         ReadOnlyPaths = "/";
+        ReadWritePaths = "${hdd-mnt}/machines/${sn}";
+        BindReadOnlyPaths = "/etc/ssh/ssh_config";
         TemporaryFileSystem = [
           "/etc:ro"
           "/root/.cache"
         ];
-        BindReadOnlyPaths = "/etc/ssh/ssh_config";
-        ReadWritePaths = "${hdd-mnt}/machines/${sn}";
       };
     };
     timers."backup-download@${sn}" = {
