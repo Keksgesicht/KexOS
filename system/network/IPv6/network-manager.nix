@@ -33,6 +33,9 @@ in
 
   systemd = {
     services = {
+      "NetworkManager-dispatcher" = {
+        serviceConfig.TimeoutStopSec = 13;
+      };
       "ipv6-prefix-update" = {
         description = "IPv6 prefix check and suffix updater";
         script = pub6script;
