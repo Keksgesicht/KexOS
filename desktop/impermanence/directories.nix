@@ -199,7 +199,7 @@ with my-functions;
     "L+ ${data-dir}/devel  - - - - ${data-dir}/Documents/development"
     "L+ ${data-dir}/git    - - - - ${data-dir}/Documents/development/git"
     "L+ ${data-dir}/Module - - - - ${data-dir}/Documents/Studium/Module"
-    "L+ ${home-dir}/nixos-config - - - - ${data-dir}/Documents/development/git/nix/config/KexOS"
+    "L+ ${home-dir}/nixos-config - - - - ${home-dir}/git/hdd/nix/config/KexOS"
   ]
   ;
 

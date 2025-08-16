@@ -16,11 +16,12 @@ in
     ''))
     (pkgs.writeShellScriptBin "KexOS-rebuild" (''
       usage() {
-        echo "$0 [boot|build|repl|test|switch]"
+        echo "$0 [boot|build|repl|test|switch] <-(y|Y|n|N)>"
         exit 1
       }
 
-      [ $# -eq 1 ] || usage
+      [ 1 -le $# ] || usage
+      [ $# -le 2 ] || usage
 
       case "$1" in
         build)
@@ -38,10 +39,26 @@ in
         ;;
       esac
 
+      case "$2" in
+        -y|-Y|-n|-N)
+          SKIP_UPDATE_ANSWER="''${2/-/}"
+        ;;
+        "")
+          true
+        ;;
+        *)
+          usage
+        ;;
+      esac
+
       cd ${kexos-cfg-path}/ || exit 2
 
       if [ -z "$SKIP_UPDATE" ]; then
-        read -p 'update input "cookie-pkg" [Y/n]' answer
+        if [ -z "$SKIP_UPDATE_ANSWER" ]; then
+          read -p 'update input "cookie-pkg" [Y/n]' answer
+        else
+          answer=$SKIP_UPDATE_ANSWER
+        fi
         if [ "$answer" != "n" ] && [ "$answer" != "N" ]; then
           set -x
           nix flake update "cookie-pkg"
