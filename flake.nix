@@ -90,6 +90,11 @@
           inherit system;
         } // extraConfig));
 
+        pkgs-fetch = (git: hash: cfg: import (fetchTarball {
+          url = "https://github.com/NixOS/nixpkgs/archive/${git}.tar.gz";
+          sha256 = "${hash}";
+        }) ({ inherit system; } // cfg));
+
         isDesktop = false;
         holidayMode = false;
 

@@ -1,5 +1,6 @@
 { sloth, bindHomeDir, ... }:
-{ config, pkgs, pkgs-latest, pkgs-stable, nvm-mnt, home-dir, username, ... }:
+{ config, pkgs, pkgs-latest, pkgs-stable, pkgs-fetch
+, nvm-mnt, home-dir, username, ... }:
 
 let
   gamingPC = (config.networking.hostName == "cookieclicker");
@@ -10,6 +11,13 @@ let
 
   pkgl = pkgs-latest { config.allowUnfree = true; };
   pkgo = pkgs-stable { config.allowUnfree = true; };
+
+  pkgs-fixed = (pkgs-fetch
+    # cookieclicker - system-487-link - flake.lock - nixpkgs-unstable
+    "5b09dc45f24cf32316283e62aec81ffee3c3e376" # NixOS 25.11 on 2025-08-03
+    "sha256-Q/I2xJn/j1wpkGhWkQnm20nShYnG7TI99foDBpXm1SY="
+    {}
+  );
 
   pkgMachineID = pkgs.writeText "${name}-machine-id" ''
     1337deadbeef42bad0815ccc4711da69
@@ -167,8 +175,9 @@ in
         "/sys/dev"
         "/sys/devices"
 
-        # 32-bit GPU Driver
-        "/run/opengl-driver-32"
+        # gamescope fix
+        [ "${pkgs-fixed.mesa}"      "/run/opengl-driver" ]
+        [ "${pkgs-fixed.mesa_i686}" "/run/opengl-driver-32" ]
 
         (sloth.concat' sloth.xdgConfigHome "/MangoHud")
 
