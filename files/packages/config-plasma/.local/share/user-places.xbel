@@ -299,30 +299,8 @@
    </metadata>
   </info>
  </bookmark>
- <bookmark href="file:///home/keks/Documents/Studium/Module/HiWi/ESA">
-  <title>HiWi-ESA</title>
-  <info>
-   <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="inode-directory"/>
-   </metadata>
-   <metadata owner="http://www.kde.org">
-    <ID>1705411101/0</ID>
-   </metadata>
-  </info>
- </bookmark>
- <bookmark href="file:///home/keks/Documents/Studium/Module/Thesis/Bachelor">
-  <title>Thesis-Bachelor</title>
-  <info>
-   <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="inode-directory"/>
-   </metadata>
-   <metadata owner="http://www.kde.org">
-    <ID>1705411112/1</ID>
-   </metadata>
-  </info>
- </bookmark>
- <bookmark href="file:///home/keks/git/ssd/Studium/HiWi/ESA/longnail">
-  <title>longnail</title>
+ <bookmark href="file:///home/keks/git/ssd/Studium/HiWi/ESA">
+  <title>ESA git</title>
   <info>
    <metadata owner="http://freedesktop.org">
     <bookmark:icon name="inode-directory"/>
