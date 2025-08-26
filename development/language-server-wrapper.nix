@@ -30,7 +30,7 @@ let
   lsp-path = "/usr/local/lsp";
   ide-wrapper = pkgs.writeShellScriptBin "${n}" ''
     export PATH=$PATH:${lsp-path}/bin
-    exec ${p}/bin/${n} $@
+    exec ${p}/bin/${n} "$@"
   '';
 
   lsp-data = {
