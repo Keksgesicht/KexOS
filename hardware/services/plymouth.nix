@@ -2,10 +2,8 @@
 
 let
   logoFile = ../../files/face.png;
-  themePkg = pkgs.plasma5Packages.breeze-plymouth;
-
+  themePkg = pkgs.kdePackages.breeze-plymouth;
   osVer = config.system.nixos.label;
-  netName = config.networking.hostName;
 in
 {
   boot.plymouth = {
