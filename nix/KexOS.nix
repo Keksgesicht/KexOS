@@ -16,19 +16,18 @@ in
     ''))
     (pkgs.writeShellScriptBin "KexOS-rebuild" (''
       usage() {
-        echo "$0 [boot|build|repl|test|switch] <-(y|Y|n|N)>"
+        echo "$0 [boot|build|repl|test|switch] <--update-cookie-pkg> <--reset-lock-file>"
         exit 1
       }
 
       [ 1 -le $# ] || usage
-      [ $# -le 2 ] || usage
 
       case "$1" in
         build)
           PRFX=""
         ;;
         repl)
-          SKIP_UPDATE="y"
+          SKIP_ANSWER="y"
           PRFX=""
         ;;
         boot|test|switch)
@@ -38,36 +37,43 @@ in
           usage
         ;;
       esac
+      ACTION="$1"
+      shift
 
-      case "$2" in
-        -y|-Y|-n|-N)
-          SKIP_UPDATE_ANSWER="''${2/-/}"
-        ;;
-        "")
-          true
-        ;;
-        *)
-          usage
-        ;;
-      esac
+      while [ -n "$1" ]; do
+        if [ -n "$SKIP_ANSWER" ]; then
+          break
+        fi
+        case "$1" in
+          --update-cookie-pkg)
+            KEXOS_DEVSHELL_COOKIEPKG="yes"
+          ;;
+          --reset-lock-file)
+            KEXOS_DEVSHELL_LOCKFILERESET="yes"
+          ;;
+          *)
+            usage
+          ;;
+        esac
+        shift
+      done
 
       cd ${kexos-cfg-path}/ || exit 2
 
-      if [ -z "$SKIP_UPDATE" ]; then
-        if [ -z "$SKIP_UPDATE_ANSWER" ]; then
-          read -p 'update input "cookie-pkg" [Y/n]' answer
-        else
-          answer=$SKIP_UPDATE_ANSWER
-        fi
-        if [ "$answer" != "n" ] && [ "$answer" != "N" ]; then
-          set -x
-          nix flake update "cookie-pkg"
-        else
-          set -x
-        fi
+      if [ -n "$KEXOS_DEVSHELL_LOCKFILERESET" ]; then
+        PROFILES_PATH="/nix/var/nix/profiles"
+        CURRENT_PROFILE="system"
+        CFG_OUT_PATH="/etc/flake-output/nixos-config"
+        old_flake_lock="$PROFILES_PATH/$CURRENT_PROFILE/$CFG_OUT_PATH"
+        cp -fv "$old_flake_lock/flake.lock" "${kexos-cfg-path}/flake.lock"
       fi
 
-      $PRFX nixos-rebuild -L --show-trace --flake ${kexos-cfg-path} "$1"
+      if [ -n "$KEXOS_DEVSHELL_COOKIEPKG" ]; then
+        nix flake update "cookie-pkg"
+      fi
+
+      set -x
+      $PRFX nixos-rebuild -L --show-trace --flake ${kexos-cfg-path} "$ACTION"
     ''))
     (pkgs.writeShellScriptBin "KexOS-sync" (''
       usage() {
