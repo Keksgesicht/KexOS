@@ -58,16 +58,16 @@ in
     };
   };
 
-  # disable hibernation
+  # disable hibernation for systems with encrypted swap
   # https://forum.manjaro.org/t/howto-disable-turn-off-hibernate-completely/8033
   systemd.sleep.extraConfig = ''
     AllowHibernation=no
     AllowHybridSleep=no
     AllowSuspendThenHibernate=no
   '';
-  services.logind = {
-    hibernateKeyLongPress = "ignore";
-    hibernateKey = "ignore";
+  services.logind.settings.Login = {
+    HandleHibernateKeyLongPress = "ignore";
+    HandleHibernateKey = "ignore";
   };
 
   # toggle performance/powersave with privileges
