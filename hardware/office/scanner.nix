@@ -9,6 +9,10 @@ let
   };
 in
 {
+  imports = [
+    ../../nix/pkgs-unfree.nix
+  ];
+
   nixpkgs.allowUnfreePackages = [
     pkgs.epkowa
     "iscan-data" "iscan-gt"

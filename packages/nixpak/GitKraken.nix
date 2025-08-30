@@ -1,8 +1,9 @@
 { sloth, bindHomeDir, ... }:
-{ pkgs, ... }:
+{ pkgs-latest, ... }:
 
 let
   name = "GitKraken";
+  pkgs = pkgs-latest { config.allowUnfree = true; };
 in
 {
   nixpak."${name}" = {
@@ -33,6 +34,4 @@ in
       sockets.x11 = true; # WTF during startup needed
     };
   };
-
-  nixpkgs.allowUnfreePackages = [ pkgs.gitkraken ];
 }

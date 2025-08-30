@@ -1,7 +1,8 @@
-{ pkgs, username, home-dir, ... }:
+{ pkgs, pkgs-latest, username, home-dir, ... }:
 
 let
   xdg-data = "${home-dir}/.local/share";
+  pkgs-unfree = pkgs-latest { config.allowUnfree = true; };
 in
 {
   imports = [
@@ -31,8 +32,6 @@ in
     aspellDicts.de
   ];
 
-  nixpkgs.allowUnfreePackages = [ pkgs.corefonts ];
-
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
@@ -40,7 +39,7 @@ in
     # Noto + NerdFont => Noto-Nerdfonts
     nerd-fonts.noto
     # Microsoft TrueType core fonts
-    corefonts
+    pkgs-unfree.corefonts
     # fonts I need (idk if duplicate)
     (callPackage ../packages/my-fonts.nix {})
   ];
