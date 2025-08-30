@@ -125,22 +125,16 @@
     in
     {
       # nix build -L .#nixosConfigurations."live-cd".config.system.build.toplevel
-      "live-cd" = nixpkgs-stable.lib.nixosSystem rec {
+      "live-cd" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system;
-        modules = [
-          ./machines/installer
-          home-manager.nixosModules.home-manager
-        ];
-      };
-      "live-cd-graphics" = nixpkgs-unstable.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = (myArgs system) // {
-          isDesktop = true;
+        specialArgs = myArgs system // {
+          #isDesktop = true;
+          vpn-ip-suf = "1";
+          lan-ip-suf = "0";
+          lan-subnet-v4 = "0.0.0";
         };
         modules = [
           ./machines/installer
-          ./machines/installer/graphics.nix
           home-manager.nixosModules.home-manager
         ];
       };

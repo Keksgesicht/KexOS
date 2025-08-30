@@ -1,9 +1,8 @@
-{ config, pkgs, lib, modulesPath
-, system, username, home-dir, ... }:
+{ pkgs, lib, modulesPath, system, isDesktop, username, home-dir, ... }:
 
 {
   networking = {
-    hostName = "live-cd-image";
+    hostName = "live-cd-image" + (if (isDesktop) then "-gui" else "");
     useDHCP = lib.mkForce true;
     firewall.enable = lib.mkForce false;
   };
@@ -13,14 +12,16 @@
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
     "${modulesPath}/installer/cd-dvd/channel.nix"
 
-    ../../nix
+    ../../nix/basic.nix
     ../../nix/version-23-05.nix
     ../../system/base-pkgs.nix
+    ../../system/boot-tmpfs.nix
+    ../../system/environment.nix
+    ../../system/openssh
     ../../system/shell-zsh.nix
   ]
-  ++ lib.optionals (system == "x86_64-linux") [
-    ../../hardware/x86_64/uefi.nix
-  ]
+  ++ lib.optionals (isDesktop) [ ./graphics.nix ]
+  ++ lib.optionals (system == "x86_64-linux") [ ../../hardware/x86_64/uefi.nix ]
   ;
 
   users.users."${username}" = {
@@ -38,7 +39,5 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIGVcKfTJylXQAdKWTmozXItrquCuODasumuWZ+7Mz9o nix@nixos-installer"
     ];
   };
-  users.groups."${username}" = {
-    gid = 1000;
-  };
+  users.groups."${username}".gid = 1000;
 }

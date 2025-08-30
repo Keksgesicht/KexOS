@@ -12,9 +12,7 @@
     ../../desktop/kde-plasma.nix
     ../../desktop/packages.nix
     ../../development
-    ../../nix/basic.nix
-    ../../nix/version-23-05.nix
-    ../../system
+    ../../packages/nixpak
     ../../system/containers/podman.nix
     ../../system/network/desktop
   ];
