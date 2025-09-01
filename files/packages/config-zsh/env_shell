@@ -1,11 +1,39 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 
-export EDITOR="nano"
-export VISUAL="nano"
-export SUDO_EDITOR="nano"
-export OPENER="xdg-open"
-export PAGER="less"
-export SHELL=$(which zsh)
+if (( $+commands[nano] )); then
+    EDITOR="nano"
+elif (( $+commands[nvim] )); then
+    EDITOR="nvim"
+elif (( $+commands[vim] )); then
+    EDITOR="vim"
+elif (( $+commands[vi] )); then
+    EDITOR="vi"
+fi
 
-export LESS="${LESS} -x4"
+if [ -n "$EDITOR" ]; then
+    VISUAL="$EDITOR"
+    SUDO_EDITOR="$EDITOR"
+    export EDITOR
+    export VISUAL
+    export SUDO_EDITOR
+fi
+
 tabs -4
+LESS="$LESS -x4"
+export LESS
+MOAR="$MOAR --shift 4"
+MOAR+=" --quit-if-one-screen"
+MOAR+=" --mousemode select"
+MOAR+=" --no-clear-on-exit"
+export MOAR
+
+if (( $+commands[moar] )); then
+    export PAGER="moar"
+    export SYSTEMD_PAGER="$PAGER"
+    export SYSTEMD_PAGERSECURE="false"
+elif (( $+commands[less] )); then
+    export PAGER="less"
+fi
+
+export OPENER="xdg-open"
+export SHELL=$(which zsh)

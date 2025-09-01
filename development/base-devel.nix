@@ -15,7 +15,6 @@
     jq
     ldns
     lsof
-    moar
     nix-output-monitor
     nmap
     psmisc
