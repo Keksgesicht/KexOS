@@ -4,7 +4,7 @@ let
   xdg-config = "${home-dir}/.config";
 
   mango-hud = pkgs.callPackage ../packages/MangoHud.nix {};
-  usb-bind-pkg = pkgs.callPackage ../packages/usb-bind.nix {};
+  usb-bind-script = ../files/scripts/usb-bind-devices-by-name.sh;
 in
 {
   imports = [
@@ -14,8 +14,6 @@ in
   users.users."${username}".packages = with pkgs; [
     # enable saving replaybuffer through a hotkey
     (callPackage ../packages/obs-cli.nix {})
-    # enable/disable USB devices
-    usb-bind-pkg
   ];
 
   # automatically run obs-studio to record replays
@@ -56,19 +54,16 @@ in
 
   security.sudo.extraRules = [ {
     users = [ username ];
-    commands = [
-      {
-        command = "${usb-bind-pkg}/bin/usb-bind-devices-by-name.sh Xbox360 bind";
+    commands = [ {
+        command = "${usb-bind-script} Xbox360 bind";
         options = [ "NOPASSWD" ];
-      }
-      {
-        command = "${usb-bind-pkg}/bin/usb-bind-devices-by-name.sh Xbox360 unbind";
+      } {
+        command = "${usb-bind-script} Xbox360 unbind";
         options = [ "NOPASSWD" ];
-      }
-    ];
+    } ];
   } ];
 
   environment.shellAliases = {
-    "usb-bind-devices-by-name.sh" = "sudo ${usb-bind-pkg}/bin/usb-bind-devices-by-name.sh";
+    "usb-bind-devices-by-name.sh" = "sudo ${usb-bind-script}";
   };
 }
