@@ -72,8 +72,15 @@ in
         nix flake update "cookie-pkg"
       fi
 
-      set -x
-      $PRFX nixos-rebuild -L --show-trace --flake ${kexos-cfg-path} "$ACTION"
+      if [ -n "$SKIP_ANSWER" ]; then
+        set -x
+        $PRFX nixos-rebuild -L --show-trace --flake ${kexos-cfg-path} "$ACTION"
+      else
+        $PRFX true || exit 47
+        set -x
+        $PRFX nixos-rebuild --flake ${kexos-cfg-path} "$ACTION" \
+          --log-format internal-json |& nom --json
+      fi
     ''))
     (pkgs.writeShellScriptBin "KexOS-sync" (''
       usage() {
