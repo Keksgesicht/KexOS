@@ -1,14 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  udev-usb = (name: vendor: product: op:
-    (pkgs.writeTextDir "etc/udev/rules.d/99-${name}.rules" (
-      lib.strings.concatStringsSep ", " [
-        "ACTION==\"add\"" "SUBSYSTEM==\"usb\"" "ATTR{idVendor}==\"${vendor}\""
-        "ATTR{idProduct}==\"${product}\"" "${op}"
-      ]
-    ))
-  );
+  udev-usb = (import ../udev-usb.nix pkgs lib);
   ethernet-delay-script = pkgs.writeShellScriptBin "ethernet-delay-script" ''
     sleep 3s
     echo "on" > /sys/bus/usb/devices/"$1"/power/control
