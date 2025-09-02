@@ -2,7 +2,7 @@
 
 mkdir -p etc/unCookie/containers/hashes
 
-BACKUP_DIR="/mnt/backup/USB/data"
+BACKUP_DIR="/mnt/backup/usb/data"
 
 rsync -avHAX --delete \
 	${BACKUP_DIR}/root/etc/unCookie/containers/hashes \

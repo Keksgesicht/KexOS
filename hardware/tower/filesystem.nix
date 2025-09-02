@@ -114,7 +114,7 @@ in
       fsType = "vfat";
       options = fat-opts;
     };
-    "/mnt/backup/USB/data" = {
+    "/mnt/backup/usb/data" = {
       device = "/dev/mapper/usb-backup";
       fsType = "btrfs";
       options = [ "noauto" ];
