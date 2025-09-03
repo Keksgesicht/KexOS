@@ -1,6 +1,7 @@
 { config, pkgs, lib, username, home-dir, ssd-mnt, secrets-dir, secrets-pkg, ... }:
 
 let
+  hn = config.networking.hostName;
   user-pw-path = "${secrets-dir}/keys/passwd/${username}";
   keyPathClient = secrets-pkg + "/ssh/client";
 in
@@ -9,6 +10,7 @@ in
     ../nix/secrets-pkg.nix
   ];
 
+  users.groups."${username}".gid = 1000;
   users.users."${username}" = {
     isNormalUser = true;
     description = "Jan B.";
@@ -18,22 +20,15 @@ in
     home = "${home-dir}";
     homeMode = "700";
     createHome = true;
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
+    extraGroups = [ "wheel" ];
     # Don't forget to create a password with `mkpasswd`.
     hashedPasswordFile = "${ssd-mnt}${user-pw-path}";
     # remote access
     openssh.authorizedKeys.keyFiles = []
-      ++ lib.optionals (config.networking.hostName != "cookieclicker")
+      ++ lib.optionals (hn != "cookieclicker")
          [( keyPathClient + "/id_cookieclicker.pub" )]
-      ++ lib.optionals (config.networking.hostName != "cookiethinker")
+      ++ lib.optionals (hn != "cookiethinker")
          [( keyPathClient + "/id_cookiethinker.pub" )]
     ;
-  };
-
-  users.groups."${username}" = {
-    gid = 1000;
   };
 }

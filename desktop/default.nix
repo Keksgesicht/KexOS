@@ -9,7 +9,6 @@
     ./home-manager/desktop.nix
     ./impermanence
     ./kde-plasma.nix
-    ./my-user.nix
     ./openssh.nix
     ./packages.nix
     ./printing.nix

@@ -68,14 +68,11 @@
   };
 
   outputs = {
-    self, flake-registry,
-    nixpkgs-stable, nixpkgs-unstable,
+    self,
     cookie-pkg, secrets-pkg,
-    home-manager,
-    impermanence,
-    lanzaboote,
-    nixpak,
-    plasma-manager,
+    nixpkgs-stable, nixpkgs-unstable,
+    home-manager, impermanence, lanzaboote,
+    ...
   }@inputs: {
     nixosConfigurations =
     let
@@ -156,7 +153,6 @@
           lanzaboote.nixosModules.lanzaboote
         ];
       };
-
       "cookiethinker" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {

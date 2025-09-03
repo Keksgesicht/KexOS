@@ -5,18 +5,11 @@
   networking.hostName = "cookieflyer";
 
   imports = [
-    ../desktop/environment.nix
-    ../desktop/my-user.nix
-    ../hardware
-    ../hardware/filesystem-single-disk.nix
+    ./common
+    ./common/server.nix
     ../hardware/laptop/server.nix
     ../hardware/services/baremetal.nix
     ../hardware/x86_64/desktop.nix
-    ../development/base-devel.nix
-    ../nix
-    ../nix/build-cache
-    ../nix/secrets-pkg.nix
-    ../nix/version-23-05.nix
     ../services/system/files-cleanup.nix
     ../services/containers/nextcloud.nix
     ../services/containers/pihole.nix
@@ -24,13 +17,7 @@
     ../services/containers/tandoor.nix
     ../services/containers/unbound.nix
     ../services/system/backup-hot.nix
-    ../services/system/backup-snapshot.nix
     ../services/system/dyndns.nix
-    ../services/system/wireguard/server.nix
-    ../system
-    ../system/impermanence
-    ../system/impermanence/server.nix
-    ../system/openssh/backup.nix
     ../system/network/server/lan.nix
   ];
 

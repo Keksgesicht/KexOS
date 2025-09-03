@@ -5,21 +5,26 @@
   networking.hostName = "cookiethinker";
 
   imports = [
-    ../desktop
-    ../development
-    ../hardware
-    ../hardware/laptop
+    ./common
+    ./common/desktop.nix
+    ../hardware/filesystem-single-disk.nix
+    ../hardware/laptop/tuxedo.nix
+    ../hardware/laptop/usb-docking-station.nix
     ../hardware/office/scanner.nix
-    ../hardware/services/baremetal.nix
-    ../hardware/x86_64/desktop.nix
-    ../nix
     ../nix/build-cache/client.nix
-    ../nix/version-23-05.nix
-    ../services/system/backup-snapshot.nix
-    ../services/system/files-cleanup.nix
     ../services/system/wireguard/client.nix
-    ../system
-    ../system/containers/podman.nix
-    ../system/network/desktop
   ];
+
+  # filesystem extras
+  fileSystems."/boot".device = "/dev/disk/by-uuid/90CE-7A63";
+  boot.initrd.luks.devices = {
+    "root" = {
+      device = "/dev/disk/by-uuid/c720b152-baf0-4336-bb04-83f01857cfab";
+      crypttabExtraOpts = [ "tpm2-device=auto" ];
+    };
+  };
+  swapDevices = [ {
+    device = "/dev/disk/by-id/nvme-KINGSTON_SNVS500G_50026B76856C0884-part2";
+    randomEncryption.enable = true;
+  } ];
 }

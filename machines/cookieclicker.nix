@@ -5,21 +5,22 @@
   networking.hostName = "cookieclicker";
 
   imports = [
-    ../desktop
+    ./common
+    ./common/desktop.nix
     ../desktop/gaming.nix
     ../development
-    ../hardware
     ../hardware/tower
-    ../hardware/services/baremetal.nix
-    ../hardware/x86_64/desktop.nix
-    ../nix
     ../nix/build-cache
-    ../nix/version-23-05.nix
-    ../services/system/cookieclicker.nix
+    ../services/containers/lancache.nix
+    ../services/containers/pihole.nix
+    ../services/containers/proxy.nix
+    ../services/containers/unbound.nix
+    ../services/system/auto-suspend.nix
+    ../services/system/backup-download.nix
+    ../services/system/backup-offline.nix
     ../services/system/dyndns.nix
-    ../system
-    ../system/containers/podman.nix
-    ../system/network/desktop
+    ../services/system/fancontrol.nix
+    ../services/system/wireguard/server.nix
     ../system/network/IPv6/network-manager.nix
     ../system/network/wireless.nix
   ];

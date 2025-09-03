@@ -5,10 +5,6 @@ let
   pkgs-unfree = pkgs-latest { config.allowUnfree = true; };
 in
 {
-  imports = [
-    ./environment.nix
-  ];
-
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;

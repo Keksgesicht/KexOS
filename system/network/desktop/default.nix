@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, username, ... }:
 
 {
   imports = [
@@ -8,6 +8,8 @@
     ./hosts.nix
     ./secrets.nix
   ];
+
+  users.users."${username}".extraGroups = [ "networkmanager" ];
 
   # Enable networking via NetworkManager
   networking.networkmanager = {
