@@ -1,7 +1,9 @@
 { pkgs, username, home-dir, isDesktop, ... }:
 
 let
+  kexos-cfg-tmp = "/tmp/KexOS-remote-config-diff";
   kexos-cfg-path = "${home-dir}/nixos-config";
+  kexos-cfg-old = "/nix/var/nix/profiles/system/etc/flake-output/nixos-config";
 in
 {
   users.users."${username}".packages = [
@@ -61,11 +63,7 @@ in
       cd ${kexos-cfg-path}/ || exit 2
 
       if [ -n "$KEXOS_DEVSHELL_LOCKFILERESET" ]; then
-        PROFILES_PATH="/nix/var/nix/profiles"
-        CURRENT_PROFILE="system"
-        CFG_OUT_PATH="/etc/flake-output/nixos-config"
-        old_flake_lock="$PROFILES_PATH/$CURRENT_PROFILE/$CFG_OUT_PATH"
-        cp -fv "$old_flake_lock/flake.lock" "${kexos-cfg-path}/flake.lock"
+        cp -fv "${kexos-cfg-old}/flake.lock" "${kexos-cfg-path}/flake.lock"
       fi
 
       if [ -n "$KEXOS_DEVSHELL_COOKIEPKG" ]; then
@@ -85,7 +83,7 @@ in
     (pkgs.writeShellScriptBin "KexOS-sync" (''
       usage() {
     '' + (if isDesktop
-      then ''echo "$0 [up|down|etc] <remote-host>"''
+      then ''echo "$0 [up|down|diff|etc] <remote-host>"''
       else ''echo "$0 etc"''
     ) + ''
 
@@ -111,6 +109,11 @@ in
         ;;
         down)
           kex-sync ''${host}:''${dir}/ ${kexos-cfg-path}/
+        ;;
+        diff)
+          mkdir -p ${kexos-cfg-tmp}/
+          kex-sync ''${host}:''${dir}/ ${kexos-cfg-tmp}/
+          diff --color=auto -r ${kexos-cfg-path} ${kexos-cfg-tmp} -x .git
         ;;
     '' else "") + ''
         etc)
