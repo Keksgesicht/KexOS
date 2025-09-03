@@ -2,6 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
+    edac-utils
     nvme-cli
     smartmontools
   ];
