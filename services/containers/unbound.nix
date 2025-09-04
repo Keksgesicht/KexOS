@@ -5,7 +5,6 @@
 
 let
   cookie-dir = "/etc/unCookie";
-  cc-dir = "${cookie-pkg}/containers";
   bind-path = "${ssd-mnt}/appdata/unbound";
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
@@ -71,9 +70,7 @@ with my-functions;
       imageFile = pkgs.dockerTools.buildImage {
         name = "localhost/unbound";
         tag = "latest";
-        fromImage = pkgs.dockerTools.pullImage (
-          builtins.fromJSON (builtins.readFile "${cc-dir}/alpinelinux-unbound.json")
-        );
+        fromImage = config.container-image-updater."unbound".imageFile;
         copyToRoot = pkgs.buildEnv {
           name = "unbound-image-root";
           paths = [

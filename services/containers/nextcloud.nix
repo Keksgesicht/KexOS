@@ -1,8 +1,5 @@
-{ config, pkgs, lib, cookie-pkg, secrets-dir, ssd-mnt, hdd-mnt, hdd-name, ... }:
+{ config, pkgs, lib, secrets-dir, ssd-mnt, hdd-mnt, hdd-name, ... }:
 
-let
-  cc-dir = "${cookie-pkg}/containers";
-in
 {
   imports = [
     ../../system/containers/podman.nix
@@ -58,9 +55,7 @@ in
       imageFile = pkgs.dockerTools.buildImage {
         name = "localhost/nextcloud";
         tag = "stable";
-        fromImage = pkgs.dockerTools.pullImage (
-          builtins.fromJSON (builtins.readFile "${cc-dir}/linuxserver-nextcloud.json")
-        );
+        fromImage = config.container-image-updater."nextcloud".imageFile;
         copyToRoot = pkgs.buildEnv {
           name = "nextcloud-image-root";
           paths = [ pkgs.ocrmypdf ] ++ pkgs.ocrmypdf.propagatedBuildInputs;
@@ -93,10 +88,8 @@ in
       autoStart = true;
       dependsOn = [];
 
-      image = "localhost/nextcloud-db:lts";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/nextcloud-db.json")
-      );
+      image     = config.container-image-updater."nextcloud-db".imageName;
+      imageFile = config.container-image-updater."nextcloud-db".imageFile;
 
       cmd = [
         "--transaction-isolation=READ-COMMITTED"
@@ -127,10 +120,8 @@ in
       autoStart = true;
       dependsOn = [];
 
-      image = "localhost/nextcloud-redis:latest";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/nextcloud-redis.json")
-      );
+      image     = config.container-image-updater."nextcloud-redis".imageName;
+      imageFile = config.container-image-updater."nextcloud-redis".imageFile;
 
       /*
       cmd = [

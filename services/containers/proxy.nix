@@ -1,10 +1,10 @@
-{ inputs, config, pkgs, lib, myDomain, cookie-pkg, ssd-mnt, ... }:
+{ inputs, config, pkgs, lib, myDomain, ssd-mnt, ... }:
 
 let
-  cc-dir = "${cookie-pkg}/containers";
+  hn = config.networking.hostName;
+
   bind-path = "${ssd-mnt}/appdata/swag";
 
-  hn = config.networking.hostName;
   my-functions = (import "${inputs.self}/nix/my-functions.nix" lib);
 in
 with my-functions;
@@ -53,10 +53,8 @@ with my-functions;
       autoStart = true;
       dependsOn = [ "pihole" ];
 
-      image = "localhost/linuxserver-swag:latest";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/linuxserver-swag.json")
-      );
+      image     = config.container-image-updater."proxy".imageName;
+      imageFile = config.container-image-updater."proxy".imageFile;
 
       environment = {
         TZ = config.time.timeZone;

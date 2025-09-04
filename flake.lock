@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1756679607,
-        "narHash": "sha256-LKsMaKV4q6tDAtaSe3VRNXnIPjmvVk0rpmsufnzG4OA=",
+        "lastModified": 1756986166,
+        "narHash": "sha256-rDU7TuFXvxzqKpUUXCB+dzGN+52P7F324nqu4aIy6Xg=",
         "path": "/etc/unCookie",
         "type": "path"
       },

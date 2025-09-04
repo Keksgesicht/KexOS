@@ -1,10 +1,7 @@
-{ config, pkgs, lib, ssd-mnt, nvm-mnt, nvm-name, cookie-pkg
+{ config, pkgs, lib, ssd-mnt, nvm-mnt, nvm-name
 , lan-subnet-v4, pod-subnet-v4, pod-subnet-v6, lan-ip-suf
 , ... }:
 
-let
-  cc-dir = "${cookie-pkg}/containers";
-in
 {
   imports = [
     ../../system/containers/podman.nix
@@ -67,10 +64,8 @@ in
         "proxy"
       ];
 
-      image = "localhost/lancache-monolithic:latest";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/lancache-monolithic.json")
-      );
+      image     = config.container-image-updater."lancache".imageName;
+      imageFile = config.container-image-updater."lancache".imageFile;
 
       environment = {
         TZ = config.time.timeZone;

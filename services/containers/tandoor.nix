@@ -1,7 +1,6 @@
-{ config, pkgs, lib, cookie-pkg, secrets-dir, hdd-mnt, hdd-name, ... }:
+{ config, lib, secrets-dir, hdd-mnt, hdd-name, ... }:
 
 let
-  cc-dir = "${cookie-pkg}/containers";
   sec-file = "${secrets-dir}/keys/containers/tandoor/ENV";
   bind-path = "${hdd-mnt}/appdata2/tandoor";
 in
@@ -56,10 +55,8 @@ in
       autoStart = true;
       dependsOn = [ "tandoor-web" ];
 
-      image = "localhost/tandoor-http:latest";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/tandoor-http.json")
-      );
+      image     = config.container-image-updater."tandoor-http".imageName;
+      imageFile = config.container-image-updater."tandoor-http".imageFile;
 
       environment = {
         TZ = config.time.timeZone;
@@ -83,10 +80,8 @@ in
       autoStart = true;
       dependsOn = [ "tandoor-db" ];
 
-      image = "localhost/tandoor-web:latest";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/tandoor-web.json")
-      );
+      image     = config.container-image-updater."tandoor-web".imageName;
+      imageFile = config.container-image-updater."tandoor-web".imageFile;
 
       environment = {
         TZ = config.time.timeZone;
@@ -109,10 +104,8 @@ in
       autoStart = true;
       dependsOn = [];
 
-      image = "localhost/tandoor-db:latest";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/tandoor-db.json")
-      );
+      image     = config.container-image-updater."tandoor-db".imageName;
+      imageFile = config.container-image-updater."tandoor-db".imageFile;
 
       environment = {
         TZ = config.time.timeZone;

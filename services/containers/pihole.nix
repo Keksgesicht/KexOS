@@ -1,9 +1,7 @@
-{ self, config, pkgs, lib, cookie-pkg, ssd-mnt
-, lan-subnet-v4, lan-ip-suf, vpn-subnet-v4, vpn-ip-suf
-, ... }:
+{ self, config, lib, ssd-mnt, lan-subnet-v4, lan-ip-suf
+, vpn-subnet-v4, vpn-ip-suf, ... }:
 
 let
-  cc-dir = "${cookie-pkg}/containers";
   cfgNetName = config.networking.hostName;
 
   local-ips = [
@@ -35,10 +33,8 @@ with my-functions;
       autoStart = true;
       dependsOn = [ "unbound" ];
 
-      image = "localhost/pihole:latest";
-      imageFile = pkgs.dockerTools.pullImage (
-        builtins.fromJSON (builtins.readFile "${cc-dir}/pihole.json")
-      );
+      image     = config.container-image-updater."pihole".imageName;
+      imageFile = config.container-image-updater."pihole".imageFile;
 
       ports = flatList (forEach local-ips (li: forEach local-ports (lp:
         "${li}:${lp}"
