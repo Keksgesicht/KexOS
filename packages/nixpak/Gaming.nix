@@ -45,7 +45,7 @@ let
     } (''
       import os
       import sys
-      gsBin = "${p.gamescope}"
+      gsBin = "${pkgs-fixed.gamescope}"
       gsBin += "/bin/gamescope"
       gsArgs = [gsBin, "-b"]
       gsArgs += ["-W", "${w}", "-H", "1440", "-r", "120", "-o", "30"]
@@ -55,9 +55,9 @@ let
   );
   gameTools = (p: [
     p.gamemode
-    p.gamescope
     p.mangohud
     # gamescope aliase
+    pkgs-fixed.gamescope
     (gamescope-wrapper p "16" "2560")
     (gamescope-wrapper p "21" "3360")
     (gamescope-wrapper p "32" "4996") # 5120 - 2 * 62
