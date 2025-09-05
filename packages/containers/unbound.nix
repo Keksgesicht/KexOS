@@ -1,14 +1,20 @@
 { stdenv, lib, cookie-pkg }:
 
+let
+  hashFile = "${cookie-pkg}/root-dns-server.hash";
+in
 stdenv.mkDerivation {
   pname = "container-unbound";
   name = "container-unbound";
   version = "1.0.0";
 
   src = ../../files/packages/containers/unbound;
+  # might replacing that with pkgs.dns-root-data
   dnssrc = builtins.fetchurl {
     url = "https://www.internic.net/domain/named.cache";
-    sha256 = (builtins.readFile "${cookie-pkg}/root-dns-server.hash");
+    sha256 = if (builtins.pathExists hashFile)
+             then (builtins.readFile hashFile)
+             else "";
   };
 
   phases = [ "unpackPhase" "installPhase" ];
