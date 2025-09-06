@@ -1,7 +1,7 @@
 { pkgs, lib, ssd-mnt, ssd-name, hdd-mnt, hdd-name, nvm-mnt, nvm-name, ... }:
 
 let
-  ssd-numbers = [ 1 2 ];
+  ssd-numbers = [ 2 ];
   ssd-label   = "/dev/disk/by-label/${ssd-name}";
   ssd-keyfile = "/dev/disk/by-partuuid/c58965ae-8061-714c-94ef-11c57da14a63";
 
@@ -74,10 +74,16 @@ in
   in
   {
     "/boot" = {
-      device = "/dev/disk/by-uuid/F6A6-57AC";
+      device = "/dev/disk/by-uuid/AD3C-E855";
       fsType = "vfat";
       options = fat-opts;
     };
+    "${backup-boot}" = { # other NVMe (see /boot)
+      device = "/dev/disk/by-uuid/F6A6-57AC";
+      fsType = "vfat";
+      options = fat-opts ++ [ "nofail" ];
+    };
+
     "/nix" = {
       device = ssd-label;
       fsType = "btrfs";
@@ -109,11 +115,6 @@ in
       ] ++ crypt-req nvm-name nvm-numbers;
     };
 
-    "${backup-boot}" = { # other NVMe (see /boot)
-      device = "/dev/disk/by-uuid/AD3C-E855";
-      fsType = "vfat";
-      options = fat-opts;
-    };
     "/mnt/backup/usb/data" = {
       device = "/dev/mapper/usb-backup";
       fsType = "btrfs";
