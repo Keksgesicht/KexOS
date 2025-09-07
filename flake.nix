@@ -135,6 +135,20 @@
           home-manager.nixosModules.home-manager
         ];
       };
+      "usb-stick" = nixpkgs-unstable.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = myArgs system // {
+          isDesktop = true;
+          vpn-ip-suf = "1";
+          lan-ip-suf = "0";
+          lan-subnet-v4 = "0.0.0";
+        };
+        modules = [
+          ./machines/usb-stick.nix
+          home-manager.nixosModules.home-manager
+          impermanence.nixosModules.impermanence
+        ];
+      };
 
       # sudo nixos-rebuild --flake . test -L
       "cookieclicker" = nixpkgs-unstable.lib.nixosSystem rec {

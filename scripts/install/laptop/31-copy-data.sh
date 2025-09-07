@@ -8,7 +8,7 @@ RSYNC_PATTERN_DIR="${MY_NIX_CFG_DIR}/scripts/rsync-pattern"
 
 REMOTE_HOST="nixos-installer"
 MY_HOME="/home/keks"
-TARGET_MNT="/mnt"
+TARGET_MNT="/mnt/main"
 
 
 if ! [ -d ${MY_HOME} ]; then

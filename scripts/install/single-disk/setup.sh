@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# "4EFC-A800" "867c7b32-c672-4660-aa54-57262ff3ebdf" cookieflyer
+# "6E49-4B18" "1269b931-af7a-4207-a424-3108ebb2fa72" usb-stick
+
 UMASK_DEF="022"
 MNT="/mnt/nixos-install"
 LUKS_NAME="nixos-install"
@@ -29,6 +32,7 @@ disk_efi() {
 	part_target=$(fdisk -l "${DISK_TARGET}" | grep "^${DISK_TARGET}" | awk '{print $1}')
 	part_target_3=$(echo "${part_target}" | sed -n '3p')
 
+	sleep 2s
 	mkfs.vfat -F32 -n EFI -i "${UUID_EFI//-/}" "${part_target_3}"
 }
 
@@ -103,7 +107,6 @@ setup_root() {
 	popd
 }
 
-
 if mountpoint ${MNT}/root/boot \
 || mountpoint ${MNT}/root/etc \
 || mountpoint ${MNT}/root/nix \
@@ -141,8 +144,13 @@ disk_efi
 crypt_root
 setup_root
 
+mkdir -p   "${MNT}/etc/nixos/secrets/keys/passwd"
+mkpasswd > "${MNT}/etc/nixos/secrets/keys/passwd/keks"
+
 set +ex
 lsblk -f
-exit 0
 
-# "4EFC-A800" "867c7b32-c672-4660-aa54-57262ff3ebdf" cookieflyer
+echo ""
+echo nixos-install --show-trace --flake "$(realpath "$(dirname "$0")/../../..")"\'#\'"${TARGET_HOSTNAME}" --root "${MNT}"/root
+
+exit 0

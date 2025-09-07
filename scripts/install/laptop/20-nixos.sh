@@ -1,22 +1,20 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
 
 # set to root of nixos-config
-MY_NIX_CFG_DIR="$(realpath $(dirname $0)/../../..)"
+MY_NIX_CFG_DIR="$(realpath "$(dirname "$0")/../../..")"
+MNT="/mnt/nixos-install"
+
+set -x
+
+../single-disk/setup.sh
 
 # copy config over
 copy-config() {
-	mkdir -p ${1}
+	mkdir -p "$1"
 	rsync -rlpt --delete \
 		--exclude=/.git \
-		${MY_NIX_CFG_DIR}/ \
-		${1}/
+		"${MY_NIX_CFG_DIR}/" \
+		"${1}/"
 }
-copy-config "/mnt/root/etc/nixos"
-copy-config "/mnt/etc/nixos"
-
-# setup nixos
-nixos-install --root /mnt/root \
-	--flake "${MY_NIX_CFG_DIR}"'#cookiethinker'
-
-# finish system setup
-mkpasswd > "/mnt/etc/nixos/secrets/keys/passwd/keks"
+copy-config "${MNT}/root/etc/nixos"
+copy-config "${MNT}/etc/nixos"

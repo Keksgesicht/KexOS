@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
+
+set -x
 
 # reduce screen brightness to 6,25%
 echo 16 | sudo tee /sys/class/backlight/*/brightness >/dev/null

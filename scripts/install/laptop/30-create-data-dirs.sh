@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 MY_HOME="/home/keks"
-TARGET_MNT="/mnt/root"
-TARGET_ARRAY_DIR="/mnt/mnt-array"
+MNT="/mnt/nixos-install"
+TARGET_HOME_DIR="${MNT}${MY_HOME}"
+TARGET_ARRAY_DIR="${MNT}/mnt-array"
 
 
 # homeBraunJan
-mkdir -p ${TARGET_MNT}${MY_HOME}
-chown 1000:1000 ${TARGET_MNT}${MY_HOME}
+mkdir -p ${TARGET_HOME_DIR}
+chown 1000:1000 ${TARGET_HOME_DIR}
 
 # Nextcloud Sync
 mkdir -p ${TARGET_ARRAY_DIR}/homeBraunJan/Documents/BackUp/Upload2Cloud
