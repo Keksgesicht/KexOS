@@ -1,7 +1,14 @@
 { pkgs, lib, ssd-mnt, ssd-name, hdd-mnt, hdd-name, nvm-mnt, nvm-name, ... }:
 
 let
-  ssd-numbers = [ 2 ];
+  /*
+   * fTPM not working under Linux
+   * TEMPORARY SOLUTION (throwing away single drives without thinking should work and I can still use Wake on LAN)
+   * find -L /dev/disk -samefile /dev/sdh2
+   * dd status=progress bs=2048 if=/etc/nixos/secrets/keys/luks/main of=/dev/sdh2 seek=0
+   */
+
+  ssd-numbers = [ 1 2 ];
   ssd-label   = "/dev/disk/by-label/${ssd-name}";
   ssd-keyfile = "/dev/disk/by-partuuid/c58965ae-8061-714c-94ef-11c57da14a63";
 
