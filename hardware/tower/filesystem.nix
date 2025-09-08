@@ -30,6 +30,7 @@ let
         device = "${ssd-label}${n}";
         keyFile = ssd-keyfile;
         keyFileSize = 2048;
+        bypassWorkqueues = true;
       };
     }
   ) ssd-numbers);
@@ -42,6 +43,8 @@ let
     "${name}${n}  ${label}${n}  ${keyfile}  ${opts}"
   ));
 
+  noWorkqueues = "no-read-workqueue,no-write-workqueue";
+
   # https://www.freedesktop.org/software/systemd/man/latest/crypttab.html
   # nofail -> no Before=cryptsetup.target
   str4crypttab = builtins.concatStringsSep "\n" (
@@ -52,7 +55,7 @@ let
     ) ++ [ "" ] ++ (
       list2crypttab
       nvm-name nvm-label nvm-keyfile nvm-numbers
-      "nofail,keyfile-size=2048,discard"
+      "nofail,keyfile-size=2048,discard,${noWorkqueues}"
     )
   );
 

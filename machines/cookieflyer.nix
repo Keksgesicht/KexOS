@@ -1,5 +1,12 @@
 { lib, hdd-mnt, hdd-name, ... }:
 
+let
+  devMain  = "/dev/disk/by-uuid/867c7b32-c672-4660-aa54-57262ff3ebdf";
+  devArray = "/dev/disk/by-uuid/92756ea5-50ee-456c-b760-5c997fcb54ad";
+
+  tpm2crypt = "tpm2-device=auto";
+  noWorkqueues = "no-read-workqueue,no-write-workqueue";
+in
 {
   # Define your hostname
   networking.hostName = "cookieflyer";
@@ -24,13 +31,14 @@
   # required boot mounts
   fileSystems."/boot".device = "/dev/disk/by-uuid/4EFC-A800";
   boot.initrd.luks.devices."root" = {
-    device = "/dev/disk/by-uuid/867c7b32-c672-4660-aa54-57262ff3ebdf";
-    crypttabExtraOpts = [ "tpm2-device=auto" ];
+    device = devMain;
+    crypttabExtraOpts = [ tpm2crypt ];
+    bypassWorkqueues = true;
   };
 
   # delayed array mount
   environment.etc."crypttab".text = ''
-    ${hdd-name} /dev/disk/by-uuid/92756ea5-50ee-456c-b760-5c997fcb54ad - nofail,tpm2-device=auto
+    ${hdd-name} ${devArray} - ${tpm2crypt},nofail,${noWorkqueues}
   '';
   fileSystems."${hdd-mnt}" = {
     device = lib.mkForce "/dev/disk/by-label/${hdd-name}";

@@ -17,10 +17,9 @@
 
   # filesystem extras
   fileSystems."/boot".device = "/dev/disk/by-uuid/90CE-7A63";
-  boot.initrd.luks.devices = {
-    "root" = {
-      device = "/dev/disk/by-uuid/c720b152-baf0-4336-bb04-83f01857cfab";
-      crypttabExtraOpts = [ "tpm2-device=auto" ];
-    };
+  boot.initrd.luks.devices."root" = {
+    device = "/dev/disk/by-uuid/c720b152-baf0-4336-bb04-83f01857cfab";
+    crypttabExtraOpts = [ "tpm2-device=auto" ];
+    bypassWorkqueues = true;
   };
 }
