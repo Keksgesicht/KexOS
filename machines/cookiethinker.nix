@@ -23,8 +23,4 @@
       crypttabExtraOpts = [ "tpm2-device=auto" ];
     };
   };
-  swapDevices = [ {
-    device = "/dev/disk/by-id/nvme-KINGSTON_SNVS500G_50026B76856C0884-part2";
-    randomEncryption.enable = true;
-  } ];
 }

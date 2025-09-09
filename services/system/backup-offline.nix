@@ -4,6 +4,12 @@ let
   pkg-bck-off = pkgs.callPackage ../../packages/backup-offline.nix {};
 in
 {
+  fileSystems."/mnt/backup/usb/data" = {
+    device = "/dev/mapper/usb-backup";
+    fsType = "btrfs";
+    options = [ "noauto" ];
+  };
+
   systemd = {
     services = {
       "backup-offline" = {

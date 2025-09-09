@@ -27,10 +27,6 @@
     device = "/dev/disk/by-uuid/867c7b32-c672-4660-aa54-57262ff3ebdf";
     crypttabExtraOpts = [ "tpm2-device=auto" ];
   };
-  swapDevices = [ {
-    device = "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_120GB_S21UNXAGA07082H-part2";
-    randomEncryption.enable = true;
-  } ];
 
   # delayed array mount
   environment.etc."crypttab".text = ''

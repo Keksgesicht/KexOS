@@ -1,4 +1,4 @@
-{ pkgs, lib, ssd-mnt, ssd-name, hdd-mnt, hdd-name, nvm-mnt, nvm-name, ... }:
+{ lib, ssd-mnt, ssd-name, hdd-mnt, hdd-name, nvm-mnt, nvm-name, ... }:
 
 let
   /*
@@ -42,20 +42,9 @@ let
     "${name}${n}  ${label}${n}  ${keyfile}  ${opts}"
   ));
 
-  backup-boot = "/mnt/backup/boot";
-in
-{
-  /*
-   * fTPM not working under Linux
-   * TEMPORARY SOLUTION (throwing away single drives without thinking should work and I can still use Wake on LAN)
-   * find -L /dev/disk -samefile /dev/sdh2
-   * dd status=progress bs=2048 if=/etc/nixos/secrets/keys/luks/main of=/dev/sdh2 seek=0
-   */
-  boot.initrd.luks.devices = list2luksdev;
-
   # https://www.freedesktop.org/software/systemd/man/latest/crypttab.html
   # nofail -> no Before=cryptsetup.target
-  environment.etc."crypttab".text = builtins.concatStringsSep "\n" (
+  str4crypttab = builtins.concatStringsSep "\n" (
     (
       list2crypttab
       hdd-name hdd-label hdd-keyfile hdd-numbers
@@ -67,28 +56,25 @@ in
     )
   );
 
+  fat-opts = [ "umask=0077" "shortname=winnt" ];
+  bfs-opts = [ "compress=zstd:3" ];
+  crypt-req = (disk: numbers: lib.lists.forEach numbers (num:
+    let
+      n = toString num;
+    in
+    "x-systemd.requires=systemd-cryptsetup@${disk}${n}.service"
+  ));
+in
+{
+  boot.initrd.luks.devices = list2luksdev;
+  environment.etc."crypttab".text = str4crypttab;
+
   # https://www.freedesktop.org/software/systemd/man/latest/systemd-fstab-generator.html
-  fileSystems =
-  let
-    fat-opts = [ "umask=0077" "shortname=winnt" ];
-    bfs-opts = [ "compress=zstd:3" ];
-    crypt-req = (disk: numbers: lib.lists.forEach numbers (num:
-      let
-        n = toString num;
-      in
-      "x-systemd.requires=systemd-cryptsetup@${disk}${n}.service"
-    ));
-  in
-  {
+  fileSystems = {
     "/boot" = {
-      device = "/dev/disk/by-uuid/AD3C-E855";
+      device = "/dev/disk/by-uuid/AD3C-E855"; # see boot-backup.nix
       fsType = "vfat";
       options = fat-opts;
-    };
-    "${backup-boot}" = { # other NVMe (see /boot)
-      device = "/dev/disk/by-uuid/F6A6-57AC";
-      fsType = "vfat";
-      options = fat-opts ++ [ "nofail" ];
     };
 
     "/nix" = {
@@ -120,36 +106,6 @@ in
         "subvol=/"
         "nofail" # no Before=local-fs.target
       ] ++ crypt-req nvm-name nvm-numbers;
-    };
-
-    "/mnt/backup/usb/data" = {
-      device = "/dev/mapper/usb-backup";
-      fsType = "btrfs";
-      options = [ "noauto" ];
-    };
-  };
-
-  swapDevices = [
-    {
-      # random encryption will resetup the LUKS header
-      # using by-partuuid should not change between system reboots or kernel updates
-      device = "/dev/disk/by-partuuid/85439545-b3f4-f742-948f-e3a7190f5fc7";
-      randomEncryption.enable = true;
-      options = [ "nofail" ];
-    }
-  ];
-
-  systemd.services = {
-    "backup-boot" = {
-      wantedBy = [ "user@1000.service" ];
-      after = [ "user@1000.service" ];
-      unitConfig.RequiresMountsFor = backup-boot;
-      serviceConfig.RemainAfterExit = true;
-      script = ''
-        ${pkgs.coreutils}/bin/sleep 666s
-        ${pkgs.rsync}/bin/rsync -rltv --delete /boot/ ${backup-boot}/
-        ${pkgs.util-linux}/bin/umount ${backup-boot}
-      '';
     };
   };
 }
