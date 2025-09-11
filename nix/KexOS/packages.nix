@@ -1,13 +1,14 @@
-{ pkgs, username, home-dir, isDesktop, ... }:
+{ config, pkgs, username, home-dir, isDesktop, ... }:
 
 let
+  kexos-pkgs = config.KexOS.packages;
   kexos-cfg-tmp = "/tmp/KexOS-remote-config-diff";
   kexos-cfg-path = "${home-dir}/nixos-config";
   kexos-cfg-old = "/nix/var/nix/profiles/system/etc/flake-output/nixos-config";
 in
 {
-  users.users."${username}".packages = [
-    (pkgs.writeShellScriptBin "KexOS" (''
+  KexOS.packages = {
+    "meta-wrapper" = pkgs.writeShellScriptBin "KexOS" (''
       if [ $# -lt 1 ]; then
         echo "Missing parameter!"
         exit 1
@@ -15,8 +16,9 @@ in
       cmd="KexOS-$1"
       shift
       exec -a "$cmd" $cmd $@
-    ''))
-    (pkgs.writeShellScriptBin "KexOS-rebuild" (''
+    '');
+
+    "rebuild" = pkgs.writeShellScriptBin "KexOS-rebuild" (''
       usage() {
         echo "$0 [boot|build|repl|test|switch] <--update-cookie-pkg> <--reset-lock-file>"
         exit 1
@@ -79,8 +81,9 @@ in
         $PRFX nixos-rebuild --flake ${kexos-cfg-path} "$ACTION" \
           --log-format internal-json |& nom --json
       fi
-    ''))
-    (pkgs.writeShellScriptBin "KexOS-sync" (''
+    '');
+
+    "sync" = pkgs.writeShellScriptBin "KexOS-sync" (''
       usage() {
     '' + (if isDesktop
       then ''echo "$0 [up|down|diff|etc] <remote-host>"''
@@ -124,6 +127,12 @@ in
         ;;
         *) usage ;;
       esac
-    ''))
+    '');
+  };
+
+  users.users."${username}".packages = [
+    kexos-pkgs."meta-wrapper"
+    kexos-pkgs."rebuild"
+    kexos-pkgs."sync"
   ];
 }

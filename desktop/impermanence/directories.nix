@@ -1,6 +1,9 @@
-{ self, lib, username, home-dir, ssd-mnt, hdd-mnt, nvm-mnt, data-dir, ... }:
+{ self, config, lib, username, home-dir
+, ssd-mnt, hdd-mnt, nvm-mnt, data-dir, ... }:
 
 let
+  kexPaths = config.KexOS.paths;
+
   bind-opt = [
     "bind"
     "nofail"
@@ -199,7 +202,7 @@ with my-functions;
     "L+ ${data-dir}/devel  - - - - ${data-dir}/Documents/development"
     "L+ ${data-dir}/git    - - - - ${data-dir}/Documents/development/git"
     "L+ ${data-dir}/Module - - - - ${data-dir}/Documents/Studium/Module"
-    "L+ ${home-dir}/nixos-config - - - - ${home-dir}/git/hdd/nix/config/KexOS"
+    "L+ ${kexPaths.nixCfgHomeLink} - - - - ${kexPaths.nixCfgDataDir}"
   ]
   ;
 

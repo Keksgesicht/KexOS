@@ -80,6 +80,8 @@
         inherit inputs;
         inherit system;
 
+        self = inputs.self;
+
         pkgs-stable = (extraConfig: import inputs.nixpkgs-stable ({
           inherit system;
         } // extraConfig));
@@ -107,10 +109,10 @@
         nvm-mnt  = "/mnt/${nvm-name}";
         data-dir = "${hdd-mnt}/homeBraunJan";
 
+        cookie-dir = "/etc/unCookie";
+        cookie-pkg = inputs.cookie-pkg;
         secrets-dir = "/etc/nixos/secrets";
         secrets-pkg = inputs.secrets-pkg;
-        cookie-pkg  = inputs.cookie-pkg;
-        self = inputs.self;
 
         lan-subnet-v4 = "192.168.178";
         lan-subnet-v6 = "fd00:da:b44::192:168:178";
@@ -124,7 +126,7 @@
       # nix build -L .#nixosConfigurations."live-cd".config.system.build.toplevel
       "live-cd" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system // {
+        specialArgs = (myArgs system) // {
           #isDesktop = true;
           vpn-ip-suf = "1";
           lan-ip-suf = "0";
@@ -137,7 +139,7 @@
       };
       "usb-stick" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = myArgs system // {
+        specialArgs = (myArgs system) // {
           isDesktop = true;
           vpn-ip-suf = "1";
           lan-ip-suf = "0";

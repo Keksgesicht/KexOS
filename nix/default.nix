@@ -6,7 +6,7 @@
     ./basic.nix
     ./flake-registry.nix
     ./garbage-collect.nix
-    ./KexOS.nix
+    ./KexOS
     ./tmp.nix
   ];
 }

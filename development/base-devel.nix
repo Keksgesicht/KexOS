@@ -1,4 +1,4 @@
-{ pkgs, username, isDesktop, ... }:
+{ config, pkgs, username, isDesktop, ... }:
 
 {
   imports = [
@@ -26,41 +26,41 @@
     strace
     unixtools.xxd
     unzip
-  ] ++ lib.optionals isDesktop [
-    (pkgs.writeShellScriptBin "KexOS-DevShell" ''
-      usage() {
-        echo "$0 path [--suffix=name] args.."
-      }
+  ] ++ lib.optionals isDesktop [ config.KexOS.packages."DevShell" ];
 
-      myDir="."
-      myOpts=""
-      resPath=""
-      if [ -d "$1" ]; then
-        myDir="$1"
-        shift
-      fi
-      if [ "$1" = "--suffix" ]; then
-        shift
-        if [ -z "$1" ]; then
-          usage
-        fi
-        res_dir=$(dirname "$1")
-        res_file=$(basename "$1")
-        shift
-        resPath="$res_dir/result-$res_file"
-      fi
-      myOpts+="$@"
+  KexOS.packages."DevShell" = pkgs.writeShellScriptBin "KexOS-DevShell" ''
+    usage() {
+      echo "$0 path [--suffix=name] args.."
+    }
 
-      if [ -z "$resPath" ]; then
-        exec -a nix \
-          nix develop "$myDir" $myOpts \
-          --command zsh
-      else
-        exec -a nix \
-          nix develop "$myDir" $myOpts \
-          --profile "$resPath" \
-          --command zsh
+    myDir="."
+    myOpts=""
+    resPath=""
+    if [ -d "$1" ]; then
+      myDir="$1"
+      shift
+    fi
+    if [ "$1" = "--suffix" ]; then
+      shift
+      if [ -z "$1" ]; then
+        usage
       fi
-    '')
-  ];
+      res_dir=$(dirname "$1")
+      res_file=$(basename "$1")
+      shift
+      resPath="$res_dir/result-$res_file"
+    fi
+    myOpts+="$@"
+
+    if [ -z "$resPath" ]; then
+      exec -a nix \
+        nix develop "$myDir" $myOpts \
+        --command zsh
+    else
+      exec -a nix \
+        nix develop "$myDir" $myOpts \
+        --profile "$resPath" \
+        --command zsh
+    fi
+  '';
 }

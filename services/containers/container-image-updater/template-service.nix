@@ -1,8 +1,6 @@
-{ config, cookie-pkg, ... }:
+{ config, cookie-pkg, cookie-dir, ... }:
 
 let
-  cookie-dir = "/etc/unCookie";
-
   update-days = (builtins.head (builtins.split " " config.system.autoUpgrade.dates));
   image-updater = ../../../files/packages/containers/image-updater;
 in
