@@ -13,9 +13,10 @@
                 "edidHash": "a12f31713ec982d50b269c861a8b95e7",
                 "edidIdentifier": "SAM 3996 0 43 2018 0",
                 "edrPolicy": "always",
-                "highDynamicRange": false,
+                "highDynamicRange": true,
                 "iccProfilePath": "",
                 "maxBitsPerColor": 0,
+                "maxPeakBrightnessOverride": 1640,
                 "mode": {
                     "height": 1440,
                     "refreshRate": 119970,
@@ -24,12 +25,12 @@
                 "overscan": 0,
                 "rgbRange": "Automatic",
                 "scale": 1,
-                "sdrBrightness": 200,
+                "sdrBrightness": 270,
                 "sdrGamutWideness": 0,
                 "transform": "Normal",
                 "uuid": "4e46882a-e325-4556-b6b7-5236f684265e",
-                "vrrPolicy": "Automatic",
-                "wideColorGamut": false
+                "vrrPolicy": "Always",
+                "wideColorGamut": true
             },
             {
                 "allowDdcCi": true,
