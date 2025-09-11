@@ -78,13 +78,15 @@ in
         "/sys/dev"
         "/sys/devices"
         # nix
-        ("/etc/nix/nix.conf")
-        ("/nix/var")
+        "/etc/nix/nix.conf"
+        "/etc/nix/registry.json"
+        "/nix/var"
         # LaTeX
         (sloth.concat' sloth.homeDir "/texmf")
         # browser read-only
         (sloth.mkdir (sloth.concat' sloth.homeDir "/Downloads/read-only"))
         # selectable read-only path
+        (sloth.concat' sloth.homeDir "/git")
         (sloth.envOr "NIXPAK_PLAYGROUND_PATH_RO" "/a/b/c")
       ];
       bind.rw = [
