@@ -10,6 +10,10 @@ let
   };
 in
 {
+  imports = [
+    ./sd-image-btrfs.nix
+  ];
+
   # Older RPis have not a lot of memory.
   # Thus, disabling tmp in RAM is a good option.
   boot.tmp.useTmpfs = lib.mkForce false;

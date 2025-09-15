@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1758013056,
-        "narHash": "sha256-oXvR1N5xlc3c4l/qraHBno6tkbxjGzmX5znwbfuIIgY=",
+        "lastModified": 1758117190,
+        "narHash": "sha256-TX6WubPSoKh2ZvMPbwYbHrEVNjvTILstL5SeSnLRk6A=",
         "path": "/etc/unCookie",
         "type": "path"
       },
@@ -233,6 +233,18 @@
         "type": "github"
       }
     },
+    "nixpkgs-custom": {
+      "locked": {
+        "lastModified": 1758188480,
+        "narHash": "sha256-ElV2ZbXPd5H9dTBq/iYmSyaRdf0U9HTb9Z0wJYUL4KE=",
+        "path": "/home/keks/git/hdd/nix/nixpkgs/custom",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/keks/git/hdd/nix/nixpkgs/custom",
+        "type": "path"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1730741070,
@@ -339,6 +351,7 @@
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
         "nixpak": "nixpak",
+        "nixpkgs-custom": "nixpkgs-custom",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "plasma-manager": "plasma-manager",

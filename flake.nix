@@ -11,6 +11,8 @@
     nixpkgs-stable.url = "nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
+    nixpkgs-custom.url = "/home/keks/git/hdd/nix/nixpkgs/custom";
+
     # system state
     cookie-pkg = {
       url = "/etc/unCookie";
@@ -70,7 +72,7 @@
   outputs = {
     self,
     cookie-pkg, secrets-pkg,
-    nixpkgs-stable, nixpkgs-unstable,
+    nixpkgs-stable, nixpkgs-unstable, nixpkgs-custom,
     home-manager, impermanence, lanzaboote,
     ...
   }@inputs: {
