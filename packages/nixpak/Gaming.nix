@@ -11,13 +11,7 @@ let
 
   pkgl = pkgs-latest { config.allowUnfree = true; };
   pkgo = pkgs-stable { config.allowUnfree = true; };
-
-  pkgs-fixed = (pkgs-fetch
-    # cookieclicker - system-487-link - flake.lock - nixpkgs-unstable
-    "5b09dc45f24cf32316283e62aec81ffee3c3e376" # NixOS 25.11 on 2025-08-03
-    "sha256-Q/I2xJn/j1wpkGhWkQnm20nShYnG7TI99foDBpXm1SY="
-    {}
-  );
+  pkgs-gs = pkgs-stable {};
 
   pkgMachineID = pkgs.writeText "${name}-machine-id" ''
     1337deadbeef42bad0815ccc4711da69
@@ -45,7 +39,7 @@ let
     } (''
       import os
       import sys
-      gsBin = "${pkgs-fixed.gamescope}"
+      gsBin = "${pkgs-gs.gamescope}"
       gsBin += "/bin/gamescope"
       gsArgs = [gsBin, "-b"]
       gsArgs += ["-W", "${w}", "-H", "1440", "-r", "120", "-o", "30"]
@@ -57,7 +51,7 @@ let
     p.gamemode
     p.mangohud
     # gamescope aliase
-    pkgs-fixed.gamescope
+    pkgs-gs.gamescope
     (gamescope-wrapper p "16" "2560")
     (gamescope-wrapper p "21" "3360")
     (gamescope-wrapper p "32" "4996") # 5120 - 2 * 62
@@ -176,8 +170,8 @@ in
         "/sys/devices"
 
         # gamescope fix
-        [ "${pkgs-fixed.mesa}"      "/run/opengl-driver" ]
-        [ "${pkgs-fixed.mesa_i686}" "/run/opengl-driver-32" ]
+        [ "${pkgs-gs.mesa}"      "/run/opengl-driver" ]
+        [ "${pkgs-gs.mesa_i686}" "/run/opengl-driver-32" ]
 
         (sloth.concat' sloth.xdgConfigHome "/MangoHud")
 
