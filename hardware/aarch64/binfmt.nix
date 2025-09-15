@@ -1,17 +1,16 @@
-# file: system/qemu-user-binfmt.nix
-# desc: available architectures for hidden emulation
-
-{ config, pkgs, ... }:
+{ ... }:
 
 {
-  # enable running programs for other architectures with Qemu
+  # use QEMU to enable transparent program execution for other architectures
   boot.binfmt.emulatedSystems = [
+    # RISC-V
+    "riscv32-linux"
+    "riscv64-linux"
+    # x86
     "i386-linux"
     "i486-linux"
     "i586-linux"
     "i686-linux"
-    "riscv32-linux"
-    "riscv64-linux"
     "x86_64-linux"
   ];
 }

@@ -1,10 +1,7 @@
-# file: system/qemu-user-binfmt.nix
-# desc: available architectures for hidden emulation
-
-{ config, pkgs, ... }:
+{ ... }:
 
 {
-  # enable running programs for other architectures with Qemu
+  # use QEMU to enable transparent program execution for other architectures
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
     "aarch64_be-linux"

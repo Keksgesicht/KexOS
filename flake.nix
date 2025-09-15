@@ -123,11 +123,11 @@
       });
     in
     {
-      # nix build -L .#nixosConfigurations."live-cd".config.system.build.toplevel
+      # nix build -L .'#'nixosConfigurations."live-cd".config.system.build.isoImage
       "live-cd" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
-          #isDesktop = true;
+          isDesktop = true;
           vpn-ip-suf = "1";
           lan-ip-suf = "0";
           lan-subnet-v4 = "0.0.0";
@@ -186,6 +186,19 @@
         ];
       };
 
+      # nix build -L .'#'nixosConfigurations."cookiepi".config.system.build.sdImage
+      "cookiepi" = nixpkgs-custom.lib.nixosSystem rec {
+        system = "aarch64-linux";
+        specialArgs = (myArgs system) // {
+          vpn-ip-suf = "4";
+          lan-ip-suf = "222";
+          ifLan = "enu1u1u1";
+        };
+        modules = [
+          ./machines/cookiepi.nix
+          impermanence.nixosModules.impermanence
+        ];
+      };
       "cookieflyer" = nixpkgs-stable.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
@@ -200,7 +213,6 @@
           lanzaboote.nixosModules.lanzaboote
         ];
       };
-
       "cookiemailer" = nixpkgs-stable.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
