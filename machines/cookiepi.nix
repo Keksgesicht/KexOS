@@ -14,4 +14,6 @@
     ../services/containers/unbound.nix
     ../system/network/server/lan.nix
   ];
+
+  KexOS.variables.rpi_version = 3;
 }

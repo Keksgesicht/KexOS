@@ -10,7 +10,11 @@ in
       default = {};
     };
     paths = lib.mkOption {
-      type = with types; attrsOf (oneOf [ str path ]);
+      type = with types; attrsOf (oneOf [ path str ]);
+      default = {};
+    };
+    variables = lib.mkOption {
+      type = with types; attrsOf (oneOf [ bool int path str ]);
       default = {};
     };
   };

@@ -5,12 +5,17 @@ let
   str = lib.strings;
   forEach = lib.lists.forEach;
 
+  inherit (config.KexOS.variables) rpi_version;
+
   ubootBtrfs = (oldAttrs: {
     extraConfig = ''
       CONFIG_CMD_BTRFS=y
       CONFIG_ZSTD=y
     '';
   });
+  ubootOverlay = (list: [ (self: super: (builtins.listToAttrs (map
+    (e: { name = e; value = super."${e}".overrideAttrs ubootBtrfs; }) list
+  ))) ]);
 
   subvolList = [ "boot" "etc" "home" "mnt-array" "nix" "var" ];
   subvolStr = (s: str.concatMapStrings (v: s + v) subvolList);
@@ -43,10 +48,10 @@ in
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  nixpkgs.overlays = [ (self: super: {
-    ubootRaspberryPi3_64bit = super.ubootRaspberryPi3_64bit.overrideAttrs ubootBtrfs;
-    ubootRaspberryPi4_64bit = super.ubootRaspberryPi4_64bit.overrideAttrs ubootBtrfs;
-  }) ];
+  nixpkgs.overlays =
+         if rpi_version == 3 then (ubootOverlay [ "ubootRaspberryPi3_64bit" ])
+    else if rpi_version == 4 then (ubootOverlay [ "ubootRaspberryPi4_64bit" ])
+    else [];
 
   sdImage = {
     compressImage = false;
