@@ -1,4 +1,4 @@
-{ config, pkgs, ssd-name, ...}:
+{ pkgs, ssd-name, ...}:
 
 let
   pkg-scu = (pkgs.callPackage ../../packages/server-and-config-update.nix {});

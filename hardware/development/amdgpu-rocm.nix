@@ -1,5 +1,5 @@
 # https://nixos.wiki/wiki/AMD_GPU
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   boot.initrd.kernelModules = [ "amdgpu" ];

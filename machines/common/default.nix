@@ -8,7 +8,6 @@
     ../../hardware
     ../../hardware/swap.nix
     ../../nix
-    ../../nix/version-23-05.nix
     ../../services/system/backup-snapshot.nix
     ../../system
   ];

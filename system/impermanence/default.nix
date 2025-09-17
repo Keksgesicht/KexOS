@@ -1,8 +1,5 @@
-{ config, pkgs, lib, inputs, username
-, ssd-mnt, ssd-name
-, hdd-mnt, hdd-name
-, nvm-mnt
-, ... }:
+{ config, pkgs, lib, inputs, username, ssd-mnt, ssd-name
+, hdd-mnt, hdd-name, nvm-mnt, ... }:
 
 let
   link-dir = "/mnt/user";

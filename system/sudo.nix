@@ -1,37 +1,32 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
+let
+  options = [ "NOPASSWD" ];
+in
 {
   security.sudo = {
     enable = true;
     #package = pkgs.doas;
     execWheelOnly = true;
-    extraRules = [
-      {
-        groups = [ "wheel" ];
-        commands = [
-          {
-            command = "${pkgs.systemd}/bin/poweroff";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "${pkgs.systemd}/bin/reboot";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "${pkgs.systemd}/bin/systemctl poweroff";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "${pkgs.systemd}/bin/systemctl reboot";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "${pkgs.systemd}/bin/systemctl suspend";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-      }
-    ];
+    extraRules = [ {
+      groups = [ "wheel" ];
+      commands = [ {
+          command = "${pkgs.systemd}/bin/poweroff";
+          inherit options;
+        } {
+          command = "${pkgs.systemd}/bin/reboot";
+          inherit options;
+        } {
+          command = "${pkgs.systemd}/bin/systemctl poweroff";
+          inherit options;
+        } {
+          command = "${pkgs.systemd}/bin/systemctl reboot";
+          inherit options;
+        } {
+          command = "${pkgs.systemd}/bin/systemctl suspend";
+          inherit options;
+      } ];
+    } ];
   };
 
   environment.shellAliases = {

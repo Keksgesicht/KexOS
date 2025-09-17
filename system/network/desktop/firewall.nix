@@ -3,6 +3,8 @@
 let
   hn = config.networking.hostName;
 
+  allowVPNaccess = false;
+
   allowedPortsShared = {
     allowedTCPPorts = [
           53 # DNS
@@ -85,7 +87,7 @@ in
         "podman-server" = allowedPortsCCbase;
         "enp6s0" = allowedPortsShared;
         "${ifWlan}" = allowedPortsShared;
-        #"tap0" = allowedPortsVPNuser;
+        "tap0" = if allowVPNaccess then allowedPortsVPNuser else {};
       }
       else if (config.networking.hostName == "cookiethinker") then {
         "wg-laptop" = { allowedTCPPorts = [ 22 ]; };

@@ -1,7 +1,6 @@
+{ ... }:
+
 # https://nixos.wiki/wiki/Fwupd
-
-{ config, ... }:
-
 {
   # firmware update
   services.fwupd = {

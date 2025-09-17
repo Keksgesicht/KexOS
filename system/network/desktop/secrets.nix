@@ -90,7 +90,7 @@ in
 
     # network connections on laptop
     "NetworkManager/system-connections/ethernet_dhcp.nmconnection" = {
-      enable = (hn == "cookiethinker");
+      enable = (hn != "cookieclicker");
       inherit mode;
       source = nm-sub "ethernet_dhcp" {};
     };
