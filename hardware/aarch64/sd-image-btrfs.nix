@@ -31,7 +31,7 @@ let
     );
   });
 
-  rootDev = "/dev/disk/by-label/NIXOS_SD";
+  rootDev = "/dev/disk/by-uuid/" + config.sdImage.rootPartitionUUID;
   btrfsOpts = {
     device = lib.mkForce rootDev;
     fsType = "btrfs";

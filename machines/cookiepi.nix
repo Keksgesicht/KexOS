@@ -16,4 +16,9 @@
   ];
 
   KexOS.variables.rpi_version = 3;
+
+  sdImage = {
+    firmwarePartitionID = "0x8b2f4f93";
+    rootPartitionUUID = "aa26e441-701e-478f-95f5-8c23ddeb4049";
+  };
 }
