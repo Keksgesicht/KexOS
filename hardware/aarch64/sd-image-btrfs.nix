@@ -17,15 +17,22 @@ let
     (e: { name = e; value = super."${e}".overrideAttrs ubootBtrfs; }) list
   ))) ]);
 
-  subvolList = [ "boot" "etc" "home" "mnt-array" "nix" "var" ];
+  subvolList = [ "boot" "etc" "home" "mnt-array" "nix" "root" "var" ];
   subvolStr = (s: str.concatMapStrings (v: s + v) subvolList);
+  nixPathRegFile = config.sdImage.nixPathRegistrationFile;
   rootfsImage = options.sdImage.rootImage.default;
   btrfsImage = rootfsImage.overrideAttrs (final: prev: {
     buildCommand = str.concatLines (forEach
       (str.splitString "\n" prev.buildCommand) (line:
         if (str.hasInfix "mkfs.btrfs" line)
         then "mkdir -p " + (subvolStr " ./rootImage/")
-           + "\n" + line + (subvolStr " --subvol ")
+           + "\n" + line + (subvolStr " --subvol ") + " --compress zstd:3"
+        # move nixRegPathFile to root subvolume
+        # otherwise wierd things happen after running the first nix commands
+        else if (str.hasSuffix nixPathRegFile line)
+        then "mkdir -p ./rootImage/root" + "\n" + (builtins.replaceStrings
+          [ nixPathRegFile ] [ ("/root" + nixPathRegFile) ] line
+        )
         else line
       )
     );
@@ -57,6 +64,14 @@ in
     compressImage = false;
     rootFilesystem = "${pkgs.path}/nixos/lib/make-btrfs-fs.nix";
     rootImage = btrfsImage;
+    # do this manually as replacing the resize2fs string in postBootCommands
+    # might be too complex. btrfs uses its own resize command.
+    expandOnBoot = false;
+  };
+
+  "setup-impermance-root-volume" = {
+    # the RPi has no permanent clock and this would only wear out the sd-card
+    backupCommands = "";
   };
 
   boot = {

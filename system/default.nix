@@ -5,7 +5,8 @@
     ./base-pkgs.nix
     ./boot-tmpfs.nix
     ./environment.nix
-    ./impermanence
+    ./impermanence/boot.nix
+    ./impermanence/directories.nix
     ./openssh
     ./shell-zsh.nix
     ./sudo.nix
