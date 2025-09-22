@@ -34,14 +34,10 @@ with my-functions;
         script = ''
           set -e
           set -o pipefail
-
-          HASHFILE="${cookie-dir}/root-dns-server.hash"
-          mkdir -p $(dirname $HASHFILE)
-
           URL="https://www.internic.net/domain/named.cache"
-          NIX_STORE_FILE=$(nix-prefetch-url --print-path $URL | tail -n 1)
-          HASH=$(sha256sum $NIX_STORE_FILE | cut -f1 -d' ' | xxd -r -p | base64)
-          echo "sha256-$HASH" | tee $HASHFILE
+          HASHFILE="${cookie-dir}/root-dns-server.hash"
+          mkdir -p "$(dirname "$HASHFILE")"
+          nix-prefetch-url "$URL" 2>/dev/null | tee "$HASHFILE"
         '';
       };
     };

@@ -15,7 +15,7 @@ in
 
   nixpkgs.allowUnfreePackages = [
     pkgs.epkowa
-    "iscan-data" "iscan-gt"
+    "iscan-data" "iscan-ds" "iscan-gt"
     "iscan-gt-f720-bundle" "iscan-gt-s600-bundle" "iscan-gt-s650-bundle"
     "iscan-gt-s80-bundle" "iscan-gt-x750-bundle" "iscan-gt-x770-bundle"
     "iscan-gt-x820-bundle" "iscan-nt-bundle" "iscan-perfection-v550-bundle"

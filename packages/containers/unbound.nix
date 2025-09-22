@@ -13,7 +13,7 @@ stdenv.mkDerivation {
   dnssrc = builtins.fetchurl {
     url = "https://www.internic.net/domain/named.cache";
     sha256 = if (builtins.pathExists hashFile)
-             then (builtins.readFile hashFile)
+             then lib.strings.removeSuffix "\n" (builtins.readFile hashFile)
              else "";
   };
 
