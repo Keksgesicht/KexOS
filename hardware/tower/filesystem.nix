@@ -59,7 +59,6 @@ let
     )
   );
 
-  fat-opts = [ "umask=0077" "shortname=winnt" ];
   bfs-opts = [ "compress=zstd:3" ];
   crypt-req = (disk: numbers: lib.lists.forEach numbers (num:
     let
@@ -69,38 +68,25 @@ let
   ));
 in
 {
+  imports = [
+    ../filesystem-single-disk.nix
+  ];
+
   boot.initrd.luks.devices = list2luksdev;
   environment.etc."crypttab".text = str4crypttab;
 
   # https://www.freedesktop.org/software/systemd/man/latest/systemd-fstab-generator.html
   fileSystems = {
-    "/boot" = {
-      device = "/dev/disk/by-uuid/AD3C-E855"; # see boot-backup.nix
-      fsType = "vfat";
-      options = fat-opts;
-    };
+    "/boot".device = "/dev/disk/by-uuid/AD3C-E855"; # see boot-backup.nix
+    "${ssd-mnt}".device = lib.mkForce ssd-label;
 
-    "/nix" = {
-      device = ssd-label;
-      fsType = "btrfs";
-      options = bfs-opts ++ [ "subvol=nix" ];
-      # implicit neededForBoot
-    };
-
-    "${ssd-mnt}" = {
-      device = ssd-label;
-      fsType = "btrfs";
-      options = bfs-opts ++ [ "subvol=/" ];
-      neededForBoot = true;
-    };
     "${hdd-mnt}" = {
-      device = hdd-label;
-      fsType = "btrfs";
-      options = [
+      device = lib.mkForce hdd-label;
+      options = lib.mkForce ([
         "compress-force=zstd:3"
         "subvol=/"
         "nofail" # no Before=local-fs.target
-      ] ++ crypt-req hdd-name hdd-numbers;
+      ] ++ crypt-req hdd-name hdd-numbers);
     };
     "${nvm-mnt}" = {
       device = nvm-label;
