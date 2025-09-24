@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+[ -n "${MY_IFLINK}" ] || exit 0
+
+IFLINK="$1"
+NMMODE="$2"
+
+case "${IFLINK}" in
+"${MY_IFLINK}")
+	case "${NMMODE}" in
+	up)
+		systemctl --no-block restart sshd.service
+	;;
+	esac
+;;
+esac
+
+exit 0

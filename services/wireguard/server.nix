@@ -1,4 +1,4 @@
-{ config, pkgs, lib, secrets-pkg, secrets-dir, username
+{ self, config, pkgs, lib, secrets-pkg, secrets-dir, username
 , myDomain, vpn-subnet-v4, vpn-subnet-v6, ifLan, ... }:
 
 let
@@ -96,7 +96,7 @@ let
 in
 {
   imports = [
-    ../../../nix/secrets-pkg.nix
+    "${self}/nix/secrets-pkg.nix"
   ];
 
   environment.shellAliases.wg = "${pkgs.wireguard-tools}/bin/wg";

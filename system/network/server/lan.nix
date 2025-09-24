@@ -7,15 +7,9 @@ in
 {
   imports = [
     ../.
-    ../IPv6/network-manager.nix
+    ../network-manager
+    ../network-manager/IPv6.nix
   ];
-
-  networking.networkmanager.enable = true;
-
-  # Just excluding wireguard interfaces does not work with NetworkManager.
-  # Thus, we disable it completly as our servers are locally self-contained.
-  # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
-  systemd.services."NetworkManager-wait-online".enable = false;
 
   environment.etc = {
     "NetworkManager/system-connections/lan.nmconnection" = {

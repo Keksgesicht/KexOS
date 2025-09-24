@@ -12,7 +12,7 @@
     ../hardware/laptop/usb-docking-station.nix
     ../hardware/office/scanner.nix
     ../nix/build-cache/client.nix
-    ../services/system/wireguard/client.nix
+    ../services/wireguard/client.nix
   ];
 
   # filesystem extras

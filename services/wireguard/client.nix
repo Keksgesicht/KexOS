@@ -102,7 +102,7 @@ in
 with my-functions;
 {
   imports = [
-    ../../../nix/secrets-pkg.nix
+    "${self}/nix/secrets-pkg.nix"
   ];
 
   users.users."${username}".packages = [ wg-cmd-script ];

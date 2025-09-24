@@ -1,7 +1,11 @@
-{ lib, isDesktop, vpn-subnet-v4, vpn-ip-suf, lan-subnet-v4, lan-ip-suf, ... }:
+{ options, pkgs, lib, isDesktop, vpn-subnet-v4, vpn-ip-suf
+, lan-subnet-v4, lan-ip-suf, ... }:
 
 let
   port = 22;
+
+  ds = "dispatcherScript";
+  net-man-opt = options.networking.networkmanager;
 in
 {
   # Enable the OpenSSH daemon.
@@ -35,4 +39,8 @@ in
       MaxSessions = 10;
     };
   };
+
+  networking.networkmanager = if (builtins.hasAttr ds net-man-opt) then {
+    "${ds}"."50-sshd".packages = with pkgs; [ systemd ];
+  } else {};
 }

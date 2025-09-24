@@ -20,8 +20,8 @@
     ../services/system/backup-offline.nix
     ../services/system/dyndns.nix
     ../services/system/fancontrol.nix
-    ../services/system/wireguard/server.nix
-    ../system/network/IPv6/network-manager.nix
+    ../services/wireguard/server.nix
+    ../system/network/network-manager/IPv6.nix
     ../system/network/wireless.nix
   ];
 }

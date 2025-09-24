@@ -1,14 +1,14 @@
-{ specialArgs, self, config, pkgs, myDomain, secrets-dir, ... }:
+{ self, config, pkgs, myDomain, secrets-dir, ... }:
 
 let
-  ip-vars = (import "${self}/system/network/IPv6/variables.nix" specialArgs config);
   hn = config.networking.hostName;
+  pub6ds = config.networking.networkmanager.dispatcherScript."50-public-ipv6";
 in
 {
   systemd = {
     services."hetzner-ddns" = {
       path = with pkgs; [ bash curl gawk gnused iproute2 jq util-linux ];
-      environment = ip-vars // {
+      environment = pub6ds.variables // {
         TTL =
           if (hn == "cookieclicker") then "300"
           else "1000";

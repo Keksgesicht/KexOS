@@ -10,7 +10,6 @@
     ../hardware/hetzner.nix
     ../services/containers/mailcow.nix
     ../services/system/rsyncd.nix
-    ../system/openssh/backup.nix
     ../system/network/server/hetzner.nix
   ];
 

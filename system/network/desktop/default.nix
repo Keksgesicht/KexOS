@@ -1,8 +1,12 @@
-{ config, pkgs, lib, username, ... }:
+{ config, pkgs, username, ... }:
 
+let
+  hn = config.networking.hostName;
+in
 {
   imports = [
     ../.
+    ../network-manager
     ./certs.nix
     ./firewall.nix
     ./hosts.nix
@@ -13,8 +17,6 @@
 
   # Enable networking via NetworkManager
   networking.networkmanager = {
-    enable = true;
-
     # randomize IP and MAC addresses
     # https://fedoramagazine.org/randomize-mac-address-nm/
     # https://blogs.gnome.org/thaller/2016/08/26/mac-address-spoofing-in-networkmanager-1-4-0/
@@ -24,22 +26,15 @@
     };
     ethernet.macAddress = "stable";
     connectionConfig = {
-      "connection.stable-id" = "\${CONNECTION}/\${BOOT}";
+      "connection.stable-id" = ''''${CONNECTION}/''${BOOT}'';
     };
 
-    dispatcherScripts = []
-      ++ lib.optionals (config.networking.hostName == "cookieclicker") [ {
-        type = "basic";
-        source = pkgs.writers.writeBash "50-no-ddns-vpn" (''
-          export PATH=$PATH
-        '' + (builtins.readFile ../../../files/linux-root/etc/NetworkManager/dispatcher.d/50-no-ddns-vpn));
-      } ];
+    dispatcherScript = if (hn == "cookieclicker") then {
+      "50-no-ddns-vpn".packages = with pkgs; [ gnugrep iproute2 ];
+    } else {};
 
     plugins = [
       pkgs.networkmanager-openconnect # VPN to university
     ];
   };
-
-  # https://askubuntu.com/questions/1018576/what-does-networkmanager-wait-online-service-do
-  systemd.services."NetworkManager-wait-online".enable = false;
 }

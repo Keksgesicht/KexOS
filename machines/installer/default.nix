@@ -14,10 +14,10 @@
 
     ../../nix/basic.nix
     ../../nix/version-23-05.nix
+    ../../services/openssh
     ../../system/base-pkgs.nix
     ../../system/boot-tmpfs.nix
     ../../system/environment.nix
-    ../../system/openssh
     ../../system/shell-zsh.nix
   ]
   ++ lib.optionals (isDesktop) [ ./graphics.nix ]
