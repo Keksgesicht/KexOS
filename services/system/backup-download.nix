@@ -20,10 +20,14 @@ let
 
         ReadOnlyPaths = "/";
         ReadWritePaths = "${hdd-mnt}/machines/${sn}";
-        BindReadOnlyPaths = "/etc/ssh/ssh_config";
+        BindReadOnlyPaths = [
+          "/etc/ssh/ssh_config"
+          "/root/.config/ssh"
+          "/root/.secrets/ssh"
+        ];
         TemporaryFileSystem = [
           "/etc:ro"
-          "/root/.cache"
+          "/home" "/root" "/run/user"
         ];
       };
     };
@@ -33,7 +37,7 @@ let
       timerConfig = {
         OnCalendar = "*-*-* 08:15:00";
         RandomizedDelaySec = "42min";
-        AccuracySec = "1min";
+        OnBootSec = "23 min";
         Persistent = "true";
       };
     };

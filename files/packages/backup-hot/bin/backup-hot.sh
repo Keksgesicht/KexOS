@@ -9,7 +9,7 @@ DATA_DIR="${TARGET_DIR}/${system_name}"
 
 copy() {
 	set -ex
-	rsync -avHA \
+	rsync -aHA \
 		--delete --delete-excluded \
 		--include-from="${cfg_dir}/machines.pattern" \
 		"$@"
@@ -30,6 +30,7 @@ copy-meta() {
 				"${DATA_DIR}${line}/"
 			;;
 		esac
+		echo "Finished copying to ${DATA_DIR}${line}"
 		touch "${DATA_DIR}${line}"
 	done <"${cfg_dir}/snapshot.default"
 }
@@ -43,4 +44,5 @@ else
 fi
 copy-meta
 
+echo "Finished copying to ${DATA_DIR}"
 touch "${DATA_DIR}"

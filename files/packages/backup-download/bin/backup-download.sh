@@ -10,7 +10,7 @@ DATA_DIR="${TARGET_DIR}/${system_name}"
 
 download() {
 	set -ex
-	rsync -avHA \
+	rsync -aHA \
 		-ze "ssh -i /root/.secrets/ssh/id_backup" \
 		--delete --delete-excluded \
 		"$@"
@@ -31,6 +31,8 @@ download-snapshot() {
 			"root@${target_host}":"${line}/.backup/latest/" \
 			"${DATA_DIR}${line}/"
 	done <"${cfg_dir}/snapshot/${pattern_file}"
+	echo "Finished copying to ${DATA_DIR}${line}"
+	touch "${DATA_DIR}${line}"
 }
 
 mkdir -p "${SSH_SOCKET_DIR}"
@@ -49,4 +51,5 @@ fi
 # make sockets unusable after backup
 ssh -O exit "${target_host}"
 
+echo "Finished copying to ${DATA_DIR}"
 touch "${DATA_DIR}"

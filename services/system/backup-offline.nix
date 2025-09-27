@@ -46,10 +46,14 @@ in
           PrivateDevices = "yes";
 
           ReadOnlyPaths = "/";
-          BindReadOnlyPaths = "/etc/ssh/ssh_config";
+          BindReadOnlyPaths = [
+            "/etc/ssh/ssh_config"
+            "/root/.config/ssh"
+            "/root/.secrets/ssh"
+          ];
           TemporaryFileSystem = [
             "/etc:ro"
-            "/root/.cache"
+            "/home" "/root" "/run/user"
           ];
         };
       };
@@ -60,6 +64,7 @@ in
         timerConfig = {
           OnCalendar = "*-*-* 07:07:07";
           RandomizedDelaySec = "42 min";
+          OnBootSec = "23 min";
           Persistent = true;
         };
         wantedBy = [ "timers.target" ];

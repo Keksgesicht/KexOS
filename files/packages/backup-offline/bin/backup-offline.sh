@@ -19,9 +19,9 @@ while read -r dir; do
 		sync_vars="--include-from=${conf_dir}/${dir}.pattern"
 	fi
 
-	rsync -avHAX --delete --delete-excluded "${sync_vars}" \
+	rsync -aHAX --delete --delete-excluded "${sync_vars}" \
 		"${source}/" "${dest}/"
 
-	touch "${dest}"
 	echo "${dir} completed"
+	touch "${dest}"
 done <"${conf_dir}/_shares.${mode}"

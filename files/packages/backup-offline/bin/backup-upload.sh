@@ -31,7 +31,7 @@ while read -r dir; do
 	fi
 
 	set -ex
-	rsync -avHA --delete --delete-excluded "${sync_vars}" \
+	rsync -aHA --delete --delete-excluded "${sync_vars}" \
 		-ze "ssh -i /root/.secrets/ssh/id_backup" \
 		"${source}/" "${remote_addr}:${dest}/"
 	set +ex
@@ -40,5 +40,6 @@ while read -r dir; do
 	echo "${dir} completed"
 done <"${conf_dir}/_shares.${mode}"
 
+echo "Finished copying to ${remote_addr}"
 ssh_exec touch "${back_dir}"
 ssh -O exit "${remote_addr}"
