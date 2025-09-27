@@ -50,14 +50,6 @@ in
         "/etc/ssh/ssh_host_rsa_key.pub"
       ];
     };
-
-    # /root -> /mnt/main/home/root
-    "${ssd-mnt}/home" = {
-      hideMounts = true;
-      directories = [
-        "/root/.secrets/ssh"
-      ];
-    };
   };
 
   # systemd-machine-id-commit fails on every rebuild without this workaround

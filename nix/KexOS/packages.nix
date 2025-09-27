@@ -1,8 +1,8 @@
-{ config, pkgs, username, home-dir, isDesktop, ... }:
+{ config, pkgs, username, cookie-dir, home-dir, isDesktop, ... }:
 
 let
   kexos-pkgs = config.KexOS.packages;
-  kexos-cfg-tmp = "/tmp/KexOS-remote-config-diff";
+  kexos-cfg-remote = "/tmp/KexOS-remote-config";
   kexos-cfg-path = "${home-dir}/nixos-config";
   kexos-cfg-old = "/nix/var/nix/profiles/system/etc/flake-output/nixos-config";
 in
@@ -20,7 +20,7 @@ in
 
     "rebuild" = pkgs.writeShellScriptBin "KexOS-rebuild" (''
       usage() {
-        echo "$0 [boot|build|repl|test|switch] <--update-cookie-pkg> <--reset-lock-file>"
+        echo "$0 [boot|build|repl|test|switch] <--update-cookie-pkg> <--reset-lock-file> <--target-host [hostname]>"
         exit 1
       }
 
@@ -45,15 +45,31 @@ in
       shift
 
       while [ -n "$1" ]; do
-        if [ -n "$SKIP_ANSWER" ]; then
-          break
-        fi
         case "$1" in
           --update-cookie-pkg)
-            KEXOS_DEVSHELL_COOKIEPKG="yes"
+            if [ -z "$SKIP_ANSWER" ]; then
+              KEXOS_REBUILD_COOKIEPKG="yes"
+            else
+              echo "ignoring updating cookie-pkg because of repl"
+            fi
           ;;
           --reset-lock-file)
-            KEXOS_DEVSHELL_LOCKFILERESET="yes"
+            if [ -z "$SKIP_ANSWER" ]; then
+              KEXOS_REBUILD_LOCKFILERESET="yes"
+            else
+              echo "ignoring updating cookie-pkg because of repl"
+            fi
+          ;;
+          --target-host)
+            shift
+            KEXOS_REBUILD_OUTPUT="#$1"
+            if [ -z "$SKIP_ANSWER" ]; then
+              KEXOS_REBUILD_REMOTE_HOST="$1"
+              ACTION+=" --target-host root@$1"
+              NIX_SSHOPTS="-i /root/.secrets/ssh/id_backup"
+              export NIX_SSHOPTS
+              PRFX+=" --preserve-env=NIX_SSHOPTS"
+            fi
           ;;
           *)
             usage
@@ -62,24 +78,40 @@ in
         shift
       done
 
-      cd ${kexos-cfg-path}/ || exit 2
+      cd ${kexos-cfg-path}/ || exit 21
+      set -e
 
-      if [ -n "$KEXOS_DEVSHELL_LOCKFILERESET" ]; then
-        cp -fv "${kexos-cfg-old}/flake.lock" "${kexos-cfg-path}/flake.lock"
+      if [ -n "$KEXOS_REBUILD_LOCKFILERESET" ]; then
+        if [ -n "$KEXOS_REBUILD_REMOTE_HOST" ]; then
+          rsync -te ssh \
+            "$KEXOS_REBUILD_REMOTE_HOST":"${kexos-cfg-old}/flake.lock" \
+            "${kexos-cfg-path}/flake.lock"
+        else
+          cp -fv "${kexos-cfg-old}/flake.lock" "${kexos-cfg-path}/flake.lock"
+        fi
       fi
 
-      if [ -n "$KEXOS_DEVSHELL_COOKIEPKG" ]; then
+      if [ -n "$KEXOS_REBUILD_COOKIEPKG" ]; then
+        if [ -n "$KEXOS_REBUILD_REMOTE_HOST" ]; then
+          $AUTH rsync -rlptue "ssh $NIX_SSHOPTS" \
+            root@"$KEXOS_REBUILD_REMOTE_HOST":${cookie-dir}/ ${cookie-dir}/
+          $AUTH rsync -rlpte "ssh $NIX_SSHOPTS" --delete ${cookie-dir}/ \
+            root@"$KEXOS_REBUILD_REMOTE_HOST":${cookie-dir}/
+        fi
         nix flake update "cookie-pkg"
       fi
 
-      if [ -n "$SKIP_ANSWER" ]; then
+      kexos-rebuild() {
         set -x
-        $PRFX nixos-rebuild -L --show-trace --flake ${kexos-cfg-path} "$ACTION"
+        $PRFX nixos-rebuild --flake ${kexos-cfg-path}"$KEXOS_REBUILD_OUTPUT" \
+          $ACTION "$@"
+      }
+
+      if [ -n "$SKIP_ANSWER" ]; then
+        kexos-rebuild -L --show-trace
       else
         $PRFX true || exit 47
-        set -x
-        $PRFX nixos-rebuild --flake ${kexos-cfg-path} "$ACTION" \
-          --log-format internal-json |& nom --json
+        kexos-rebuild --log-format internal-json |& nom --json
       fi
     '');
 
@@ -114,9 +146,9 @@ in
           kex-sync ''${host}:''${dir}/ ${kexos-cfg-path}/
         ;;
         diff)
-          mkdir -p ${kexos-cfg-tmp}/
-          kex-sync ''${host}:''${dir}/ ${kexos-cfg-tmp}/
-          diff --color=auto -r ${kexos-cfg-path} ${kexos-cfg-tmp} -x .git
+          mkdir -p ${kexos-cfg-remote}/
+          kex-sync ''${host}:''${dir}/ ${kexos-cfg-remote}/
+          diff --color=auto -r ${kexos-cfg-path} ${kexos-cfg-remote} -x .git
         ;;
     '' else "") + ''
         etc)

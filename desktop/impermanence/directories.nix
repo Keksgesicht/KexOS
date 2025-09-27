@@ -98,6 +98,7 @@ with my-functions;
     ));
   in
   {
+    # /home/keks -> /mnt/main/home/keks
     "${ssd-mnt}" = {
       hideMounts = true;
       # do not even try using the home-manager impermanence module
@@ -150,6 +151,15 @@ with my-functions;
         ];
       };
     };
+
+    # /root -> /mnt/main/home/root
+    "${ssd-mnt}/home" = {
+      hideMounts = true;
+      directories = [
+        "/root/.config/ssh"
+        "/root/.secrets/ssh"
+      ];
+    };
   };
 
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html
@@ -193,6 +203,9 @@ with my-functions;
   ]
   ++ secureUserDir [
     "${trash-dir}"
+    "${ssd-mnt}/root/root/.cache"
+    "${ssd-mnt}/root/root/.cache/ssh"
+    "${ssd-mnt}/root/root/.cache/ssh/sockets"
     "${ssd-mnt}/root${home-dir}/.cache"
     "${ssd-mnt}/root${home-dir}/.cache/ssh"
     "${ssd-mnt}/root${home-dir}/.cache/ssh/sockets"
