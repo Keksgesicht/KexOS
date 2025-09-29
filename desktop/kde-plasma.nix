@@ -77,6 +77,7 @@ with my-functions;
     in
     {
       overrideStrategy = "asDropin";
+      serviceConfig.TimeoutStopSec = 23; # faster restarts when panel bugs out
       environment = {
         # prevent defaults
         PATH = lib.mkForce null;
