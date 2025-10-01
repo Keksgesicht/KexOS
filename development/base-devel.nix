@@ -33,34 +33,44 @@
       echo "$0 path [--suffix=name] args.."
     }
 
+    cmd="zsh"
     myDir="."
     myOpts=""
     resPath=""
+
     if [ -d "$1" ]; then
       myDir="$1"
       shift
     fi
-    if [ "$1" = "--suffix" ]; then
+    while [ -n "$1" ]; do
+      case "$1" in
+        --suffix)
+          shift
+          if [ -z "$1" ]; then
+            usage
+          fi
+          res_dir=$(dirname "$1")
+          res_file=$(basename "$1")
+          resPath="$res_dir/result-$res_file"
+        ;;
+        --nice)
+          cmd="nice $cmd"
+        ;;
+        *)
+          myOpts+="$1"
+        ;;
+      esac
       shift
-      if [ -z "$1" ]; then
-        usage
-      fi
-      res_dir=$(dirname "$1")
-      res_file=$(basename "$1")
-      shift
-      resPath="$res_dir/result-$res_file"
-    fi
-    myOpts+="$@"
+    done
+
+    kexos-devshell() {
+      exec -a nix nix develop "$myDir" $myOpts $@ --command $cmd
+    }
 
     if [ -z "$resPath" ]; then
-      exec -a nix \
-        nix develop "$myDir" $myOpts \
-        --command zsh
+      kexos-devshell
     else
-      exec -a nix \
-        nix develop "$myDir" $myOpts \
-        --profile "$resPath" \
-        --command zsh
+      kexos-devshell --profile "$resPath"
     fi
   '';
 }
