@@ -1,13 +1,16 @@
-{ pkgs, lib, ... }:
+{ ... }:
 
-let
-  udev-usb = (import ../udev-usb.nix pkgs lib);
-in
 {
-  services.udev.packages = [
-    # disable USB ethernet adapter
-    (udev-usb "usb-docking-disable-ethernet" "0b95" "1790" ''
-      ATTR{authorized}="0"
-    '')
+  imports = [
+    ../common/udev-usb.nix
   ];
+
+  services.udev.usbRule = {
+    # disable USB ethernet adapter
+    "99-usb-docking-disable-ethernet" = {
+      vendor = "0b95";
+      product = "1790";
+      cmd = "ATTR{authorized}=\"0\"";
+    };
+  };
 }

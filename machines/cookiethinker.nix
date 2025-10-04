@@ -7,7 +7,6 @@
   imports = [
     ./common
     ./common/desktop.nix
-    ../hardware/filesystem-single-disk.nix
     ../hardware/laptop/tuxedo.nix
     ../hardware/laptop/usb-docking-station.nix
     ../hardware/office/scanner.nix

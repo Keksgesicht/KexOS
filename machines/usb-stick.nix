@@ -7,7 +7,6 @@
   imports = [
     ./common
     ./common/desktop.nix
-    ../hardware/filesystem-single-disk.nix
     ../hardware/laptop/tuxedo.nix
     ../nix/build-cache/client.nix
   ];

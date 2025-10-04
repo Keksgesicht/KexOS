@@ -1,21 +1,28 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
-  udev-usb = (import ../udev-usb.nix pkgs lib);
   ethernet-delay-script = pkgs.writeShellScriptBin "ethernet-delay-script" ''
     sleep 3s
     echo "on" > /sys/bus/usb/devices/"$1"/power/control
   '';
 in
 {
-  services.udev.packages = [
-    # keyboard wakeup from suspend
-    (udev-usb "usb-docking-keyboard-wakeup" "1017" "a002" ''
-      ATTR{power/wakeup}="enabled"
-    '')
-    # enable ethernet adapter while charging
-    (udev-usb "usb-docking-ethernet-while-charging" "0b95" "1790" ''
-      RUN+="${ethernet-delay-script}/bin/ethernet-delay-script %k"
-    '')
+  imports = [
+    ../common/udev-usb.nix
   ];
+
+  services.udev.usbRule = {
+    # keyboard wakeup from suspend
+    "99-usb-docking-keyboard-wakeup" = {
+      vendor = "1017";
+      product = "a002";
+      cmd = "ATTR{power/wakeup}=\"enabled\"";
+    };
+    # enable ethernet adapter while charging
+    "99-usb-docking-ethernet-while-charging" = {
+      vendor = "0b95";
+      product = "1790";
+      cmd = "RUN+=\"${ethernet-delay-script}/bin/ethernet-delay-script %k\"";
+    };
+  };
 }

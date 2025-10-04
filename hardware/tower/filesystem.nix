@@ -68,10 +68,6 @@ let
   ));
 in
 {
-  imports = [
-    ../filesystem-single-disk.nix
-  ];
-
   boot.initrd.luks.devices = list2luksdev;
   environment.etc."crypttab".text = str4crypttab;
 
