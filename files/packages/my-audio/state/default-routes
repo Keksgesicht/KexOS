@@ -1,4 +1,8 @@
 [default-routes]
+alsa_card.pci-0000_09_00.3:output:analog-output-lineout={"latencyOffsetNsec":0, "channelVolumes":[1.000000, 1.000000, 1.000000, 1.000000], "channelMap":["FL", "FR", "RL", "RR"], "mute":false}
+alsa_card.pci-0000_09_00.3:output:iec958-stereo-output={"iec958Codecs":[], "channelVolumes":[1.000000, 1.000000], "mute":false, "latencyOffsetNsec":0, "channelMap":["FL", "FR"]}
+alsa_card.pci-0000_09_00.3:profile:output:analog-surround-40=["analog-output-lineout"]
+alsa_card.pci-0000_09_00.3:profile:output:iec958-stereo=["iec958-stereo-output"]
 alsa_card.pci-0000_0a_00.3:output:analog-output-lineout={"latencyOffsetNsec":0, "channelVolumes":[1.000000, 1.000000, 1.000000, 1.000000], "channelMap":["FL", "FR", "RL", "RR"], "mute":false}
 alsa_card.pci-0000_0a_00.3:profile:output:analog-surround-40=["analog-output-lineout"]
 alsa_card.usb-Auna_Mic_CM900_Auna_Mic_CM900-00:input:analog-input-mic={"latencyOffsetNsec":0, "mute":false, "channelMap":["MONO"], "channelVolumes":[0.884755]}

@@ -1,5 +1,7 @@
 [default-profile]
+alsa_card.pci-0000_09_00.3=output:analog-surround-40
 alsa_card.pci-0000_0a_00.3=output:analog-surround-40
 alsa_card.pci-0000_44_00.1=pro-audio
+alsa_card.pci-0000_45_00.1=pro-audio
 alsa_card.usb-Auna_Mic_CM900_Auna_Mic_CM900-00=input:mono-fallback
 alsa_card.usb-GeneralPlus_USB_Audio_Device-00=output:iec958-stereo

@@ -1,4 +1,4 @@
-hdmi_desktop="alsa_output.pci-0000_44_00.1.pro-output"
+hdmi_desktop="alsa_output.pci-0000_45_00.1.pro-output"
 usb_dock="usb-GeneralPlus_USB_Audio_Device-00"
 
 my_mic_list=""
