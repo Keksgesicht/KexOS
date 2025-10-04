@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   # Define your hostname
@@ -22,4 +22,7 @@
     crypttabExtraOpts = [ "tpm2-device=auto" ];
     bypassWorkqueues = true;
   };
+
+  # why does /boot grow faster on my laptop? tower uses 1G too.
+  boot.loader.systemd-boot.configurationLimit = lib.mkForce 10;
 }
