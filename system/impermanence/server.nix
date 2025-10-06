@@ -1,4 +1,4 @@
-{ username, ssd-mnt, ... }:
+{ username, ssd-mnt, home-dir, ... }:
 
 {
   # https://nixos.wiki/wiki/Impermanence#Home_Managing
@@ -11,4 +11,8 @@
       "git/hdd/nix/nixpkgs"
     ];
   };
+
+  systemd.tmpfiles.rules = [
+    "f+ ${home-dir}/.zshrc - - - - -"
+  ];
 }
