@@ -1,8 +1,9 @@
 { sloth, bindHomeDir, ... }:
-{ pkgs, ... }:
+{ pkgs-stable, ... }:
 
 let
   name = "Office";
+  pkgs = pkgs-stable {};
   args = { remove = "%U"; extra = "%U"; };
 in
 {
