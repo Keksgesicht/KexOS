@@ -28,6 +28,7 @@ in
 
       case "$1" in
         build)
+          WORKS_LOCAL="y"
           PRFX=""
         ;;
         repl)
@@ -63,11 +64,11 @@ in
           --target-host)
             shift
             KEXOS_REBUILD_OUTPUT="#$1"
-            if [ -z "$SKIP_ANSWER" ]; then
-              KEXOS_REBUILD_REMOTE_HOST="$1"
+            KEXOS_REBUILD_REMOTE_HOST="$1"
+            NIX_SSHOPTS="-i /root/.secrets/ssh/id_backup"
+            export NIX_SSHOPTS
+            if [ -z "$SKIP_ANSWER" ] && [ -z "$WORKS_LOCAL" ]; then
               ACTION+=" --target-host root@$1"
-              NIX_SSHOPTS="-i /root/.secrets/ssh/id_backup"
-              export NIX_SSHOPTS
               PRFX+=" --preserve-env=NIX_SSHOPTS"
             fi
           ;;
