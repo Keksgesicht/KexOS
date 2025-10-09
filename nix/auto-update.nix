@@ -1,4 +1,4 @@
-{ self, isDesktop, holidayMode, home-dir, username, ... }:
+{ self, config, isDesktop, holidayMode, home-dir, username, ... }:
 
 let
   current-system = "/nix/var/nix/profiles/system";
@@ -7,6 +7,8 @@ let
 
   srvNameCopy = "copy-latest-lock-file";
   localCfgDir = "${home-dir}/nixos-config";
+
+  timerConfig = config.KexOS.service."dummy".timer;
 in
 {
   environment.etc = {
@@ -20,6 +22,7 @@ in
     enable = !holidayMode;
     dates = "Tue *-*-* 02:22:19";
     randomizedDelaySec = "123min";
+    persistent = true;
 
     operation =
       if (isDesktop) then "boot"
@@ -58,4 +61,5 @@ in
       chmod 644 "$LOCK_FILE"
     '';
   };
+  systemd.timers."nixos-upgrade" = timerConfig;
 }

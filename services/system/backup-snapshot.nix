@@ -18,40 +18,37 @@ let
 in
 with my-functions;
 {
-  environment.systemPackages = with pkgs; [
-    (callPackage ../../packages/list-backups.nix {})
+  environment.systemPackages = [
+    (pkgs.callPackage ../../packages/list-backups.nix {})
   ];
 
-  systemd = {
-    services = {
-      # one snapshot a day
-      "backup-snapshot@" = {
-        description = "Online Backup Job (snapshot - %i)";
-        after = [ "mnt-%i.mount" ];
-        requires = [ "mnt-%i.mount" ];
-        path = with pkgs; [ btrfs-progs gawk util-linux ];
-        serviceConfig = {
-          Type      = "oneshot";
-          ExecStart = "${pkg-snapper}/bin/backup-snapshot.sh %i";
-          PrivateTmp   = "yes";
-          ProtectHome  = "yes";
-          ProtectClock = "yes";
-          ProtectProc  = "invisible";
-        };
+  KexOS.service."backup-snapshot@" = {
+    service = {
+      description = "Online Backup Job (snapshot - %i)";
+      after = [ "mnt-%i.mount" ];
+      requires = [ "mnt-%i.mount" ];
+      path = with pkgs; [ btrfs-progs gawk util-linux ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkg-snapper}/bin/backup-snapshot.sh %i";
+        ReadWritePaths = "/mnt/%i";
+        PrivateDevices = "no";
+        InaccessiblePaths = lib.mkForce [];
       };
     };
-
-    timers = {
-      # one snapshot a day
-      "backup-snapshot@" = {
-        description = "Online Backup Timer (snapshot - %i)";
-        timerConfig = {
-          OnCalendar = "*-*-* 06:15:00";
-          # also run when system was offline (like anacron)
-          Persistent = "true";
-        };
+    # one snapshot a day
+    timer = {
+      description = "Online Backup Timer (snapshot - %i)";
+      after = lib.mkForce [];
+      timerConfig = lib.mkForce {
+        OnCalendar = "*-*-* 06:15:00";
+        Persistent = "true";
       };
-    }
+    };
+  };
+
+  systemd = {
+    timers = {}
     // (bck-snap-timer ssd-name)
     // (bck-snap-timer hdd-name)
     // (if (hn == "cookieflyer") then (bck-snap-timer hot-name) else {})
@@ -65,33 +62,16 @@ with my-functions;
       ));
     in
     if (hn == "cookieclicker") then
-      backupLink ssd-name [
-        "appdata"
-        "etc"
-        "home"
-        "var"
-        "vm"
-      ] ++
+      backupLink ssd-name [ "appdata" "etc" "home" "var" "vm" ] ++
       backupLink hdd-name [
-        "appdata2"
-        "homeBraunJan"
-        "homeGaming"
-        "machines"
-        "resources"
+        "appdata2" "homeBraunJan" "homeGaming" "machines" "resources"
       ]
     else if (hn == "cookiethinker") then
-      backupLink ssd-name [ "etc" "home" ]
-      ++
+      backupLink ssd-name [ "etc" "home" ] ++
       backupLink hdd-name [ "homeBraunJan" ]
     else
-      backupLink ssd-name [
-        "appdata"
-        "etc"
-        "home"
-      ] ++
-      backupLink hdd-name [
-        "appdata2"
-      ]
+      backupLink ssd-name [ "appdata" "etc" "home" ] ++
+      backupLink hdd-name [ "appdata2" ]
     ++ lib.optionals (hn == "cookieflyer") (backupLink hot-name [ "data" ])
     ;
   };

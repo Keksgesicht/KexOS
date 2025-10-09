@@ -1,11 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
-  ctab-tpm2 = (name: ''
-    ${name}  /dev/disk/by-label/${name}  -  nofail,tpm2-device=auto
-  '');
+  inherit (lib.lists) forEach;
 
-  pkg-hot = pkgs.callPackage ../../packages/backup-hot.nix {};
+  hot-list = [ 1 2 ];
+  hot-name = (num: "hot_backup_" + (builtins.toString num));
+  hot-pkg = pkgs.callPackage ../../packages/backup-hot.nix {};
+
+  req-crypt = (n: "x-systemd.requires=systemd-cryptsetup@${n}.service");
+  ctab-tpm2 = (n: "${n} /dev/disk/by-label/${n} - nofail,tpm2-device=auto");
 
   timer-hot = {
     overrideStrategy = "asDropin";
@@ -13,49 +16,38 @@ let
   };
 in
 {
-  environment.etc."crypttab".text = ""
-    + (ctab-tpm2 "hot-backup-1")
-    + (ctab-tpm2 "hot-backup-2")
-    ;
+  environment.etc."crypttab".text = lib.strings.concatLines (
+    forEach hot-list (e: ctab-tpm2 (hot-name e))
+  );
 
   fileSystems."/mnt/hot_backup" = {
-    device = "/dev/disk/by-label/hot-backup";
+    device = "/dev/disk/by-label/hot_backup";
     options = [
       "nofail"
       "compress-force=zstd:3"
       "x-systemd.automount" # makes delayed mounting possible
       "x-systemd.device-timeout=123s" # prevent job removal
-      #"x-systemd.requires=systemd-cryptsetup@hot-backup-1.service"
-      #"x-systemd.requires=systemd-cryptsetup@hot-backup-2.service"
-    ];
+    ] ++ forEach hot-list (e: (req-crypt (hot-name e)));
   };
 
-  systemd.services."backup-hot@" = {
-    description = "Hot Backup Job for %i";
-    requires = [ "mnt-hot_backup.mount" ];
-    path = with pkgs; [ rsync util-linux ];
-    serviceConfig = {
-      Type = "exec";
-      ExecStart = "${pkg-hot}/bin/backup-hot.sh %i";
-
-      PrivateTmp   = "yes";
-      ProtectHome  = "yes";
-      ProtectClock = "yes";
-      ProtectProc  = "invisible";
-
-      ReadOnlyPaths  = "/";
-      ReadWritePaths = "/mnt/hot_backup/data/%i";
+  KexOS.service."backup-hot@" = {
+    service  = {
+      stopIfChanged = false;
+      restartIfChanged = false;
+      after = [ "podman-pihole.service" ];
+      description = "Hot Backup Job for %i";
+      requires = [ "mnt-hot_backup.mount" ];
+      path = with pkgs; [ rsync util-linux ];
+      serviceConfig = {
+        Type = "exec";
+        ExecStart = "${hot-pkg}/bin/backup-hot.sh %i";
+        ReadWritePaths = "/mnt/hot_backup/data/%i";
+        InaccessiblePaths = lib.mkForce [];
+      };
     };
+    timer.timerConfig.OnCalendar = "*-*-* 06:23:00";
   };
   systemd.timers = {
-    "backup-hot@" = {
-      timerConfig = {
-        OnCalendar = "*-*-* 06:23:00";
-        RandomizedDelaySec = "42 min";
-        Persistent = true;
-      };
-      wantedBy = [ "timers.target" ];
-    };
     "backup-hot@cookieflyer" = timer-hot;
     "backup-hot@cookiemailer" = timer-hot;
   };

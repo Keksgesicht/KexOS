@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -x
 
 OLDIFS=${IFS}
 
@@ -42,11 +44,11 @@ rm "$tmp_file_dir"
 
 ### only keep newest version of nextcloud or mobile phone backups
 if [ -d "/mnt/array/appdata2/nextcloud" ]; then
-	sleep 3s
+	sleep 7s
 	while ! systemctl is-active podman-nextcloud.service; do
-		sleep 5s
+		sleep 13s
 	done
-	sleep 3s
+	sleep 42s
 
 	# Cleanup older Backups in Nextcloud
 	docexe-nextcloud() {

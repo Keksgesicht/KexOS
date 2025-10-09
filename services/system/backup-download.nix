@@ -2,50 +2,40 @@
 
 let
   bd-pkg = (pkgs.callPackage ../../packages/backup-download.nix {});
-
   bd-units = (sn: th: {
-    tmpfiles.rules = [ "d  ${hdd-mnt}/machines/${sn}" ];
-    services."backup-download@${sn}" = {
-      path = with pkgs; [ gnutar gzip openssh rsync ];
-      requires = [ "mnt-${hdd-name}.mount" ];
-      description = "Generates Backups from different Remote Systems";
-      serviceConfig = {
-        Type      = "oneshot";
-        ExecStart = "${bd-pkg}/bin/backup-download.sh ${sn} ${th}";
-
-        ProtectProc    = "invisible";
-        PrivateTmp     = "yes";
-        ProtectClock   = "yes";
-        PrivateDevices = "yes";
-
-        ReadOnlyPaths = "/";
-        ReadWritePaths = "${hdd-mnt}/machines/${sn}";
-        BindReadOnlyPaths = [
-          "/etc/ssh/ssh_config"
-          "/root/.config/ssh"
-          "/root/.secrets/ssh"
-        ];
-        TemporaryFileSystem = [
-          "/etc:ro"
-          "/home" "/root" "/run/user"
-        ];
+    systemd.tmpfiles.rules = [ "d  ${hdd-mnt}/machines/${sn}" ];
+    KexOS.service."backup-download@${sn}" = {
+      service = {
+        stopIfChanged = false;
+        restartIfChanged = false;
+        after = [ "podman-pihole.service" ];
+        path = with pkgs; [ gnutar gzip openssh rsync ];
+        requires = [ "mnt-${hdd-name}.mount" ];
+        description = "Generates Backups from different Remote Systems";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${bd-pkg}/bin/backup-download.sh ${sn} ${th}";
+          ProtectHome = "no";
+          TemporaryFileSystem = [
+            "/etc:ro" "/home:ro" "/run/user:ro"
+            "/root"
+          ];
+          BindReadOnlyPaths = [
+            "/etc/ssh/ssh_config"
+            "/root/.config/ssh"
+            "/root/.secrets/ssh"
+          ];
+          ReadWritePaths = "${hdd-mnt}/machines/${sn}";
+          InaccessiblePaths = lib.mkForce [];
+        };
       };
-    };
-    timers."backup-download@${sn}" = {
-      enable = true;
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = "*-*-* 08:15:00";
-        RandomizedDelaySec = "42min";
-        OnBootSec = "23 min";
-        Persistent = "true";
-      };
+      timer.timerConfig.OnCalendar = "*-*-* 08:15:00";
     };
   });
 in
 {
-  systemd = lib.mkMerge [
-    ({ tmpfiles.rules = [ "q  ${hdd-mnt}/machines" ]; })
+  config = lib.mkMerge [
+    ({ systemd.tmpfiles.rules = [ "q  ${hdd-mnt}/machines" ]; })
     (bd-units "cookieflyer"   "cookieflyer.${myDomain}")
     (bd-units "cookiemailer" "cookiemailer.${myDomain}")
     (bd-units "pihole" "rpi.pihole.internal")

@@ -5,14 +5,21 @@
 # https://www.youtube.com/playlist?list=PLcxL7iznHgfUHJyo4c0CMtaoFJ8S_9iVU
 
 let
-   mailcow-updater-script = "./update.sh --force";
-   mailcow-srv-cfg = {
+  mailcow-updater-script = "./update.sh --force";
+  mailcow-path = "${hdd-mnt}/appdata2/mailcow";
+
+  WorkingDirectory = "${mailcow-path}/docker";
+  MAILCOW_BACKUP_LOCATION = "${mailcow-path}/backup";
+
+  ReadWritePaths = [ "/var/lib/docker" ];
+  serviceConfig = {
+    Type = "oneshot";
+    inherit WorkingDirectory;
+  };
+  mailcow-srv-cfg = {
     after    = [ "mnt-${hdd-name}.mount" ];
     requires = [ "mnt-${hdd-name}.mount" ];
-   };
-   mailcow-path = "${hdd-mnt}/appdata2/mailcow";
-   WorkingDirectory = "${mailcow-path}/docker";
-   MAILCOW_BACKUP_LOCATION = "${mailcow-path}/backup";
+  };
 in
 {
   imports = [
@@ -25,49 +32,45 @@ in
     inherit MAILCOW_BACKUP_LOCATION;
   };
 
-  systemd.timers = {
+  KexOS.service = {
     "mailcow-update" = {
-      timerConfig.RandomizedDelaySec = "42min";
-    };
-  };
-  systemd.services = {
-    "mailcow-update" = mailcow-srv-cfg // {
-      enable = !holidayMode;
-      startAt = "Thu *-*-* 01:12:35";
-      path = with pkgs; [
-        bash curl docker gawk git iptables systemd
-      ];
-      script = ''
-        set +e
-        ${mailcow-updater-script}
-        if [ "$?" = 2 ]; then
+      service = mailcow-srv-cfg // {
+        enable = !holidayMode;
+        startAt = "Thu *-*-* 01:12:35";
+        path = with pkgs; [
+          bash curl docker gawk git iptables jq openssl systemd
+        ];
+        script = ''
+          set +e
           ${mailcow-updater-script}
-        fi
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        inherit WorkingDirectory;
+          if [ "$?" = 2 ]; then
+            ${mailcow-updater-script}
+          fi
+        '';
+        serviceConfig = serviceConfig // {
+          ReadWritePaths = ReadWritePaths ++ [ WorkingDirectory ];
+        };
       };
     };
-    "mailcow-backup" = mailcow-srv-cfg // {
-      startAt = "*-*-* 06:06:06";
-      path = with pkgs; [
-        bash docker findutils gnugrep gnused which
-      ];
-      environment = {
-        BACK_PARAMS = "backup all";
-        BACK_OPTS = "--delete-days 1";
-        inherit MAILCOW_BACKUP_LOCATION;
+    "mailcow-backup" = {
+      service = mailcow-srv-cfg // {
+        startAt = "*-*-* 06:06:06";
+        path = with pkgs; [ bash docker findutils gnugrep gnused which ];
+        environment = {
+          BACK_PARAMS = "backup all";
+          BACK_OPTS = "--delete-days 1";
+          inherit MAILCOW_BACKUP_LOCATION;
+        };
+        script = ''
+          mkdir -p $MAILCOW_BACKUP_LOCATION
+          helper-scripts/backup_and_restore.sh \
+            $BACK_PARAMS $BACK_OPTS
+        '';
+        serviceConfig = serviceConfig // {
+          ReadWritePaths = ReadWritePaths ++ [ MAILCOW_BACKUP_LOCATION ];
+        };
       };
-      script = ''
-        mkdir -p $MAILCOW_BACKUP_LOCATION
-        helper-scripts/backup_and_restore.sh \
-          $BACK_PARAMS $BACK_OPTS
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        inherit WorkingDirectory;
-      };
+      timer.timerConfig.RandomizedDelaySec = "123sec";
     };
   };
 }

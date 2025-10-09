@@ -1,4 +1,4 @@
-{ pkgs, ...}:
+{ pkgs, lib, ... }:
 
 let
   pkg-bck-off = pkgs.callPackage ../../packages/backup-offline.nix {};
@@ -10,65 +10,49 @@ in
     options = [ "noauto" ];
   };
 
-  systemd = {
-    services = {
-      "backup-offline" = {
+  KexOS.service = {
+    "backup-offline" = {
+      service = {
+        stopIfChanged = false;
+        restartIfChanged = false;
         description = "Offline Backup Job over USB";
         bindsTo = [ "mnt-backup-usb-data.mount" ];
         path = with pkgs; [ rsync util-linux ];
-        unitConfig = {
-          RequiresMountsFor = "/mnt/backup/usb/data";
-        };
+        unitConfig.RequiresMountsFor = "/mnt/backup/usb/data";
         serviceConfig = {
           Type = "exec";
           ExecStart = "${pkg-bck-off}/bin/backup-offline.sh";
-
-          ProtectProc  = "invisible";
-          PrivateTmp   = "yes";
-          ProtectHome  = "yes";
-          ProtectClock = "yes";
-
-          ReadOnlyPaths  = "/";
           ReadWritePaths = "/mnt/backup/usb";
+          InaccessiblePaths = lib.mkForce [];
         };
       };
-      # similar to backup-download
-      "backup-upload" = {
+      timer = lib.mkForce {};
+    };
+    # similar to backup-download
+    "backup-upload" = {
+      service = {
+        stopIfChanged = false;
+        restartIfChanged = false;
+        after = [ "podman-pihole.service" ];
         description = "Upload Backups over SSH tunnel via RSYNC";
         path = with pkgs; [ gnutar gzip openssh rsync ];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkg-bck-off}/bin/backup-upload.sh";
-
-          ProtectProc    = "invisible";
-          PrivateTmp     = "yes";
-          ProtectClock   = "yes";
-          PrivateDevices = "yes";
-
-          ReadOnlyPaths = "/";
+          ProtectHome = "no";
+          TemporaryFileSystem = [
+            "/etc:ro" "/home:ro" "/run/user:ro"
+            "/root"
+          ];
           BindReadOnlyPaths = [
             "/etc/ssh/ssh_config"
             "/root/.config/ssh"
             "/root/.secrets/ssh"
           ];
-          TemporaryFileSystem = [
-            "/etc:ro"
-            "/home" "/root" "/run/user"
-          ];
+          InaccessiblePaths = lib.mkForce [];
         };
       };
-    };
-
-    timers = {
-      "backup-upload" = {
-        timerConfig = {
-          OnCalendar = "*-*-* 07:07:07";
-          RandomizedDelaySec = "42 min";
-          OnBootSec = "23 min";
-          Persistent = true;
-        };
-        wantedBy = [ "timers.target" ];
-      };
+      timer.timerConfig.OnCalendar = "*-*-* 07:07:07";
     };
   };
 }

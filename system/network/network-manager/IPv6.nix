@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   pub6ds = config.networking.networkmanager.dispatcherScript."50-public-ipv6";
@@ -11,25 +11,23 @@ in
     ];
   };
 
-  systemd = {
-    services = {
-      "NetworkManager-dispatcher" = {
-        serviceConfig.TimeoutStopSec = 13;
-      };
-      "ipv6-prefix-update" = {
-        description = "IPv6 prefix check and suffix updater";
-        serviceConfig.ExecStart = pub6ds.output.script + " "
+  KexOS.service."ipv6-prefix-update" = {
+    service = {
+      description = "IPv6 prefix check and suffix updater";
+      onSuccess = [ "hetzner-ddns.service" ];
+      serviceConfig = {
+        ExecStart = pub6ds.output.script + " "
           + "${pub6ds.variables.MY_IFLINK} prefix";
+        PrivateDevices = "no";
+        TimeoutStopSec = 13;
       };
     };
-    timers = {
-      "ipv6-prefix-update" = {
-        description = "regular IPv6 prefix update check";
-        timerConfig = {
-          OnStartupSec = "123sec";
-          OnUnitInactiveSec = "1234sec";
-        };
-        wantedBy = [ "timers.target" ];
+    timer = {
+      description = "regular IPv6 prefix update check";
+      after = lib.mkForce [];
+      timerConfig = lib.mkForce {
+        OnStartupSec = "123sec";
+        OnUnitInactiveSec = "1234sec";
       };
     };
   };

@@ -1,6 +1,7 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
+  inherit (config.KexOS.service."dummy".service) serviceConfig;
   fc-bin = "${pkgs.lm_sensors}/bin/fancontrol";
   fc-cfg = (pkgs.callPackage ../../packages/config-fancontrol.nix {});
 in
@@ -13,9 +14,10 @@ in
   # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/services/hardware/fancontrol.nix
   systemd.services.fancontrol = {
     overrideStrategy = "asDropinIfExists";
-    serviceConfig = {
+    serviceConfig = serviceConfig // {
+      PrivateDevices = "no";
       ExecStartPre = "${fc-cfg}/bin/fancontrol-hwmon-fix.sh";
-      ExecStart = lib.mkForce "${fc-bin} /etc/fancontrol";
+      ExecStart = lib.mkForce "${fc-bin} /tmp/fancontrol-config";
     };
   };
 

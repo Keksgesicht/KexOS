@@ -5,6 +5,7 @@
 
 let
   bind-path = "${ssd-mnt}/appdata/unbound";
+  pss = (sec: (import ./podman-systemd-service.nix lib sec));
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
@@ -19,39 +20,30 @@ with my-functions;
     final.name = "alpinelinux-unbound";
   };
 
-  systemd = {
-    services = {
-      "podman-unbound" = (import ./podman-systemd-service.nix lib 17) // {
-        partOf = [ "NetworkManager.service" ];
+  systemd.services."podman-unbound" = (pss 17) // {
+    partOf = [ "NetworkManager.service" ];
+  };
+
+  KexOS.service."update-root-dns-servers" = {
+    service = {
+      description = "Download root DNS server list";
+      path = with pkgs; [ curl nix unixtools.xxd ];
+      serviceConfig = {
+        ReadWritePaths = cookie-dir;
+        InaccessiblePaths = lib.mkForce [];
       };
-      "update-root-dns-servers" = {
-        description = "Download root DNS server list";
-        path = [
-          pkgs.curl
-          pkgs.nix
-          pkgs.unixtools.xxd
-        ];
-        script = ''
-          set -e
-          set -o pipefail
-          URL="https://www.internic.net/domain/named.cache"
-          HASHFILE="${cookie-dir}/root-dns-server.hash"
-          mkdir -p "$(dirname "$HASHFILE")"
-          nix-prefetch-url "$URL" 2>/dev/null | tee "$HASHFILE"
-        '';
-      };
+      script = ''
+        set -e
+        set -o pipefail
+        URL="https://www.internic.net/domain/named.cache"
+        HASHFILE="${cookie-dir}/root-dns-server.hash"
+        mkdir -p "$(dirname "$HASHFILE")"
+        nix-prefetch-url "$URL" 2>/dev/null | tee "$HASHFILE"
+      '';
     };
-    timers = {
-      "update-root-dns-servers" = {
-        enable = true;
-        description = "Download root DNS server list";
-        timerConfig = {
-          OnCalendar = "monthly";
-          RandomizedDelaySec = "42min";
-          Persistent = "true";
-        };
-        wantedBy = [ "timers.target" ];
-      };
+    timer = {
+      description = "Download root DNS server list";
+      timerConfig.OnCalendar = "monthly";
     };
   };
 
@@ -59,9 +51,8 @@ with my-functions;
     "unbound" = {
       autoStart = true;
       dependsOn = [];
-
-      # https://ryantm.github.io/nixpkgs/builders/images/dockertools/
       image = "localhost/unbound:latest";
+      # https://ryantm.github.io/nixpkgs/builders/images/dockertools/
       imageFile = pkgs.dockerTools.buildImage {
         name = "localhost/unbound";
         tag = "latest";
@@ -73,15 +64,10 @@ with my-functions;
               inherit cookie-pkg;
             })
           ];
-          pathsToLink = [
-            "/scripts"
-          ];
+          pathsToLink = [ "/scripts" ];
         };
-        config = {
-          Cmd = [ "/scripts/entrypoint.sh" ];
-        };
+        config.Cmd = [ "/scripts/entrypoint.sh" ];
       };
-
       ports = [
         "2053:53/tcp"
         "2053:53/udp"

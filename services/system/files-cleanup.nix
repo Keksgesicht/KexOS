@@ -1,80 +1,56 @@
-{ pkgs, data-dir, ssd-mnt, ssd-name, hdd-mnt, hdd-name, home-dir, ... }:
+{ pkgs, lib, data-dir, ssd-mnt, ssd-name, hdd-mnt, hdd-name, home-dir, ... }:
 
 let
+  cleanup-pkg = pkgs.callPackage ../../packages/files-cleanup.nix {};
   locate-path = "/var/cache/locatedb";
 in
 {
+  KexOS.service."files-cleanup" = {
+    service = {
+      description = "unCookie Cleanup";
+      path = with pkgs; [ gawk moreutils plocate podman ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${cleanup-pkg}/bin/cleanup.sh";
+        ReadOnlyPaths = "/";
+        ReadWritePaths = [
+          "${home-dir}/nixos-config"
+          "${data-dir}"
+          "-${hdd-mnt}/appdata2/nextcloud/janb/files/.Calendar-Backup"
+          "-${hdd-mnt}/appdata2/nextcloud/janb/files/.Contacts-Backup"
+          "-${hdd-mnt}/appdata2/nextcloud/janb/files/InstantUpload/SignalBackup"
+          "-${ssd-mnt}/appdata/ddns"
+          "-/var/lib/containers/storage"
+        ];
+      };
+      wants = [ "update-locatedb.service" ];
+    };
+    # cleanup after boot and repeat after 24h (if still running)
+    timer = {
+      description = "unCookie Cleanup Timer";
+      after = lib.mkForce [
+        "update-locatedb.service"
+        "podman-nextcloud.service"
+        "mnt-${ssd-name}.mount"
+        "mnt-${hdd-name}.mount"
+        "backup-snapshot@${ssd-name}.service"
+        "backup-snapshot@${hdd-name}.service"
+      ];
+      timerConfig = lib.mkForce {
+        OnStartupSec      = "7s";
+        OnUnitInactiveSec = "1d";
+      };
+    };
+  };
+
   systemd = {
     services = {
-      "files-cleanup" = {
-        description = "unCookie Cleanup";
-        path = [
-          pkgs.gawk
-          pkgs.moreutils
-          pkgs.plocate
-          pkgs.podman
-        ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.callPackage ../../packages/files-cleanup.nix {}}/bin/cleanup.sh";
-
-          PrivateTmp     = "yes";
-          ProtectClock   = "yes";
-          PrivateDevices = "yes";
-          ProtectProc    = "invisible";
-
-          ReadOnlyPaths = "/";
-          #ExecPaths = "/usr/bin";
-
-          ReadWritePaths = [
-            "${home-dir}/nixos-config"
-            "${data-dir}"
-
-            "-${hdd-mnt}/appdata2/nextcloud/janb/files/.Calendar-Backup"
-            "-${hdd-mnt}/appdata2/nextcloud/janb/files/.Contacts-Backup"
-            "-${hdd-mnt}/appdata2/nextcloud/janb/files/InstantUpload/SignalBackup"
-            "-${ssd-mnt}/appdata/ddns"
-
-            "-/var/lib/containers/storage"
-          ];
-        };
-      };
-
       # script in unit above needs updatedb/locate
-      "update-locatedb" = {
-        after = [
-          "mnt-${ssd-name}.mount"
-          "mnt-${hdd-name}.mount"
-        ];
-      };
+      "update-locatedb".after = [
+        "mnt-${ssd-name}.mount"
+        "mnt-${hdd-name}.mount"
+      ];
     };
-
-    timers = {
-      # cleanup after boot and repeat after 24h (if still running)
-      "files-cleanup" = {
-        wants = [
-          "update-locatedb.service"
-        ];
-        after = [
-          "update-locatedb.service"
-          "podman-nextcloud.service"
-          "mnt-${ssd-name}.mount"
-          "mnt-${hdd-name}.mount"
-          "backup-snapshot@${ssd-name}.service"
-          "backup-snapshot@${hdd-name}.service"
-        ];
-        description = "unCookie Cleanup Timer";
-        timerConfig = {
-          OnBootSec         = "13s";
-          OnUnitInactiveSec = "1d";
-          AccuracySec       = "3s";
-        };
-        wantedBy = [
-          "timers.target"
-        ];
-      };
-    };
-
     # environment variable LOCATE_PATH does not seem to be used by `locate`
     tmpfiles.rules = [
       "L+ ${locate-path} - - - - ${ssd-mnt}${locate-path}"

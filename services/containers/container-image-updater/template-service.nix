@@ -1,4 +1,4 @@
-{ config, cookie-pkg, cookie-dir, ... }:
+{ config, lib, cookie-pkg, cookie-dir, ... }:
 
 let
   update-days = (builtins.head (builtins.split " " config.system.autoUpgrade.dates));
@@ -11,30 +11,19 @@ in
     };
   };
 
-  systemd = {
-    services."container-image-updater@" = {
+  KexOS.service."container-image-updater@" = {
+    service = {
       description = "Bump up container image version hashes [%i]";
       serviceConfig = {
-        Type      = "oneshot";
+        Type = "oneshot";
         ExecStart = "${image-updater}/bin/get-container-image-hash.sh";
-
-        PrivateTmp   = "yes";
-        ProtectHome  = "yes";
-        ProtectClock = "yes";
-        ProtectProc  = "invisible";
-
-        ReadOnlyPaths  = "/";
         ReadWritePaths = "${cookie-dir}/containers";
-        #TemporaryFileSystem = "/etc:ro";
+        InaccessiblePaths = lib.mkForce [];
       };
     };
-    timers."container-image-updater@" = {
+    timer = {
       description = "Automatic container image version updater [%i]";
-      timerConfig = {
-        OnCalendar = "${update-days} 01:44:12";
-        RandomizedDelaySec = "30min";
-        Persistent = "true";
-      };
+      timerConfig.OnCalendar = "${update-days} 01:39:24";
     };
   };
 }

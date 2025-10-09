@@ -1,12 +1,13 @@
-{ self, config, pkgs, myDomain, secrets-dir, ... }:
+{ self, config, pkgs, lib, myDomain, secrets-dir, ... }:
 
 let
   hn = config.networking.hostName;
   pub6ds = config.networking.networkmanager.dispatcherScript."50-public-ipv6";
 in
 {
-  systemd = {
-    services."hetzner-ddns" = {
+  KexOS.service."hetzner-ddns" = {
+    service = {
+      after = [ "podman-pihole.service" ];
       path = with pkgs; [ bash curl gawk gnused iproute2 jq util-linux ];
       environment = pub6ds.variables // {
         TTL =
@@ -21,14 +22,15 @@ in
       serviceConfig = {
         EnvironmentFile = "${secrets-dir}/keys/services/ddns/HETZNER_APIKEY";
         ExecStart = "${self}/files/scripts/hetzner-ddns.sh";
+        PrivateDevices = "no";
       };
     };
-    timers."hetzner-ddns" = {
-      timerConfig = {
-        OnStartupSec = "123sec";
-        OnUnitInactiveSec = "1234sec";
+    timer = {
+      after = lib.mkForce [];
+      timerConfig = lib.mkForce {
+        OnStartupSec = "12sec";
+        OnUnitInactiveSec = "4321sec";
       };
-      wantedBy = [ "timers.target" ];
     };
   };
 }

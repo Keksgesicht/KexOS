@@ -7,7 +7,7 @@ find-hwmon() {
 }
 
 file_input="$(dirname "$0")/../cfg/fancontrol.config.sample"
-file_output="/etc/fancontrol"
+file_output="/tmp/fancontrol-config"
 cp "${file_input}" ${file_output}
 
 hwmon_temp1=$(find-hwmon /sys/devices/pci0000:00/0000:00:18.3/hwmon)

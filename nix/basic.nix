@@ -1,5 +1,8 @@
-{ system, ... }:
+{ config, system, ... }:
 
+let
+  timerConfig = config.KexOS.service."dummy".timer;
+in
 {
   # set hardware architecture and os platform
   nixpkgs.hostPlatform = {
@@ -24,4 +27,6 @@
     # enable flake commands
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
+
+  systemd.timers."nix-optimise" = timerConfig;
 }

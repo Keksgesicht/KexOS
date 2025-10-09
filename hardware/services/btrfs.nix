@@ -2,11 +2,8 @@
 
 let
   pkgs-sta = pkgs-stable {};
-
   hn = config.networking.hostName;
-  delayTimer = {
-    timerConfig.RandomizedDelaySec = "222s";
-  };
+  timerConfig = config.KexOS.service."dummy".timer;
 in
 {
   environment.systemPackages = with pkgs; [
@@ -30,7 +27,7 @@ in
 
   # wait for drives to be mounted
   systemd.timers = if (hn == "cookieclicker") then {
-    "btrfs-scrub-mnt-${hdd-name}" = delayTimer;
-    "btrfs-scrub-mnt-${nvm-name}" = delayTimer;
+    "btrfs-scrub-mnt-${hdd-name}" = timerConfig;
+    "btrfs-scrub-mnt-${nvm-name}" = timerConfig;
   } else {};
 }

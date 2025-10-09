@@ -1,9 +1,14 @@
-{ pkgs, inputs, username, ... }:
+{ self, config, pkgs, username, ... }:
 
 let
-  self-dir = inputs.self;
-  pkg-dir = "${self-dir}/packages";
+  inherit (config.KexOS.service."dummy".service) serviceConfig;
+  pkg-dir = "${self}/packages";
   my-audio = pkgs.callPackage "${pkg-dir}/my-audio.nix" {};
+  srvList = [
+    "pipewire.service"
+    "pipewire-pulse.service"
+    "wireplumber.service"
+  ];
 in
 {
   imports = [
@@ -43,30 +48,17 @@ in
   systemd.user.services = {
     "my-audio" = {
       description = "Custom Audio Setup (pipewire)";
-      path = [
-        pkgs.gawk
-        pkgs.pipewire
-        pkgs.pulseaudio
-        pkgs.ripgrep
-      ];
-      after = [
-        "pipewire.service"
-        "pipewire-pulse.service"
-        "wireplumber.service"
-      ];
-      partOf = [
-        "pipewire.service"
-        "pipewire-pulse.service"
-        "wireplumber.service"
-      ];
-      serviceConfig = {
+      path = with pkgs; [ gawk pipewire pulseaudio ripgrep ];
+      after = srvList;
+      partOf = srvList;
+      wantedBy = srvList;
+      serviceConfig = serviceConfig // {
         ExecStart = "${my-audio}/bin/audio-init.sh";
         Restart = "always";
         Type = "exec";
+        ProtectHome = "read-only";
+        BindPaths = "/run/user/1000";
       };
-      wantedBy = [
-        "pipewire.service"
-      ];
     };
     # trying to even start a additional screencast concurrently to OBS-Studio (dmabuf?) will crash xdg-desktop-portal.service
     # restarting pipewire and co or xdg-desktop-portal and co does not help
@@ -81,12 +73,7 @@ in
     # Otherwise services like Discord might not be able to use audio
     "app-ferdium@autostart" = {
       overrideStrategy = "asDropin";
-      after = [
-        "pipewire.service"
-        "pipewire-pulse.service"
-        "wireplumber.service"
-        "my-audio.service"
-      ];
+      after = srvList ++ [ "my-audio.service" ];
     };
   };
 }

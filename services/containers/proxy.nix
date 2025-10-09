@@ -1,10 +1,8 @@
-{ inputs, config, pkgs, lib, myDomain, ssd-mnt, ... }:
+{ config, inputs, pkgs, lib, myDomain, ssd-mnt, ... }:
 
 let
   hn = config.networking.hostName;
-
   bind-path = "${ssd-mnt}/appdata/swag";
-
   my-functions = (import "${inputs.self}/nix/my-functions.nix" lib);
 in
 with my-functions;
@@ -20,42 +18,32 @@ with my-functions;
     final.name = "linuxserver-swag";
   };
 
-  systemd = {
-    services = {
-      "podman-proxy" = (import ./podman-systemd-service.nix lib 25);
-      "server-and-config-update@SwagCertbot" = {
-        overrideStrategy = "asDropin";
-        path = [ pkgs.podman ];
-        description = "Renew SSL/TLS Certificate";
-        serviceConfig = {
-          BindReadOnlyPaths = "/etc/containers";
-          ReadWritePaths = "/var/lib/containers/storage";
-        };
+  systemd.services."podman-proxy" = (import ./podman-systemd-service.nix lib 25);
+
+  KexOS.service."server-and-config-update@SwagCertbot" = {
+    service = {
+      overrideStrategy = "asDropin";
+      path = [ pkgs.podman ];
+      description = "Renew SSL/TLS Certificate";
+      serviceConfig = {
+        BindReadOnlyPaths = "/etc/containers";
+        ReadWritePaths = "/var/lib/containers/storage";
       };
     };
-
-    timers = {
-      "server-and-config-update@SwagCertbot" = {
-        enable = true;
-        overrideStrategy = "asDropin";
-        wantedBy = [ "timers.target" ];
-        after = [ "podman-proxy.service" ];
-        timerConfig = {
-          OnCalendar = "Wed *-*-* 20:20:00";
-          RandomizedDelaySec = "5min";
-        };
-      };
+    timer = {
+      overrideStrategy = "asDropin";
+      after = [ "podman-proxy.service" ];
+      timerConfig.OnCalendar = "Wed *-*-* 20:20:00";
     };
   };
+
 
   virtualisation.oci-containers.containers = {
     "proxy" = {
       autoStart = true;
       dependsOn = [ "pihole" ];
-
       image     = config.container-image-updater."proxy".imageName;
       imageFile = config.container-image-updater."proxy".imageFile;
-
       environment = {
         TZ = config.time.timeZone;
         URL = myDomain;
