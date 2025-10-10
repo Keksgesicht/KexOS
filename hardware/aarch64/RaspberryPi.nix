@@ -1,4 +1,4 @@
-{ lib, ssd-mnt, ... }:
+{ pkgs, lib, ssd-mnt, lan-subnet-v4, lan-ip-suf, ... }:
 
 # https://nixos.wiki/wiki/NixOS_on_ARM/Raspberry_Pi
 let
@@ -8,6 +8,14 @@ let
     CPUAccounting = true;
     CPUQuota = "80%";
   };
+
+  dns-cfg = pkgs.writeText "wg-refresh-resolv.conf" ''
+    nameserver 172.23.53.1
+    nameserver ${lan-subnet-v4}.${lan-ip-suf}
+    nameserver 9.9.9.9
+    options timeout:3
+    options attempts:1
+  '';
 in
 {
   imports = [
@@ -28,20 +36,23 @@ in
     size = 4096;
   } ];
 
-  # reduce the load on the sd-card
-  system.autoUpgrade = {
-    # run updates only on the first tuesday of the month
-    dates = lib.mkForce "Tue *-*-01..07 02:10";
-    randomizedDelaySec = lib.mkForce "64min";
-  };
+  # build remotely and only copy closures to this system
+  # TODO create service on cookieflyer for this
+  system.autoUpgrade.enable = lib.mkForce false;
 
   systemd.services = {
-    # try not freezing RPi on rebuilds
+    # try not freezing RPi on any Nix commands
     "nix-daemon" = { inherit serviceConfig; };
-    "nixos-upgrade" = { inherit serviceConfig; };
 
     # sshd might not listen to the needed addresses
     # also RPi has no RTC. startup of NTP might be useful.
     "NetworkManager-wait-online".enable = lib.mkForce true;
+
+    # RPi has no RTC and might not be able to use DNS
+    "systemd-timesyncd".serviceConfig = {
+      # force the usage of DNS servers defined in the unit scope
+      TemporaryFileSystem = "/var/run/nscd";
+      BindReadOnlyPaths = "${dns-cfg}:/etc/resolv.conf";
+    };
   };
 }
