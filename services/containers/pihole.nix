@@ -32,10 +32,8 @@ with my-functions;
     "pihole" = {
       autoStart = true;
       dependsOn = [ "unbound" ];
-
       image     = config.container-image-updater."pihole".imageName;
       imageFile = config.container-image-updater."pihole".imageFile;
-
       ports = flatList (forEach local-ips (li: forEach local-ports (lp:
         "${li}:${lp}"
       )));
@@ -60,7 +58,9 @@ with my-functions;
         "--dns" "172.23.53.2"
         "--dns" "fd00:172:23::aaaa:2"
         "--cap-add" "CAP_CHOWN"
+        "--health-start-period=123s"
       ];
+      podman.sdnotify = "healthy";
     };
   };
 }
