@@ -12,12 +12,6 @@ in
   ];
 
   container-image-updater = {
-    "tandoor-http" = {
-      upstream.name = "nginx";
-      upstream.tag = "mainline-alpine";
-      final.name = "tandoor-http";
-      final.tag = "latest";
-    };
     "tandoor-web" = {
       upstream.name = "vabene1111/recipes";
       final.name = "tandoor-web";
@@ -39,7 +33,6 @@ in
       };
     in
     {
-      "podman-tandoor-http" = (pss 13) // serviceExtraConfig;
       "podman-tandoor-web" = (pss 17) // serviceExtraConfig;
       "podman-tandoor-db" = (pss 23) // serviceExtraConfig;
     };
@@ -48,29 +41,6 @@ in
   # https://docs.tandoor.dev/install/docker/
   # https://github.com/TandoorRecipes/recipes
   virtualisation.oci-containers.containers = {
-    "tandoor-http" = {
-      autoStart = true;
-      dependsOn = [ "tandoor-web" ];
-      image     = config.container-image-updater."tandoor-http".imageName;
-      imageFile = config.container-image-updater."tandoor-http".imageFile;
-      environment = {
-        TZ = config.time.timeZone;
-      };
-      environmentFiles = [ sec-file ];
-      volumes = [
-        # Do not make this a bind mount
-        # see https://docs.tandoor.dev/install/docker/#volumes-vs-bind-mounts
-        "tandoor-nginx_config:/etc/nginx/conf.d:ro"
-        "tandoor-staticfiles:/opt/recipes/staticfiles:ro"
-        "${bind-path}/mediafiles:/opt/recipes/mediafiles:ro"
-      ];
-      extraOptions = [
-        "--network" "server"
-        "--ip" "172.23.219.1"
-        "--ip6" "fd00:172:23::219:1"
-        "--add-host" "web_recipes:172.23.219.2"
-      ];
-    };
     "tandoor-web" = {
       autoStart = true;
       dependsOn = [ "tandoor-db" ];
@@ -84,13 +54,12 @@ in
         # Do not make this a bind mount
         # see https://docs.tandoor.dev/install/docker/#volumes-vs-bind-mounts
         "tandoor-staticfiles:/opt/recipes/staticfiles"
-        "tandoor-nginx_config:/opt/recipes/nginx/conf.d"
         "${bind-path}/mediafiles:/opt/recipes/mediafiles"
       ];
       extraOptions = [
         "--network" "server"
-        "--ip" "172.23.219.2"
-        "--ip6" "fd00:172:23::219:2"
+        "--ip" "172.23.219.1"
+        "--ip6" "fd00:172:23::219:1"
       ];
     };
     "tandoor-db" = {
