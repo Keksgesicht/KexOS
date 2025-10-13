@@ -1,5 +1,12 @@
 { config, pkgs, lib, secrets-dir, ssd-mnt, hdd-mnt, hdd-name, ... }:
 
+let
+  pss = (sec: import ./podman-systemd-service.nix lib sec);
+  serviceExtraConfig = {
+    after    = [ "mnt-${hdd-name}.mount" ];
+    requires = [ "mnt-${hdd-name}.mount" ];
+  };
+in
 {
   imports = [
     ../../system/containers/podman.nix
@@ -24,23 +31,10 @@
     };
   };
 
-  systemd = {
-    services =
-    let
-      serviceExtraConfig = {
-        after = [
-          "mnt-${hdd-name}.mount"
-        ];
-        requires = [
-          "mnt-${hdd-name}.mount"
-        ];
-      };
-    in
-    {
-      "podman-nextcloud" = (import ./podman-systemd-service.nix lib 23) // serviceExtraConfig;
-      "podman-nextcloud-db" = (import ./podman-systemd-service.nix lib 27);
-      "podman-nextcloud-redis" = (import ./podman-systemd-service.nix lib 27);
-    };
+  systemd.services = {
+    "podman-nextcloud" = (pss 23) // serviceExtraConfig;
+    "podman-nextcloud-db" = (pss 27);
+    "podman-nextcloud-redis" = (pss 27);
   };
 
   virtualisation.oci-containers.containers = {
@@ -50,7 +44,6 @@
         "nextcloud-db"
         "nextcloud-redis"
       ];
-
       image = "localhost/nextcloud:stable";
       imageFile = pkgs.dockerTools.buildImage {
         name = "localhost/nextcloud";
@@ -65,7 +58,6 @@
           Cmd = [ "/init" ];
         };
       };
-
       environment = {
         TZ = config.time.timeZone;
         #PHP_MEMORY_LIMIT = "512M";
@@ -83,14 +75,11 @@
         "--dns" "fd00:172:23::aaaa:2"
       ];
     };
-
     "nextcloud-db" = {
       autoStart = true;
       dependsOn = [];
-
       image     = config.container-image-updater."nextcloud-db".imageName;
       imageFile = config.container-image-updater."nextcloud-db".imageFile;
-
       cmd = [
         "--transaction-isolation=READ-COMMITTED"
         "--binlog-format=ROW"
@@ -115,21 +104,11 @@
         "--ip6" "fd00:172:23::443:2:1"
       ];
     };
-
     "nextcloud-redis" = {
       autoStart = true;
       dependsOn = [];
-
       image     = config.container-image-updater."nextcloud-redis".imageName;
       imageFile = config.container-image-updater."nextcloud-redis".imageFile;
-
-      /*
-      cmd = [
-        "redis-server"
-        "--appendonly" "yes"
-        "--requirepass" "$$\{REDIS_HOST_PASSWORD\}"
-      ];
-      */
       environment = {
         TZ = config.time.timeZone;
       };
@@ -137,13 +116,15 @@
         "${secrets-dir}/keys/containers/nextcloud/REDIS"
       ];
       volumes = [
-        "${ssd-mnt}/appdata/redis/nextcloud:/data"
+        "${ssd-mnt}/appdata/redis/nextcloud/cfg:/etc/redis"
+        "${ssd-mnt}/appdata/redis/nextcloud/data:/data"
       ];
       extraOptions = [
         "--network" "server"
         "--ip" "172.23.82.2"
         "--ip6" "fd00:172:23::443:2:2"
       ];
+      cmd = [ "redis-server" "/etc/redis/redis.conf" ];
     };
   };
 }
