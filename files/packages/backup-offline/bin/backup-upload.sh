@@ -7,7 +7,7 @@ conf_dir="$(realpath "$(dirname "$0")/../cfg")"
 local_system="cookieclicker"
 remote_user="root"
 remote_domain="keksgesicht.de"
-remote_system="cookieflyer.${remote_domain}"
+remote_system="cookieflyer.internal.${remote_domain}"
 remote_addr="${remote_user}@${remote_system}"
 
 back_path="/mnt/hot_backup"

@@ -10,9 +10,8 @@ geo $upstream_443 {
 map $ssl_preread_server_name $upstream_1443 {
     hostnames;
     # https://datatracker.ietf.org/doc/html/rfc863
-    *.cookieclicker.keksgesicht.de 9;
-    *.cookieflyer.keksgesicht.de 9;
-    *.keksgesicht.de    8443;
+    *.internal.keksgesicht.de      9;
+    *.keksgesicht.de            8443;
 }
 
 

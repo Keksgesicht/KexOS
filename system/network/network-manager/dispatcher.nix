@@ -48,8 +48,9 @@ let
           if (hn == "cookieclicker") then "br-home"
           else ifLan;
         MY_IPV6_SUFFIX =
-          if (hn == "cookieclicker") then "da:b44:${lan-ip-suf}:1"
-          else if (hn == "cookieflyer") then "da:c54:${lan-ip-suf}:1"
+               if (hn == "cookieclicker") then "da:b44:${lan-ip-suf}:1"
+          else if (hn == "cookieflyer")   then "da:c54:${lan-ip-suf}:2"
+          else if (hn == "cookiepi")      then "da:b44:${lan-ip-suf}:4"
           else "dead:beef:0815:42";
       };
       output.script = pkgs.writers.writeBash name (

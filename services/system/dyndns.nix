@@ -15,7 +15,8 @@ in
           else "1000";
         records =
           if (hn == "cookieclicker") then "tw.host"
-          else if (hn == "cookieflyer") then "pi.host"
+          else if (hn == "cookieflyer") then "fy.host"
+          else if (hn == "cookiepi") then "pi.host"
           else "";
         domain = myDomain;
       };

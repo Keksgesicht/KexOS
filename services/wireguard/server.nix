@@ -56,6 +56,10 @@ let
   # laptop
   wg-client-laptop = wg-client "cookiethinker" "" "" "102" "10:2";
 
+  # cookiepi
+  wg-pi = wg-client "cookiepi" "" "" "4" "4";
+  wg-pi-click = wg-pi // (cli-end "pi" "22263");
+
   # rpi
   wg-rpi = wg-client "rpi" "" "" "103" "10:3";
   wg-rpi-click = wg-rpi // (cli-end "ub" "22263");
@@ -67,7 +71,7 @@ let
   wg-fly = wg-srv "cookieflyer" "2";
 
   hncc = hn != "cookieclicker";
-  wg-fly-click = wg-fly // (cli-end "pi" "22243");
+  wg-fly-click = wg-fly // (cli-end "fy" "22243");
 
   # self
   wg-server = (suf: iface: listenPort: extPeers:
@@ -87,7 +91,7 @@ let
           ++ (lib.optionals (hn != "cookiemailer") [ wg-mail wg-client-handy ])
           ++ (lib.optionals (hncc) [ wg-click ])
           ++ (lib.optionals (hncc && hn != "cookieflyer" ) [ wg-fly ])
-          ++ (lib.optionals (hncc && hn != "cookiepi" ) [ wg-rpi ])
+          ++ (lib.optionals (hncc && hn != "cookiepi" ) [ wg-pi wg-rpi ])
           ++ [ wg-client-laptop ]
           ++ extPeers;
       };
@@ -110,9 +114,10 @@ in
 
   networking.wireguard.interfaces =
     if (hn == "cookieclicker") then
-      wg-server "1" ifLan 22223 [ wg-fly-click wg-rpi-click ]
+      wg-server "1" ifLan 22223 [ wg-fly-click wg-pi-click wg-rpi-click ]
     else if (hn == "cookieflyer")  then (wg-server "2" "${ifLan}" 22243 [])
     else if (hn == "cookiemailer") then (wg-server "3" "invalid"  22301 [])
+    else if (hn == "cookiepi")     then (wg-server "4" "${ifLan}" 22263 [])
     else {};
 
   systemd.services =
@@ -145,9 +150,11 @@ in
     });
   in
   if (hn == "cookieclicker") then
-     (listRefresh [ "cookieflyer" "cookiemailer" "rpi" ])
-    // (listCheck [ "cookieflyer" "cookiemailer" "rpi" ] [ "2" "3" "103" ])
+     (listRefresh [ "cookieflyer" "cookiemailer" "cookiepi" "rpi" ])
+    // (listCheck [ "cookieflyer" "cookiemailer" "cookiepi" "rpi" ] [ "2" "3" "4" "103" ])
   else if (hn == "cookieflyer") then
     (listCheck [ "cookiemailer" ] [ "3" ])
+  else if (hn == "cookiepi") then
+    (listCheck [ "cookieflyer" "cookiemailer" ] [ "2" "3" ])
   else {};
 }

@@ -50,5 +50,6 @@ in
   systemd.timers = {
     "backup-hot@cookieflyer" = timer-hot;
     "backup-hot@cookiemailer" = timer-hot;
+    "backup-hot@cookiepi" = timer-hot;
   };
 }

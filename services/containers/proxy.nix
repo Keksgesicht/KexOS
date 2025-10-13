@@ -1,9 +1,14 @@
-{ config, inputs, pkgs, lib, myDomain, ssd-mnt, ... }:
+{ self, config, pkgs, lib, myDomain, ssd-mnt, ... }:
 
 let
   hn = config.networking.hostName;
+  pss = (sec: import ./podman-systemd-service.nix lib sec);
+
+  subdomain-base = "wildcard,*.${hn}.internal";
   bind-path = "${ssd-mnt}/appdata/swag";
-  my-functions = (import "${inputs.self}/nix/my-functions.nix" lib);
+  swag-cfg = (pkgs.callPackage "${self}/packages/containers/swag-cfg.nix" {});
+
+  my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
 {
@@ -18,7 +23,10 @@ with my-functions;
     final.name = "linuxserver-swag";
   };
 
-  systemd.services."podman-proxy" = (import ./podman-systemd-service.nix lib 25);
+  systemd.services."podman-proxy" = (pss 25) // {
+    after = [ "systemd-tmpfiles-resetup.service" ];
+    restartTriggers = [ swag-cfg ];
+  };
 
   KexOS.service."server-and-config-update@SwagCertbot" = {
     service = {
@@ -37,7 +45,6 @@ with my-functions;
     };
   };
 
-
   virtualisation.oci-containers.containers = {
     "proxy" = {
       autoStart = true;
@@ -49,11 +56,9 @@ with my-functions;
         URL = myDomain;
         EMAIL = "certbot@${myDomain}";
         SUBDOMAINS =
-          if (hn == "cookieclicker") then
-            "wildcard,*.cookieclicker"
-          else if (hn == "cookieflyer") then
-            "wildcard,*.cookieflyer,cloud,tandoor.tb"
-          else "";
+          if (hn == "cookieflyer") then
+            "${subdomain-base},cloud,tandoor.tb"
+          else subdomain-base;
         ONLY_SUBDOMAINS = "true";
         VALIDATION = "dns";
         DNSPLUGIN = "hetzner";
@@ -76,17 +81,12 @@ with my-functions;
     };
   };
 
-  systemd.tmpfiles.rules =
-  let
-    inCfg = "${inputs.self}/files/container-cfg/swag/nginx";
-    eList = (forEach (listFilesRec inCfg) (e:
-      let
-        eFile = lib.removePrefix inCfg e;
-      in
-      "r ${bind-path}/nginx${eFile} - - - - -"
-    ));
-  in
-  eList ++ [
-    "C+ ${bind-path}/nginx - 99 200 - ${inCfg}"
+  systemd.tmpfiles.rules = (forEach (listFilesRec swag-cfg) (e:
+    let
+      eFile = lib.removePrefix "${swag-cfg}" e;
+    in
+    "r ${bind-path}${eFile} - - - - -"
+  )) ++ [
+    "C+ ${bind-path}/nginx - 99 200 - ${swag-cfg}/nginx"
   ];
 }

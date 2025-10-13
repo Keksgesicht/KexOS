@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1758987833,
-        "narHash": "sha256-zuJaubup+DvhF1SOLNY1zcBxGVAv1zPc2trbqXL/1KE=",
+        "lastModified": 1760461719,
+        "narHash": "sha256-0HQDpd5M48cIbrHJnnXCWAr/HjKz4tGNqmhp9FbM4Uw=",
         "path": "/etc/unCookie",
         "type": "path"
       },
@@ -235,8 +235,8 @@
     },
     "nixpkgs-custom": {
       "locked": {
-        "lastModified": 1758188480,
-        "narHash": "sha256-ElV2ZbXPd5H9dTBq/iYmSyaRdf0U9HTb9Z0wJYUL4KE=",
+        "lastModified": 1760126658,
+        "narHash": "sha256-POAYBby8/AcAlvfmn22VRf8x4p+eqp9Retxe0eQB7Pw=",
         "path": "/home/keks/git/hdd/nix/nixpkgs/custom",
         "type": "path"
       },
@@ -263,11 +263,11 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1758346548,
-        "narHash": "sha256-afXE7AJ7MY6wY1pg/Y6UPHNYPy5GtUKeBkrZZ/gC71E=",
+        "lastModified": 1760139962,
+        "narHash": "sha256-4xggC56Rub3WInz5eD7EZWXuLXpNvJiUPahGtMkwtuc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b2a3852bd078e68dd2b3dfa8c00c67af1f0a7d20",
+        "rev": "7e297ddff44a3cc93673bb38d0374df8d0ad73e4",
         "type": "github"
       },
       "original": {
@@ -278,11 +278,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1758427187,
-        "narHash": "sha256-pHpxZ/IyCwoTQPtFIAG2QaxuSm8jWzrzBGjwQZIttJc=",
+        "lastModified": 1760284886,
+        "narHash": "sha256-TK9Kr0BYBQ/1P5kAsnNQhmWWKgmZXwUQr4ZMjCzWf2c=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "554be6495561ff07b6c724047bdd7e0716aa7b46",
+        "rev": "cf3f5c4def3c7b5f1fc012b3d839575dbe552d43",
         "type": "github"
       },
       "original": {
@@ -382,8 +382,8 @@
     "secrets-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1751495997,
-        "narHash": "sha256-CWBFxkW60ySm6PUH5C56G1+IXHv6FrpMhZsD71r2g74=",
+        "lastModified": 1760455381,
+        "narHash": "sha256-+6v1NY325Bi+gZNBqcLdZBLnDIVPhbl52tkLaNbtNKc=",
         "path": "/etc/nixos/secrets/local",
         "type": "path"
       },

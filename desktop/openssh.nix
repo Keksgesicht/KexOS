@@ -4,7 +4,7 @@ let
   sshPubKeyPath = secrets-pkg + "/ssh/server";
   sshServerKeys = (name:
     lib.optionals (config.networking.hostName != "${name}") [
-      ( sshPubKeyPath + "/${name}" )
+      ( sshPubKeyPath + "${name}" )
     ]
   );
 

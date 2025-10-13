@@ -4,28 +4,76 @@
 , ... }:
 
 let
-  bind-path = "${ssd-mnt}/appdata/unbound";
-  pss = (sec: (import ./podman-systemd-service.nix lib sec));
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
+
+let
+  bind-path = "${ssd-mnt}/appdata/unbound";
+  pss = (sec: (import ./podman-systemd-service.nix lib sec));
+
+  myDomainGen = (l: forEach l (eL: forEach eL.zone (eZ:
+    ''
+      local-zone: "${eZ.name}" ${eZ.type}
+      local-data: "${eZ.name} 30 IN A ${eL.ip4}"
+      local-data: "${eZ.name} 30 IN AAAA ${eL.ip6}"
+    ''
+  )));
+  myServer = (name: suf: prefix:
+    let
+      pfx     = if (prefix == "") then "" else "${prefix}.";
+      type    = if (prefix == "") then "redirect" else "static";
+      subnet4 = if (prefix == "") then vpn-subnet-v4 else lan-subnet-v4;
+      subnet6 = if (prefix == "") then vpn-subnet-v6 else lan-subnet-v6;
+    in
+    { ip4 = "${subnet4}.${suf}"; ip6 = "${subnet6}:${suf}"; zone = [
+      { name = "${pfx}${name}.internal.${myDomain}"; inherit type; }
+    ]; }
+  );
+  myDomainText = myDomainGen [
+    (myServer "cookieclicker" "1" "")
+    (myServer "cookieclicker" "220" "nix-serve")
+    (myServer "cookieflyer" "2" "")
+    (myServer "cookieflyer" "25" "nix-serve")
+    (myServer "cookiemailer" "3" "")
+    (myServer "cookiepi" "4" "")
+    (myServer "cookiepi" "222" "nix-serve")
+  ];
+  myDomainConf = pkgs.writeText "${myDomain}.conf" (
+    lib.strings.concatStringsSep "\n" (flatList myDomainText)
+  );
+in
 {
   imports = [
     ../../system/containers/podman.nix
     ./container-image-updater
   ];
 
+  boot.kernel.sysctl = {
+    "net.core.rmem_max" = 4194304;
+    "net.core.wmem_max" = 4194304;
+  };
+
   container-image-updater."unbound" = {
     upstream.name = "alpinelinux/unbound";
     final.name = "alpinelinux-unbound";
   };
 
-  systemd.services."podman-unbound" = (pss 17) // {
-    partOf = [ "NetworkManager.service" ];
+  systemd = {
+    services."podman-unbound" = (pss 17) // {
+      after = [ "systemd-tmpfiles-resetup.service" ];
+      partOf = [ "NetworkManager.service" ];
+      restartTriggers = [ myDomainConf ];
+    };
+    tmpfiles.rules = [
+      "r  ${bind-path}/conf/${myDomain}.conf - - - - -"
+      "C+ ${bind-path}/conf/${myDomain}.conf - 100 101 - ${myDomainConf}"
+    ];
   };
 
   KexOS.service."update-root-dns-servers" = {
     service = {
+      after = [ "podman-pihole.service" ];
       description = "Download root DNS server list";
       path = with pkgs; [ curl nix unixtools.xxd ];
       serviceConfig = {
@@ -85,45 +133,5 @@ with my-functions;
         "--dns" "0.0.0.0"
       ];
     };
-  };
-
-  systemd.tmpfiles.rules =
-  let
-    myDomainGen = (l: forEach l (eL: forEach eL.zone (eZ:
-      ''
-        local-zone: "${eZ.name}" ${eZ.type}
-        local-data: "${eZ.name} 30 IN A ${eL.ip4}"
-        local-data: "${eZ.name} 30 IN AAAA ${eL.ip6}"
-      ''
-    )));
-    myDomainText = myDomainGen [
-      { ip4 = "${vpn-subnet-v4}.2"; ip6 = "${vpn-subnet-v6}:2"; zone = [
-        { name = "cookieflyer.${myDomain}"; type = "redirect"; }
-      ]; }
-      { ip4 = "${lan-subnet-v4}.25"; ip6 = "${lan-subnet-v6}:25"; zone = [
-        { name = "nix-serve.cookieflyer.${myDomain}"; type = "static"; }
-      ]; }
-      { ip4 = "${vpn-subnet-v4}.1"; ip6 = "${vpn-subnet-v6}:1"; zone = [
-        { name = "cookieclicker.${myDomain}"; type = "redirect"; }
-      ]; }
-      { ip4 = "${lan-subnet-v4}.220"; ip6 = "${lan-subnet-v6}:220"; zone = [
-        { name = "nix-serve.cookieclicker.${myDomain}"; type = "static"; }
-      ]; }
-      { ip4 = "${vpn-subnet-v4}.3"; ip6 = "${vpn-subnet-v6}:3"; zone = [
-        { name = "cookiemailer.${myDomain}"; type = "redirect"; }
-      ]; }
-    ];
-    myDomainConf = pkgs.writeText "${myDomain}.conf" (
-      lib.strings.concatStringsSep "\n" (flatList myDomainText)
-    );
-  in
-  [
-    "r  ${bind-path}/conf/${myDomain}.conf - - - - -"
-    "C+ ${bind-path}/conf/${myDomain}.conf - 100 101 - ${myDomainConf}"
-  ];
-
-  boot.kernel.sysctl = {
-    "net.core.rmem_max" = 4194304;
-    "net.core.wmem_max" = 4194304;
   };
 }

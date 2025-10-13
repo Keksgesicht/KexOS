@@ -81,11 +81,15 @@ let
     } {
       name = "cookieflyer";
       suf4 = "2"; suf6 = "2";
-      ep = "pi.host.${myDomain}:22243";
+      ep = "fy.host.${myDomain}:22243";
     } {
       name = "cookiemailer";
       suf4 = "3"; suf6 = "3";
       ep = "ma.host.${myDomain}:22301";
+    } {
+      name = "cookiepi";
+      suf4 = "4"; suf6 = "4";
+      ep = "pi.host.${myDomain}:22263";
     } {
       name = "rpi";
       suf4 = "103"; suf6 = "10:3";
@@ -162,7 +166,7 @@ with my-functions;
       serviceConfig = {
         # force the usage of DNS servers defined in the unit scope
         TemporaryFileSystem = "/var/run/nscd";
-        BindPaths = "${vpn-dns-cfg}:/etc/resolv.conf";
+        BindReadOnlyPaths = "${vpn-dns-cfg}:/etc/resolv.conf";
       };
     };
     vpn-ping = (suf: ''

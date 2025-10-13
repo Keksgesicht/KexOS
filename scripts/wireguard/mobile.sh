@@ -6,16 +6,20 @@ set -e
 ### check parameter
 
 usage() {
-	echo "$0 [NAME] [PEER NAME] [PEER ADDRESS]"
+	echo "$0 [NAME] [PEER ADDRESS] <PEER NAME>"
 }
 
-if [ "$#" != 3 ]; then
+if [ "$#" -lt 2 ] || [ 3 -lt "$#" ]; then
 	usage
 	exit 1
 fi
 HOST=$1
-PEER_NAME=$2
-PEER_ADDR=$3
+PEER_ADDR=$2
+if [ -n "$3" ]; then
+	PEER_NAME=$3
+else
+	PEER_NAME="handy"
+fi
 
 ### variables
 
@@ -43,8 +47,8 @@ umask 022
 mkdir -p ${SecretsDir}/shared
 mkdir -p "${PublicDir}"
 
-cp shared  ${SecretsDir}/shared/"${HOST}-${PEER_NAME}"
-mv public "${PublicDir}"/"${HOST}-${PEER_NAME}"
+cp shared "${SecretsDir}/shared/${PEER_NAME}"
+cp public "${PublicDir}/${PEER_NAME}-${HOST}"
 
 chown -R ${UserName}:${UserName} "$(dirname "${PublicDir}")"
 chmod 644 "${PublicDir}"/"${HOST}"
@@ -65,7 +69,7 @@ CONF_FILE="wg.conf"
 
 	echo "[Peer]"
 	echo -n "PresharedKey="; cat shared
-	echo -n "PublicKey="; cat "${PublicDir}"/"${HOST}-${PEER_NAME}";
+	echo -n "PublicKey="; cat public
 	echo "Endpoint=${PEER_ADDR}"
 	echo "AllowedIPs=0.0.0.0/0, ::/0"
 } > ${CONF_FILE}

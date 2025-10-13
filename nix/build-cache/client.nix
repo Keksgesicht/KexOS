@@ -4,23 +4,27 @@ let
   hn = config.networking.hostName;
   hostList = [ {
       name = "cookieclicker"; proto = "https"; port = "443";
-      key = "uR9PO+9+vDixa/2TPJ3pox41GtT2lMhq/fwRLAEMH3s=";
-    } {
-      name = "cookiemailer"; proto = "http"; port = "5000";
-      key = "yElGHv9tU/d6Ef4TDWQymF8q797+LLZd6MmIKjQCaI8=";
+      key = "76N6Zdl9lH866USAdQ92DHqVJedsugR4ajp9/UVGhwo=";
     } {
       name = "cookieflyer"; proto = "https"; port = "443";
-      key = "goE1zTBxklLmVNYqDBunJ0gyDt1Nwi2CFtn0cfEq03g=";
+      key = "+1N9MpQ5IOpVvrdOipmJAe66g4CO12o3Ed4U5g+C/co=";
+    } {
+      name = "cookiemailer"; proto = "http"; port = "5000";
+      key = "OGeVzmNtrB+2y1nogJnuBrV3+G/LUxCQIasya7ake6A=";
+    } {
+      name = "cookiepi"; proto = "https"; port = "443";
+      key = "gg2p72frz2N8Ocf4amLQRDXkfiUgbO0uz/zuhUcwrK0=";
   } ];
+  hostName = (name: "nix-serve.${name}.internal.${myDomain}");
   hostFilter = (list: func: (func (builtins.filter (e: (hn != e.name)) list)));
 in
 {
   nix.settings = {
     substituters = hostFilter hostList (l: lib.lists.forEach l (e:
-      "${e.proto}://nix-serve.${e.name}.${myDomain}:${e.port}/"
+      "${e.proto}://${hostName e.name}:${e.port}/"
     ));
     trusted-public-keys = hostFilter hostList (l: lib.lists.forEach l (e:
-      "nix-serve.${e.name}.${myDomain}:${e.key}"
+      "${hostName e.name}:${e.key}"
     ));
 
     # nixos-rebuild failed when a previously online substituters goes offline

@@ -12,6 +12,7 @@
     ../services/containers/pihole.nix
     ../services/containers/proxy.nix
     ../services/containers/unbound.nix
+    ../services/system/dyndns.nix
     ../system/network/server/lan.nix
   ];
 

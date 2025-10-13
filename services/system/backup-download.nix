@@ -36,9 +36,10 @@ in
 {
   config = lib.mkMerge [
     ({ systemd.tmpfiles.rules = [ "q  ${hdd-mnt}/machines" ]; })
-    (bd-units "cookieflyer"   "cookieflyer.${myDomain}")
-    (bd-units "cookiemailer" "cookiemailer.${myDomain}")
-    (bd-units "pihole" "rpi.pihole.internal")
+    (bd-units "cookieflyer"   "cookieflyer.internal.${myDomain}")
+    (bd-units "cookiemailer" "cookiemailer.internal.${myDomain}")
+    (bd-units "cookiepi"         "cookiepi.internal.${myDomain}")
+    (bd-units "pihole"         "rpi.pihole.internal")
   ];
 
   /*

@@ -52,16 +52,19 @@ Host cookie*
 	IdentityFile ~/.secrets/ssh/id_nixos
 
 Host cookieclicker
-	HostName cookieclicker.keksgesicht.de
-
-Host cookiemailer
-	HostName cookiemailer.keksgesicht.de
+	HostName cookieclicker.internal.keksgesicht.de
 
 Host cookieflyer
-	HostName cookieflyer.keksgesicht.de
+	HostName cookieflyer.internal.keksgesicht.de
+
+Host cookiemailer
+	HostName cookiemailer.internal.keksgesicht.de
+
+Host cookiepi
+	HostName cookiepi.internal.keksgesicht.de
 
 Host cookiethinker
-	HostName cookiethinker.keksgesicht.de
+	HostName cookiethinker.internal.keksgesicht.de
 
 Host pihole
 	HostName rpi.pihole.internal
