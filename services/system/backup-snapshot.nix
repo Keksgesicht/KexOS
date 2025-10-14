@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ssd-name, hdd-name, ...}:
+{ self, config, pkgs, lib, ssd-name, hdd-name, ...}:
 
 let
   hn = config.networking.hostName;
@@ -18,9 +18,9 @@ let
 in
 with my-functions;
 {
-  environment.systemPackages = [
-    (pkgs.callPackage ../../packages/list-backups.nix {})
-  ];
+  environment.shellAliases = {
+    lb = "${self}/files/scripts/list-backups.sh";
+  };
 
   KexOS.service."backup-snapshot@" = {
     service = {
