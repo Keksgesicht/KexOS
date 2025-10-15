@@ -7,8 +7,8 @@
     "ff02::2" = [ "ip6-allrouters" ];
 
     # VPN devices
-    "${vpn-subnet-v4}.102" = [ "cookiethinker.${myDomain}" ];
-    "${vpn-subnet-v4}.103" = [ "rpi.pihole.internal" ];
+    "${vpn-subnet-v4}.102" = [ "cookiethinker.internal.${myDomain}" ];
+    "${vpn-subnet-v4}.103" = [    "rpi.pihole.internal" ];
 
     # LAN devices
     "${lan-subnet-v4}.1"   = [ "fritz.box" ]; # Router
