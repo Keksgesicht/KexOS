@@ -74,6 +74,9 @@ in
     backupCommands = "";
   };
 
+  # with no real impermance pruning is needed
+  virtualisation.podman.autoPrune.enable = true;
+
   boot = {
     kernelParams = [
       "rootwait"
