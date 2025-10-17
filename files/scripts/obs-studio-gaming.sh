@@ -49,6 +49,7 @@ run_obs() {
 	echo "Starting OBS Studio with ReplayBuffer"
 
 	run_stop
+	rm -frv "${HOME}"/.var/app/OBS-Studio/.config/obs-studio/.sentinel/
 
 	if echo "${screen_res}" | grep -q '3840x2160'; then
 		echo "Recording 16:9 at 3840x2160"
