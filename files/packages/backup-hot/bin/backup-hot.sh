@@ -26,7 +26,7 @@ copy-meta() {
 		rsyncd)
 			bnline=$(basename "${line}")
 			copy --password-file="${RSYNCD_KEY}" -4 \
-				"rsync://backup@${system_name}.keksgesicht.de/${bnline}/" \
+				"rsync://backup@${system_name}.internal.keksgesicht.de/${bnline}/" \
 				"${DATA_DIR}${line}/"
 			;;
 		esac
