@@ -243,7 +243,7 @@ sortRole=0
 viewShade=193,208,209
 
 [lspclient]
-AllowedServerCommandLines=/usr/local/lsp/bin/bash-language-server start,/usr/local/lsp/bin/clangd -log=error --background-index --limit-results=500 --completion-style=bundled,/usr/local/lsp/bin/jdtls,/usr/local/lsp/bin/lemminx,/usr/local/lsp/bin/marksman server,/usr/local/lsp/bin/nil,/usr/local/lsp/bin/pylsp --check-parent-process,/usr/local/lsp/bin/texlab,/usr/local/lsp/bin/yaml-language-server --stdio
+AllowedServerCommandLines=/usr/local/lsp/bin/bash-language-server start,/usr/local/lsp/bin/clangd -log=error --background-index --limit-results=500 --completion-style=bundled --compile-commands-dir=build,/usr/local/lsp/bin/jdtls,/usr/local/lsp/bin/lemminx,/usr/local/lsp/bin/marksman server,/usr/local/lsp/bin/nil,/usr/local/lsp/bin/pylsp --check-parent-process,/usr/local/lsp/bin/texlab,/usr/local/lsp/bin/yaml-language-server --stdio
 AutoHover=true
 AutoImport=true
 BlockedServerCommandLines=

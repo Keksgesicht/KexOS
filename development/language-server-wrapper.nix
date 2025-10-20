@@ -1,49 +1,84 @@
-pkgs: lib: p: n:
+{ config, pkgs, lib, username, home-dir, ... }:
+
 let
-  lsp-pkgs = with pkgs; [
-    # Bash
-    bash-language-server
-    shfmt
-    # C/C++
-    clang-tools
-    # Java
-    jdt-language-server
-    # JSON
-    jq
-    # LaTeX
-    texlab
-    # Markdown
-    marksman
-    # Nix
-    nil
-    # Python
-    python3Packages.python-lsp-server
-    ruff
-    # XML
-    lemminx
-    libxml2
-    # YAML
-    yaml-language-server
-    yamlfmt
-  ];
+  inherit (lib) mkOption types;
 
-  lsp-path = "/usr/local/lsp";
-  ide-wrapper = pkgs.writeShellScriptBin "${n}" ''
-    export PATH=$PATH:${lsp-path}/bin
-    exec ${p}/bin/${n} "$@"
-  '';
+  lsp-path-local = "/usr/local/lsp";
+  lsp-path-nix = pkgs.symlinkJoin {
+    name = "lsp-pkgs-joined";
+    paths = config.KexOS.lsp-wrapper.lsp-pkgs;
+  };
 
-  lsp-data = {
-    inherit lsp-path;
-    lsp = pkgs.symlinkJoin {
-      name = "lsp-pkgs-joined";
-      paths = lsp-pkgs;
+  pkgWrapOpts = types.submodule ({ config, ... }: {
+    options = {
+      package = lib.mkOption {
+        type = types.package;
+      };
+      binName = lib.mkOption {
+        type = types.str;
+        default = config.package.name;
+      };
     };
-    ide = pkgs.symlinkJoin {
-      pname = "${n}-lsp";
-      name = "${n}-with-language-server";
-      paths = [ ide-wrapper p ];
+  });
+
+  ide-wrapper = (n: p: pkgs.writeShellScriptBin "${n}" ''
+    export PATH=${lsp-path-local}/bin:$PATH
+    export CPATH=${home-dir}/git/hdd/header
+    exec ${p}/bin/${n} "$@"
+  '');
+  ide-lsp-wrapped = (n: p: pkgs.symlinkJoin {
+    name = "${n}-with-language-server";
+    paths = [ (ide-wrapper n p) p ];
+  });
+in
+{
+  options.KexOS.lsp-wrapper = {
+    lsp-pkgs = mkOption {
+      type = types.listOf types.package;
+      default = [];
+    };
+    ide-pkgs = mkOption {
+      type = types.listOf pkgWrapOpts;
+      default = [];
     };
   };
-in
-lsp-data
+
+  config.KexOS.lsp-wrapper = {
+    lsp-pkgs = with pkgs; [
+      # Bash
+      bash-language-server
+      shfmt
+      # C/C++
+      clang-tools
+      # Java
+      jdt-language-server
+      # JSON
+      jq
+      # LaTeX
+      texlab
+      # Markdown
+      marksman
+      # Nix
+      nil
+      # Python
+      python3Packages.python-lsp-server
+      ruff
+      # XML
+      lemminx
+      libxml2
+      # YAML
+      yaml-language-server
+      yamlfmt
+    ];
+    ide-pkgs = [];
+  };
+
+  config.users.users."${username}".packages = lib.lists.forEach (
+    config.KexOS.lsp-wrapper.ide-pkgs
+  ) (p: ide-lsp-wrapped p.binName p.package);
+
+  config.systemd.tmpfiles.rules = [
+    # dedicated path for lsp servers
+    "L+ ${lsp-path-local} - - - - ${lsp-path-nix}"
+  ];
+}

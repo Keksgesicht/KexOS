@@ -57,7 +57,7 @@
           cmd="nice $cmd"
         ;;
         *)
-          myOpts+="$1"
+          myOpts+=" $1"
         ;;
       esac
       shift
