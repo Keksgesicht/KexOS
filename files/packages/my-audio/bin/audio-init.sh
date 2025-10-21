@@ -5,22 +5,17 @@ export work_dir
 source "${work_dir}"/../lib/settings.sh
 
 mute_hardware() {
-	### mute all hardware (laptop/mobile)
-	if [ "$(cat /etc/hostname)" = "cookiethinker" ]; then
-		for alsa_dev in $(pactl list sinks short | awk '/alsa/ {print $2}'); do
-			if [[ "${alsa_dev}" == *"${usb_dock}"* ]]; then
-				continue
-			fi
-			pactl set-sink-mute "${alsa_dev}" 1
-		done
-	fi
+	### mute all hardware
+	for alsa_dev in $(pactl list sinks short | awk '$2 ~ /^alsa/ {print $2}'); do
+		pactl set-sink-mute "${alsa_dev}" 1
+	done
 
-	### mute hdmi outputs on desktop
-	if [ "$(cat /etc/hostname)" = "cookieclicker" ]; then
-		for alsa_dev in $(pactl list sinks short | awk '/'"${hdmi_desktop}"'/ {print $2}'); do
-			pactl set-sink-mute "${alsa_dev}" 1
+	### unmute needed devices
+	for output_dev in ${my_speaker_list}; do
+		for alsa_dev in $(pactl list sinks short | awk '$2 ~ /'"${output_dev}"'/ {print $2}'); do
+			pactl set-sink-mute "${alsa_dev}" 0
 		done
-	fi
+	done
 }
 
 sleep 2.3s
