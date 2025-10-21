@@ -2,7 +2,7 @@
 
 let
   xdg-config = "${home-dir}/.config";
-
+  inherit (config.KexOS.service."dummy".service) serviceConfig;
   mango-hud = pkgs.callPackage ../packages/MangoHud.nix {};
   usb-bind-script = ../files/scripts/usb-bind-devices-by-name.sh;
 in
@@ -21,15 +21,19 @@ in
     services = {
       "obs-studio-gaming" = {
         description = "OBS Studio Autostarter (gaming)";
-        path = [
+        path = with pkgs; [
           config.nixpak."OBS-Studio".output.env
-          pkgs.bash
-          pkgs.gawk
-          pkgs.procps
-          pkgs.psmisc
-          pkgs.util-linux
-          pkgs.xorg.xrandr
+          bash gawk procps psmisc util-linux xorg.xrandr
         ];
+        serviceConfig = serviceConfig // {
+          PrivateDevices = "no";
+          ProtectHome = "no";
+          TemporaryFileSystem = [ "/home" "/root:ro" ];
+          BindPaths = [
+            "%h/.var/app/OBS-Studio"
+            "%h/Videos/Gaming/Desktop"
+          ];
+        };
         script = (builtins.readFile ../files/scripts/obs-studio-gaming.sh);
         scriptArgs = "start";
       };

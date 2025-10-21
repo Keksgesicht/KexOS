@@ -1,7 +1,8 @@
-{ pkgs, ssd-name, ...}:
+{ config, pkgs, lib, ssd-name, ...}:
 
 let
   pkg-scu = (pkgs.callPackage ../../packages/server-and-config-update.nix {});
+  inherit (config.KexOS.service."dummy".service) serviceConfig;
 in
 {
   KexOS.service."server-and-config-update@" = {
@@ -12,6 +13,9 @@ in
         Type = "oneshot";
         ExecStart = "${pkg-scu}/bin/%i.sh";
         TemporaryFileSystem = "/etc:ro";
+        InaccessiblePaths = lib.mkForce (builtins.filter (e:
+          !(lib.strings.hasPrefix "/etc" e)
+        ) serviceConfig.InaccessiblePaths.content);
       };
     };
     timer = {

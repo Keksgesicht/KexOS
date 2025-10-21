@@ -57,7 +57,7 @@ in
         Restart = "always";
         Type = "exec";
         ProtectHome = "read-only";
-        BindPaths = "/run/user/1000";
+        BindReadOnlyPaths = "/run/user/1000";
       };
     };
     # trying to even start a additional screencast concurrently to OBS-Studio (dmabuf?) will crash xdg-desktop-portal.service

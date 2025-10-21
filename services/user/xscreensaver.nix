@@ -15,9 +15,10 @@ in
         GDK_BACKEND = "x11";
       };
       serviceConfig = serviceConfig // {
-        ProtectHome = "read-only";
+        ProtectHome = "tmpfs";
         PrivateDevices = "no";
         TemporaryFileSystem = "%h/.cache";
+        BindReadOnlyPaths = "%h/.xscreensaver";
       };
       script = ''
         xscreensaver --no-splash &

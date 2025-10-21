@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hdd-mnt, ... }:
 
 let
   inherit (config.KexOS.service."dummy".service) serviceConfig;
@@ -18,6 +18,9 @@ in
       PrivateDevices = "no";
       ExecStartPre = "${fc-cfg}/bin/fancontrol-hwmon-fix.sh";
       ExecStart = lib.mkForce "${fc-bin} /tmp/fancontrol-config";
+      InaccessiblePaths = lib.mkForce (builtins.filter (e:
+        !(lib.strings.hasPrefix hdd-mnt e)
+      ) serviceConfig.InaccessiblePaths.content);
     };
   };
 

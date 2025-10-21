@@ -1,7 +1,7 @@
 { config, lib, cookie-dir, ssd-mnt, ssd-name, hdd-mnt, hdd-name, ... }:
 
 let
-  inherit (lib) attrsets mkDefault mkMerge mkOption strings types;
+  inherit (lib) attrsets mkDefault mkForce mkMerge mkOption strings types;
 
   defOpt = mkOption { default = { enable = true; }; };
   srvOpts = { name, config, ... }: {
@@ -73,6 +73,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        InaccessiblePaths = mkForce [];
       };
       script = ''
         sleep 13m
@@ -80,7 +81,7 @@ in
       '';
       inherit wantedBy;
     };
-    timer = lib.mkForce {};
+    timer = mkForce {};
   };
 
   config.systemd = {
