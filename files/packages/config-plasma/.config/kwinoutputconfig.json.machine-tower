@@ -16,10 +16,9 @@
                 "highDynamicRange": true,
                 "iccProfilePath": "",
                 "maxBitsPerColor": 0,
-                "maxPeakBrightnessOverride": 1640,
                 "mode": {
                     "height": 1440,
-                    "refreshRate": 119970,
+                    "refreshRate": 99996,
                     "width": 5120
                 },
                 "overscan": 0,
@@ -61,6 +60,68 @@
                 "uuid": "6c22c19e-08b0-410b-8d96-750662f82757",
                 "vrrPolicy": "Never",
                 "wideColorGamut": false
+            },
+            {
+                "allowDdcCi": true,
+                "allowSdrSoftwareBrightness": true,
+                "autoRotation": "InTabletMode",
+                "brightness": 1,
+                "colorPowerTradeoff": "PreferEfficiency",
+                "colorProfileSource": "sRGB",
+                "connectorName": "DP-4",
+                "detectedDdcCi": false,
+                "edidHash": "4b507577d58661dfbb3a129c9565ac58",
+                "edidIdentifier": "GSM 23304 225959 4 2019 0",
+                "edrPolicy": "always",
+                "highDynamicRange": false,
+                "iccProfilePath": "",
+                "maxBitsPerColor": 0,
+                "mode": {
+                    "height": 2160,
+                    "refreshRate": 60000,
+                    "width": 3840
+                },
+                "mstPath": "-1\u0000",
+                "overscan": 0,
+                "rgbRange": "Automatic",
+                "scale": 1.7,
+                "sdrBrightness": 200,
+                "sdrGamutWideness": 0,
+                "transform": "Normal",
+                "uuid": "28dbf1d0-82b6-4e74-98b5-f806ae597e4e",
+                "vrrPolicy": "Never",
+                "wideColorGamut": false
+            },
+            {
+                "allowDdcCi": true,
+                "allowSdrSoftwareBrightness": true,
+                "autoRotation": "InTabletMode",
+                "brightness": 1,
+                "colorPowerTradeoff": "PreferEfficiency",
+                "colorProfileSource": "sRGB",
+                "connectorName": "DP-7",
+                "detectedDdcCi": false,
+                "edidHash": "a12f31713ec982d50b269c861a8b95e7",
+                "edidIdentifier": "SAM 3996 0 43 2018 0",
+                "edrPolicy": "always",
+                "highDynamicRange": false,
+                "iccProfilePath": "",
+                "maxBitsPerColor": 0,
+                "mode": {
+                    "height": 1440,
+                    "refreshRate": 59977,
+                    "width": 5120
+                },
+                "mstPath": "-3-1\u0000",
+                "overscan": 0,
+                "rgbRange": "Automatic",
+                "scale": 1,
+                "sdrBrightness": 500,
+                "sdrGamutWideness": 0,
+                "transform": "Normal",
+                "uuid": "2852b22a-4595-4ca1-98f1-710a089c2c14",
+                "vrrPolicy": "Never",
+                "wideColorGamut": false
             }
         ],
         "name": "outputs"
@@ -88,6 +149,51 @@
                             "y": 0
                         },
                         "priority": 1,
+                        "replicationSource": ""
+                    }
+                ]
+            },
+            {
+                "lidClosed": false,
+                "outputs": [
+                    {
+                        "enabled": true,
+                        "outputIndex": 0,
+                        "position": {
+                            "x": 0,
+                            "y": 2160
+                        },
+                        "priority": 0,
+                        "replicationSource": ""
+                    },
+                    {
+                        "enabled": true,
+                        "outputIndex": 1,
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "priority": 1,
+                        "replicationSource": ""
+                    },
+                    {
+                        "enabled": false,
+                        "outputIndex": 2,
+                        "position": {
+                            "x": 8960,
+                            "y": 0
+                        },
+                        "priority": -1,
+                        "replicationSource": ""
+                    },
+                    {
+                        "enabled": false,
+                        "outputIndex": 3,
+                        "position": {
+                            "x": 11219,
+                            "y": 0
+                        },
+                        "priority": -1,
                         "replicationSource": ""
                     }
                 ]
