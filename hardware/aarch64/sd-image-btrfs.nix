@@ -20,7 +20,7 @@ let
   subvolList = [ "boot" "etc" "home" "mnt-array" "nix" "root" "var" ];
   subvolStr = (s: str.concatMapStrings (v: s + v) subvolList);
   nixPathRegFile = config.sdImage.nixPathRegistrationFile;
-  rootfsImage = options.sdImage.rootImage.default;
+  rootfsImage = options.sdImage.rootFilesystemImage.default;
   btrfsImage = rootfsImage.overrideAttrs (final: prev: {
     buildCommand = str.concatLines (forEach
       (str.splitString "\n" prev.buildCommand) (line:
@@ -62,8 +62,8 @@ in
 
   sdImage = {
     compressImage = false;
-    rootFilesystem = "${pkgs.path}/nixos/lib/make-btrfs-fs.nix";
-    rootImage = btrfsImage;
+    rootFilesystemCreator = "${pkgs.path}/nixos/lib/make-btrfs-fs.nix";
+    rootFilesystemImage = btrfsImage;
     # do this manually as replacing the resize2fs string in postBootCommands
     # might be too complex. btrfs uses its own resize command.
     expandOnBoot = false;

@@ -236,8 +236,8 @@
     },
     "nixpkgs-custom": {
       "locked": {
-        "lastModified": 1758704419,
-        "narHash": "sha256-CpnfNueJfLIkJeAq4P/3do8ka16+8NawFrlWqLIsks4=",
+        "lastModified": 1762899470,
+        "narHash": "sha256-NdONfGO1Rx5O1Fa/uqHM5cpQhKceXQ1lN65bhdomykM=",
         "path": "/home/keks/git/hdd/nix/nixpkgs/custom",
         "type": "path"
       },

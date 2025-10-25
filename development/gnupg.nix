@@ -10,6 +10,13 @@
   /*
   gpg --full-generate-key
 
+  gpg --edit-key <mail>
+  > addkey
+  > 10
+  > addkey
+  > 12
+  > save
+
   GPG_HOMEDIR=$(mktemp -d)
   gpg --homedir $GPG_HOMEDIR ...
 
@@ -24,10 +31,9 @@
 
   gpg --export-secret-keys    <mail> > ~/.secrets/gpg/<mail>.secret.gpg
   gpg --export-secret-subkeys <mail> > ~/.secrets/gpg/<mail>.secsub.gpg
-  gpg --armor --export        <mail> > ~/.secrets/gpg/<mail>.public.gpg
+  gpg --armor --export        <mail> > ~/.secrets/gpg/<mail>.pubkey.gpg
+  gpg --keyserver keys.openpgp.org --send-key <key ID>
 
   gpg --fingerprint <mail> | head -n 2 | tail -n 1
-  gpg --armor --export <mail> > ~/.secrets/gpg/<mail>.pubkey.gpg
-  gpg --keyserver keys.openpgp.org --send-key <mail>
   */
 }
