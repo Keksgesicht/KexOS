@@ -46,10 +46,11 @@ in
   config.KexOS.lsp-wrapper = {
     lsp-pkgs = with pkgs; [
       # Bash
-      bash-language-server
-      shfmt
+      bash-language-server shfmt
       # C/C++
       clang-tools
+      # GO
+      gopls go
       # Java
       jdt-language-server
       # JSON
@@ -61,14 +62,11 @@ in
       # Nix
       nil
       # Python
-      python3Packages.python-lsp-server
-      ruff
+      python3Packages.python-lsp-server ruff
       # XML
-      lemminx
-      libxml2
+      lemminx libxml2
       # YAML
-      yaml-language-server
-      yamlfmt
+      yaml-language-server yamlfmt
     ];
     ide-pkgs = [];
   };

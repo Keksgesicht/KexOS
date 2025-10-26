@@ -1,10 +1,8 @@
 { sloth, appDir, ... }:
-{ config, pkgs, ssd-mnt, home-dir, ... }:
+{ config, pkgs, lib, ssd-mnt, username, home-dir, ... }:
 
 let
   name = "PlayGround";
-
-  kexos-pkgs = config.KexOS.packages;
   pkg-make-persistent = pkgs.writeShellScriptBin "make-persistent" ''
     while [ -n "$1" ]; do
       if ! [ -e "$1" ]; then
@@ -28,13 +26,14 @@ in
 {
   nixpak."${name}" = {
     wrapper = {
-      packages = with pkgs; [
-        htop git nix rsync
-        kexos-pkgs."meta-wrapper"
-        kexos-pkgs."DevShell"
+      packages = [
         pkg-make-persistent
       ];
       variables = {
+        PATH = lib.mkAfter [
+          "/etc/profiles/per-user/${username}/bin"
+          "/run/current-system/sw/bin"
+        ];
         #GDK_BACKEND = "x11";
         #QT_QPA_PLATFORM = "wayland";
       };
@@ -67,6 +66,9 @@ in
         #"/dev/uinput"
       ];
       bind.ro = [
+        # allow impure PATH
+        "/etc/profiles/per-user/${username}"
+        "/run/current-system/sw"
         # host system information
         "/etc/lsb-release"
         "/etc/os-release"

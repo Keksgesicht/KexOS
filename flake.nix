@@ -52,7 +52,7 @@
 
     # https://github.com/nixpak/nixpak
     nixpak = {
-      url = "github:nixpak/nixpak";
+      url = "github:Keksgesicht/nixpak/sort-bind-paths";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
