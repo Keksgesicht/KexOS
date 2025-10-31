@@ -74,6 +74,7 @@ in
   security.sudo.extraRules = [ {
     users = [ username ];
     commands = [
+      { options = [ "NOPASSWD" ]; command = "${cpu-gov-script} performance"; }
       { options = [ "NOPASSWD" ]; command = "${cpu-gov-script} ondemand"; }
       { options = [ "NOPASSWD" ]; command = "${cpu-gov-script} powersave"; }
     ];
@@ -82,9 +83,10 @@ in
     cpu-toggle-governor() {
       CPUGOV=$(cat /sys/bus/cpu/devices/cpu0/cpufreq/scaling_governor)
       case "$CPUGOV" in
-        "powersave") sudo ${cpu-gov-script} "ondemand" ;;
-        "ondemand") sudo ${cpu-gov-script} "powersave" ;;
-        *) sudo ${cpu-gov-script} "powersave" ;;
+        "performance") sudo ${cpu-gov-script} "ondemand" ;;
+        "ondemand")    sudo ${cpu-gov-script} "powersave" ;;
+        "powersave")   sudo ${cpu-gov-script} "performance" ;;
+        *)             sudo ${cpu-gov-script} "ondemand" ;;
       esac
     }
   '';
