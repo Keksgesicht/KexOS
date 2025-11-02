@@ -8,7 +8,7 @@ in
   KexOS.service."hetzner-ddns" = {
     service = {
       after = [ "podman-pihole.service" ];
-      path = with pkgs; [ bash curl gawk gnused iproute2 jq util-linux ];
+      path = with pkgs; [ bash curl gawk gnused hcloud iproute2 jq util-linux ];
       environment = pub6ds.variables // {
         TTL =
           if (hn == "cookieclicker") then "300"

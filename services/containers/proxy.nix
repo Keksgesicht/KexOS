@@ -61,7 +61,7 @@ with my-functions;
           else subdomain-base;
         ONLY_SUBDOMAINS = "true";
         VALIDATION = "dns";
-        DNSPLUGIN = "hetzner";
+        DNSPLUGIN = "hetzner-cloud";
         # seconds to wait for DNS record propagation
         PROPAGATION = "42";
         STAGING = "false";

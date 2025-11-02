@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 # own modified version of https://github.com/filiparag/hetzner_ddns
+# https://docs.hetzner.cloud/reference/cloud#dns
 
 self='hetzner-ddns.service'
 api_ip='https://ip.hetzner.com/'
-api_rec='https://dns.hetzner.com/api/v1/records'
-api_zone='https://dns.hetzner.com/api/v1/zones'
 
 test_configuration() {
     records_escaped="$(echo "$records" | sed 's:\*:\\\*:g')"
@@ -15,7 +14,7 @@ test_configuration() {
             'Info: TTL is invalid, defaulting to 1000 seconds'
         TTL=1000
     fi
-    if [ -z "$API_KEY" ]; then
+    if [ -z "$HCLOUD_TOKEN" ]; then
         logger -t $self -p 3 'Error: API key is not set, unable to proceed'
         exit 78
     fi
@@ -30,23 +29,19 @@ test_configuration() {
 }
 
 test_api_key() {
-    if curl $api_zone -H "Auth-API-Token: $API_KEY" 2>/dev/null | \
-    grep -q 'Invalid authentication credentials'; then
+    if hcloud all list >/dev/null |& grep -q 'no active context or token'; then
         logger -t $self -p 3 'Error: Invalid API key'
         exit 22
     fi
 }
 
 get_zone() {
-    zone="$(
-        curl $api_zone -H "Auth-API-Token: $API_KEY" 2>/dev/null | \
-        jq -r '.zones[] | .name + " " + .id' | \
-        awk -v d="$domain" '$1==d {print $2}'
-    )"
-    if [ -z "$zone" ]; then
+    if hcloud zone describe "${domain}" >/dev/null |& grep -q 'Zone not found'; then
+        zone=""
         logger -t $self -p 3 "Error: Unable to fetch zone ID for domain $domain"
         return 1
     else
+        zone=$(hcloud zone describe "${domain}" --output json | jq -r '.id')
         logger -t $self "Zone for ${domain}: $zone"
         return 0
     fi
@@ -54,18 +49,10 @@ get_zone() {
 
 get_record() {
     if [ -n "$zone" ]; then
-        record_ipv4="$(
-            echo "$records_json" | \
-            jq -r '.records[] | .name + " " + .type + " " + .id' | \
-            awk -v r="$1" -v d="$domain" \
-                '($1==r || $1==sprintf("%s.%s",r,d)) && $2=="A" {print $3 }'
-        )"
-        record_ipv6="$(
-            echo "$records_json" | \
-            jq -r '.records[] | .name + " " + .type + " " + .id' | \
-            awk -v r="$1" -v d="$domain" \
-                '($1==r || $1==sprintf("%s.%s",r,d)) && $2=="AAAA" {print $3 }'
-        )"
+        record_ipv4=$(hcloud zone rrset describe "${domain}" "$1" 'A' --output json |
+            jq -r '.records[0].value')
+        record_ipv6=$(hcloud zone rrset describe "${domain}" "$1" 'AAAA' --output json |
+            jq -r '.records[0].value')
     fi
     if [ -z "$record_ipv4" ] && [ -z "$record_ipv6" ]; then
         return 1
@@ -78,9 +65,6 @@ get_record() {
 
 get_records() {
     # Get all record IDs
-    records_json="$(
-        curl "${api_rec}?zone_id=$zone" -H "Auth-API-Token: $API_KEY" 2>/dev/null
-    )"
     for current_record in $records_escaped; do
         current_record="$(echo "$current_record" | sed 's:\\::')"
         if get_record "$current_record"; then
@@ -99,37 +83,24 @@ get_records() {
 
 get_record_ip_addr() {
     # Get record's IP address
-    if [ -n "$record_ipv4" ]; then
-        ipv4_rec="$(
-            curl "$api_rec/$record_ipv4" \
-                -H "Auth-API-Token: $API_KEY" 2>/dev/null | \
-                jq -r '.record.value'
-        )"
+    if [ -z "$record_ipv4" ]; then
+        logger -t $self -p 4 \
+            "Warning: Unable to fetch previous IPv4 address for $current_record.$domain"
+        ipv4_rec=''
+    else
+        ipv4_rec="$record_ipv4"
     fi
-    if [ -n "$record_ipv6" ]; then
-        ipv6_rec="$(
-            curl "$api_rec/$record_ipv6" \
-                -H "Auth-API-Token: $API_KEY" 2>/dev/null | \
-                jq -r '.record.value'
-        )"
+    if [ -z "$record_ipv6" ]; then
+        logger -t $self -p 4 \
+            "Warning: Unable to fetch previous IPv6 address for $current_record.$domain"
+        ipv6_rec=''
+    else
+        ipv6_rec="$record_ipv6"
     fi
-    if [ -n "$record_ipv4" ]; then
-        if [ -z "$ipv4_rec" ] || [ "$ipv4_rec" = 'null' ]; then
-            logger -t $self -p 4 \
-                "Warning: Unable to fetch previous IPv4 address for $current_record.$domain"
-            ipv4_rec=''
-        fi;
-    fi
-     if [ -n "$record_ipv6" ]; then
-        if [ -z "$ipv6_rec" ] || [ "$ipv6_rec" = 'null' ]; then
-            logger -t $self -p 4 \
-                "Warning: Unable to fetch previous IPv6 address for $current_record.$domain"
-            ipv6_rec=''
-        fi;
-    fi
-    if [ -z "$ipv4_rec" ] && [ -z "$ipv6_rec" ]; then
+    if [ -z "$record_ipv4" ] && [ -z "$record_ipv4" ]; then
         return 1
     fi
+
 }
 
 get_my_ip_addr() {
@@ -140,10 +111,10 @@ get_my_ip_addr() {
 
     # wierd privacy fix
     ipv6_cur="$(
-        ip -6 addr show "${MY_IFLINK}" 2>/dev/null | \
-        awk '$1 == "inet6" && $2 !~ /^fe80:/ && $2 !~ /^f[cd]/ &&
-            /'"${MY_IPV6_SUFFIX}"'/ {gsub(/\/.*$/, "", $2); print $2}' | \
-        head -1
+        ip -6 addr show "${MY_IFLINK}" 2>/dev/null |
+            awk '$1 == "inet6" && $2 !~ /^fe80:/ && $2 !~ /^f[cd]/ &&
+            /'"${MY_IPV6_SUFFIX}"'/ {gsub(/\/.*$/, "", $2); print $2}' |
+            head -1
     )"
     if [ -z "$ipv6_cur" ]; then
         ipv6_cur="$(
@@ -159,42 +130,20 @@ get_my_ip_addr() {
 
 set_record() {
     # Update record if IP address has changed
-    if [ -n "$record_ipv4" ] && [ -n "$ipv4_cur" ] \
-    && [ "$ipv4_cur" != "$ipv4_rec" ]; then
-        curl -X "PUT" "$api_rec/$record_ipv4" \
-            -H 'Content-Type: application/json' \
-            -H "Auth-API-Token: $API_KEY" \
-            -d "{
-            \"value\": \"$ipv4_cur\",
-            \"ttl\": $TTL,
-            \"type\": \"A\",
-            \"name\": \"$current_record\",
-            \"zone_id\": \"$zone\"
-            }" 1>/dev/null 2>/dev/null &&
-        logger -t $self \
-            "Update IPv4 for $current_record.$domain: $ipv4_rec => $ipv4_cur"
+    if [ -n "$record_ipv4" ] && [ -n "$ipv4_cur" ] && [ "$ipv4_cur" != "$ipv4_rec" ]; then
+        hcloud zone rrset set-records "$domain" "$current_record" 'A' --record "$ipv4_cur" &&
+            logger -t $self "Update IPv4 for $current_record.$domain: $ipv4_rec => $ipv4_cur"
     fi
-    if [ -n "$record_ipv6" ] && [ -n "$ipv6_cur" ] \
-    && [ "$ipv6_cur" != "$ipv6_rec" ]; then
-        curl -X "PUT" "$api_rec/$record_ipv6" \
-            -H 'Content-Type: application/json' \
-            -H "Auth-API-Token: $API_KEY" \
-            -d "{
-            \"value\": \"$ipv6_cur\",
-            \"ttl\": $TTL,
-            \"type\": \"AAAA\",
-            \"name\": \"$current_record\",
-            \"zone_id\": \"$zone\"
-            }" 1>/dev/null 2>/dev/null &&
-        logger -t $self \
-            "Update IPv6 for $current_record.$domain: $ipv6_rec => $ipv6_cur"
+    if [ -n "$record_ipv6" ] && [ -n "$ipv6_cur" ] && [ "$ipv6_cur" != "$ipv6_rec" ]; then
+        hcloud zone rrset set-records "$domain" "$current_record" 'AAAA' --record "$ipv6_cur" &&
+            logger -t $self "Update IPv6 for $current_record.$domain: $ipv6_rec => $ipv6_cur"
     fi
 }
 
 pick_record() {
     # Get record ID from array
-    echo "$2" | \
-    awk "{
+    echo "$2" |
+        awk "{
         for(i=1;i<=NF;i++){
             n=\$i;gsub(/=.*/,\"\",n);
             r=\$i;gsub(/.*=/,\"\",r);
@@ -224,7 +173,7 @@ run_ddns() {
     test_api_key
 
     while ! get_zone || ! get_records; do
-        sleep $((TTL/2))
+        sleep $((TTL / 2))
         logger -t $self 'Retrying to fetch zone and record data'
     done
 
