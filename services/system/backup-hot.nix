@@ -3,7 +3,7 @@
 let
   inherit (lib.lists) forEach;
 
-  hot-list = [ 1 2 ];
+  hot-list = [ 1 2 3 ];
   hot-name = (num: "hot_backup_" + (builtins.toString num));
   hot-pkg = pkgs.callPackage ../../packages/backup-hot.nix {};
 
