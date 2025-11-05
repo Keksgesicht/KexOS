@@ -71,7 +71,7 @@ in
   };
 
   # toggle performance/powersave with privileges
-  security.sudo.extraRules = [ {
+  security.sudo-rs.extraRules = [ {
     users = [ username ];
     commands = [
       { options = [ "NOPASSWD" ]; command = "${cpu-gov-script} performance"; }

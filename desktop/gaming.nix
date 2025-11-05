@@ -4,6 +4,7 @@ let
   xdg-config = "${home-dir}/.config";
   inherit (config.KexOS.service."dummy".service) serviceConfig;
   mango-hud = pkgs.callPackage ../packages/MangoHud.nix {};
+  options = [ "NOPASSWD" ];
   usb-bind-script = ../files/scripts/usb-bind-devices-by-name.sh;
 in
 {
@@ -56,15 +57,12 @@ in
     "C+ ${xdg-config}/MangoHud - - - - ${mango-hud}"
   ];
 
-  security.sudo.extraRules = [ {
+  security.sudo-rs.extraRules = [ {
     users = [ username ];
-    commands = [ {
-        command = "${usb-bind-script} Xbox360 bind";
-        options = [ "NOPASSWD" ];
-      } {
-        command = "${usb-bind-script} Xbox360 unbind";
-        options = [ "NOPASSWD" ];
-    } ];
+    commands = [
+      { inherit options; command = "${usb-bind-script} Xbox360 bind"; }
+      { inherit options; command = "${usb-bind-script} Xbox360 unbind"; }
+    ];
   } ];
 
   environment.shellAliases = {

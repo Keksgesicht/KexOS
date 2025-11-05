@@ -104,7 +104,7 @@ in
   ];
 
   environment.shellAliases.wg = "${pkgs.wireguard-tools}/bin/wg";
-  security.sudo.extraRules = [ {
+  security.sudo-rs.extraRules = [ {
     users = [ username ];
     commands = [ {
       options = [ "NOPASSWD" ];

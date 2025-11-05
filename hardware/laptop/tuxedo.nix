@@ -18,7 +18,7 @@ in
   hardware.tuxedo-drivers.enable = true;
 
   # reset backlight color and brightness
-  security.sudo.extraRules = [ {
+  security.sudo-rs.extraRules = [ {
     users = [ username ];
     commands = [ {
       options = [ "NOPASSWD" ];

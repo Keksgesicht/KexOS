@@ -116,7 +116,7 @@ with my-functions;
 
   users.users."${username}".packages = [ wg-cmd-script ];
   environment.shellAliases.wg-tool = "sudo ${wg-cmd-script}/bin/wg-tool";
-  security.sudo.extraRules = [ {
+  security.sudo-rs.extraRules = [ {
     users = [ username ];
     commands = [ {
       options = [ "NOPASSWD" ];
