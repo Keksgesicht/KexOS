@@ -45,7 +45,6 @@ with my-functions;
   } ];
 
   users.users."${username}".packages = [
-    pkgs.candy-icons
     libKDE.discover
     libKDE.kruler
     # use digital clock with PIM plugin
@@ -54,12 +53,14 @@ with my-functions;
     # security stuff
     libKDE.ksshaskpass
     config.programs.kdeconnect.package
+  ] ++ (with pkgs; [
+    candy-icons
     # graphics info
-    pkgs.clinfo
-    pkgs.glxinfo
-    pkgs.vulkan-tools
-    pkgs.wayland-utils
-  ];
+    clinfo
+    mesa-demos
+    vulkan-tools
+    wayland-utils
+  ]);
 
   systemd.tmpfiles.rules = [
     # calendar does not show events without it
