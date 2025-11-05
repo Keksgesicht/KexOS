@@ -21,14 +21,14 @@ fi
 tabs -4
 LESS="$LESS -x4"
 export LESS
-MOAR="$MOAR --shift 4"
-MOAR+=" --quit-if-one-screen"
-MOAR+=" --mousemode select"
-MOAR+=" --no-clear-on-exit"
-export MOAR
+MOOR="$MOOR --shift 4"
+MOOR+=" --quit-if-one-screen"
+MOOR+=" --mousemode select"
+MOOR+=" --no-clear-on-exit"
+export MOOR
 
-if (( $+commands[moar] )); then
-    export PAGER="moar"
+if (( $+commands[moor] )); then
+    export PAGER="moor"
     export SYSTEMD_PAGER="$PAGER"
     export SYSTEMD_PAGERSECURE="false"
 elif (( $+commands[less] )); then

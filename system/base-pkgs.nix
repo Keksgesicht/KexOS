@@ -12,7 +12,7 @@
     eza
     fastfetch
     lm_sensors
-    moar
+    moor
     moreutils
     nano
     rename
