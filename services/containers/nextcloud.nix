@@ -6,6 +6,16 @@ let
     after    = [ "mnt-${hdd-name}.mount" ];
     requires = [ "mnt-${hdd-name}.mount" ];
   };
+
+  nextcloud-ssd = "${ssd-mnt}/appdata/nextcloud";
+  nextcloud-hdd = "${hdd-mnt}/appdata2/nextcloud";
+
+  bind-opts = {
+    fsType = "none";
+    options = [ "bind" "nofail" "x-gvfs-hide" ];
+  };
+  hot-path = "/mnt/hot_backup/data/cookieclicker";
+  hot-opts = { depends = [ hdd-mnt hot-path ]; };
 in
 {
   imports = [
@@ -44,28 +54,16 @@ in
         "nextcloud-db"
         "nextcloud-redis"
       ];
-      image = "localhost/nextcloud:stable";
-      imageFile = pkgs.dockerTools.buildImage {
-        name = "localhost/nextcloud";
-        tag = "stable";
-        fromImage = config.container-image-updater."nextcloud".imageFile;
-        copyToRoot = pkgs.buildEnv {
-          name = "nextcloud-image-root";
-          paths = [ pkgs.ocrmypdf ] ++ pkgs.ocrmypdf.propagatedBuildInputs;
-        };
-        config = {
-          Env = [ "LD_PRELOAD=" ];
-          Cmd = [ "/init" ];
-        };
-      };
+      image     = config.container-image-updater."nextcloud".imageName;
+      imageFile = config.container-image-updater."nextcloud".imageFile;
       environment = {
         TZ = config.time.timeZone;
         #PHP_MEMORY_LIMIT = "512M";
       };
       volumes = [
-        "${ssd-mnt}/appdata/nextcloud:/config"
-        "${hdd-mnt}/appdata2/nextcloud:/data"
-        "${pkgs.ocrmypdf}/bin/ocrmypdf:/usr/local/bin/ocrmypdf:ro"
+        "${nextcloud-ssd}/web:/config"
+        "${nextcloud-hdd}/web:/data"
+        "${nextcloud-hdd}/files_external:/files_external:ro"
       ];
       extraOptions = [
         "--network" "server"
@@ -96,7 +94,7 @@ in
         "${secrets-dir}/keys/containers/nextcloud/MYSQL_ROOT"
       ];
       volumes = [
-        "${ssd-mnt}/appdata/database/nextcloud:/var/lib/mysql:Z"
+        "${nextcloud-ssd}/db:/var/lib/mysql:Z"
       ];
       extraOptions = [
         "--network" "server"
@@ -116,8 +114,8 @@ in
         "${secrets-dir}/keys/containers/nextcloud/REDIS"
       ];
       volumes = [
-        "${ssd-mnt}/appdata/redis/nextcloud/cfg:/etc/redis"
-        "${ssd-mnt}/appdata/redis/nextcloud/data:/data"
+        "${nextcloud-ssd}/redis/cfg:/etc/redis"
+        "${nextcloud-ssd}/redis/data:/data"
       ];
       extraOptions = [
         "--network" "server"
@@ -125,6 +123,18 @@ in
         "--ip6" "fd00:172:23::443:2:2"
       ];
       cmd = [ "redis-server" "/etc/redis/redis.conf" ];
+    };
+  };
+
+  fileSystems = {
+    "${nextcloud-hdd}/files_external/git-ssd" = bind-opts // hot-opts // {
+      device = "${hot-path}/home/keks/git";
+    };
+    "${nextcloud-hdd}/files_external/homeBraunJan" = bind-opts // hot-opts // {
+      device = "${hot-path}/homeBraunJan";
+    };
+    "${nextcloud-hdd}/files_external/homeGaming" = bind-opts // hot-opts // {
+      device = "${hot-path}/homeGaming";
     };
   };
 }
