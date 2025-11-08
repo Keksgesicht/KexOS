@@ -134,6 +134,9 @@ with my-functions;
     }
     else if (config.networking.hostName == "cookieclicker") then
     {
+      # power off desktop on button press
+      "powerdevilrc"."AC/SuspendAndShutdown"."PowerButtonAction".value = 8;
+      "powerdevilrc"."Battery/SuspendAndShutdown"."PowerButtonAction".value = 8;
       # UPS will drain much faster
       "powerdevilrc"."BatteryManagement"."BatteryLowLevel".value = 42;
       "powerdevilrc"."BatteryManagement"."BatteryCriticalLevel".value = 32;
