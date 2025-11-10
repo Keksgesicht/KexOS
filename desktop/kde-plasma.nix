@@ -12,6 +12,7 @@ with my-functions;
 {
   imports = [
     ../development/language-server-wrapper.nix
+    ./sddm.nix
   ];
 
   # Enable the X11 windowing system.
@@ -19,15 +20,6 @@ with my-functions;
 
   # Enable the KDE Plasma Desktop Environment (wayland by default).
   services.desktopManager."${plasma}".enable = true;
-  services.displayManager = {
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-      autoNumlock = true;
-      theme = "breeze";
-    };
-    defaultSession = "plasma";
-  };
 
   # I do not need this from nix packages
   environment."${plasma}".excludePackages = with libKDE; [
@@ -98,22 +90,6 @@ with my-functions;
       serviceConfig.TimeoutStartSec = 15;
     };
   };
-
-  environment.etc."tmpfiles.d/ZZ-sddm-no-audio.conf".text =
-  let
-    dn = "/dev/null";
-    sdUser = "/.config/systemd/user";
-    sddmHome = "/var/lib/sddm";
-  in ''
-    d  ${sddmHome}/.config          0750 sddm sddm - -
-    d  ${sddmHome}/.config/systemd  0750 sddm sddm - -
-    d  ${sddmHome}${sdUser}         0750 sddm sddm - -
-    L+ ${sddmHome}${sdUser}/pipewire.service       - - - - ${dn}
-    L+ ${sddmHome}${sdUser}/pipewire.socket        - - - - ${dn}
-    L+ ${sddmHome}${sdUser}/pipewire-pulse.service - - - - ${dn}
-    L+ ${sddmHome}${sdUser}/pipewire-pulse.socket  - - - - ${dn}
-    L+ ${sddmHome}${sdUser}/wireplumber.service    - - - - ${dn}
-  '';
 
   home-manager.users."${username}" =
   let

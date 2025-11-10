@@ -1,90 +1,59 @@
-{ self, config, lib, username, home-dir
-, ssd-mnt, hdd-mnt, nvm-mnt, data-dir, ... }:
+{ self, config, lib, username, home-dir, ssd-mnt, hdd-mnt, data-dir, ... }:
 
 let
   kexPaths = config.KexOS.paths;
 
-  bind-opt = [
-    "bind"
-    "nofail"
-    "x-gvfs-hide"
-  ];
+  bind-opt = [ "bind" "nofail" "x-gvfs-hide" ];
   bind-opts = {
     fsType = "none";
     options = bind-opt;
   };
-  data-opts = {
-    depends = [
-      "${hdd-mnt}"
-      "${home-dir}"
-    ];
-  };
+  data-opts = { depends = [ hdd-mnt home-dir ]; };
+  bind-data = (path: bind-opts // data-opts // {
+    device = "${data-dir}/${path}";
+  });
 
   trash-dir = "${hdd-mnt}/Trash/1000";
-  git-ssd-dir = "${ssd-mnt}${home-dir}/git";
 
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
 {
   fileSystems = {
-    "${home-dir}/Documents" = bind-opts // data-opts // {
-      device = "${data-dir}/Documents";
-    };
-    "${home-dir}/Music" = bind-opts // data-opts // {
-      device = "${data-dir}/Music";
-    };
-    "${home-dir}/Pictures" = bind-opts // data-opts // {
-      device = "${data-dir}/Pictures";
-    };
-    "${home-dir}/Videos" = bind-opts // data-opts // {
-      device = "${data-dir}/Videos";
+    # Documents
+    "${home-dir}/Documents" = bind-data "Documents";
+    "${home-dir}/Music"     = bind-data "Music";
+    "${home-dir}/Pictures"  = bind-data "Pictures";
+    "${home-dir}/Videos"    = bind-data "Videos";
+
+    # Development
+    "${home-dir}/devel"   = bind-data "Documents/development";
+    "${home-dir}/git/hdd" = bind-data "Documents/development/git";
+    "${home-dir}/git/ssd" = bind-opts // {
+      depends = [ home-dir ssd-mnt ];
+      device = "${ssd-mnt}${home-dir}/git";
     };
 
-    "${home-dir}/devel" = bind-opts // data-opts // {
-      device = "${data-dir}/Documents/development";
-    };
-    "${home-dir}/git/hdd" = bind-opts // data-opts // {
-      device = "${data-dir}/Documents/development/git";
-    };
-    "${home-dir}/git/ssd" = bind-opts // data-opts // {
-      device = "${git-ssd-dir}";
-    };
-    "${home-dir}/Module" = bind-opts // data-opts // {
-      device = "${data-dir}/Documents/Studium/Module";
-    };
+    # Gaming
+    "${data-dir}/Documents/Gaming" = bind-data "homeGaming/Documents";
+    "${data-dir}/Pictures/Gaming"  = bind-data "homeGaming/Pictures";
+    "${data-dir}/Videos/Gaming/Desktop" = bind-data "homeGaming/Videos/Desktop";
+    "${data-dir}/Videos/Gaming/sandbox" = bind-data "homeGaming/Videos/sandbox";
 
-    "${data-dir}/Documents/Gaming" = bind-opts // data-opts // {
-      device = "${hdd-mnt}/homeGaming/Documents";
-    };
-    "${data-dir}/Pictures/Gaming" = bind-opts // data-opts // {
-      device = "${hdd-mnt}/homeGaming/Pictures";
-    };
-    "${data-dir}/Videos/Gaming/Desktop" = bind-opts // data-opts // {
-      device = "${hdd-mnt}/homeGaming/Videos/Desktop";
-    };
-    "${data-dir}/Videos/Gaming/sandbox" = bind-opts // data-opts // {
-      device = "${hdd-mnt}/homeGaming/Videos/sandbox";
-    };
-
+    # Miscellaneous
     "${home-dir}/.local/share/Trash" = bind-opts // data-opts // {
-      device = "${trash-dir}";
+      device = trash-dir;
     };
     "${data-dir}/Pictures/Screenshots" = bind-opts // {
       device = "${ssd-mnt}/root${home-dir}/Pictures/Screenshots";
-      depends = [
-        "${nvm-mnt}"
-        "${data-dir}"
-      ];
+      depends = [ ssd-mnt data-dir ];
     };
     "${data-dir}/Videos/Screencasts" = bind-opts // {
       device = "${ssd-mnt}/root${home-dir}/Videos/Screencasts";
-      depends = [
-        "${nvm-mnt}"
-        "${data-dir}"
-      ];
+      depends = [ ssd-mnt data-dir ];
     };
-  };
+    "${home-dir}/Module" = bind-data "Documents/Studium/Module";
+  } // {}; # SDDM theming
 
   # https://nixos.wiki/wiki/Impermanence#Home_Managing
   # https://github.com/nix-community/impermanence
@@ -145,7 +114,6 @@ with my-functions;
           ".var/app"
         ]
         ++ usernameDir [
-          ".icons"
           "background"
           "texmf"
         ];
@@ -176,10 +144,6 @@ with my-functions;
     ));
   in
   resetUserDir [
-    # overrides home-dir creation,
-    # but allows SDDM to access ~/.face
-    "${ssd-mnt}/root${home-dir}"
-
     "${ssd-mnt}/root${home-dir}/git"
     "${ssd-mnt}/root${home-dir}/Pictures"
     "${ssd-mnt}/root${home-dir}/Pictures/Screenshots"
@@ -216,10 +180,5 @@ with my-functions;
     "L+ ${data-dir}/git    - - - - ${data-dir}/Documents/development/git"
     "L+ ${data-dir}/Module - - - - ${data-dir}/Documents/Studium/Module"
     "L+ ${kexPaths.nixCfgHomeLink} - - - - ${kexPaths.nixCfgDataDir}"
-  ]
-  ;
-
-  # disable home-dir create,
-  # as this is done by systemd-tmpfiles now.
-  users.users."${username}".createHome = lib.mkForce false;
+  ];
 }
