@@ -93,6 +93,10 @@ with my-functions;
         NIXPKGS_QT6_QML_IMPORT_PATH = "${kdepim-qml-path}";
       };
     };
+    "plasma-ksplash" = {
+      overrideStrategy = "asDropin";
+      serviceConfig.TimeoutStartSec = 15;
+    };
   };
 
   environment.etc."tmpfiles.d/ZZ-sddm-no-audio.conf".text =
