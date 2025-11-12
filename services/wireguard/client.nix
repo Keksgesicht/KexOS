@@ -98,14 +98,19 @@ let
 
   sysd-restart = (e:
     "/run/current-system/systemd/bin/systemctl " +
-    "--no-block restart \"wireguard-${wg-name}-peer-${e.name}-refresh\""
+    "--no-block restart \"wireguard-wg-${wg-name}-peer-${e.name}-refresh\""
   );
 
   my-functions = (import "${self}/nix/my-functions.nix" lib);
+
+  wg-restart = with my-functions; concatStr (forEach peerList (e: ''
+    ${sysd-restart e} || true
+  ''));
 in
 with my-functions;
 {
   imports = [
+    "${self}/nix/KexOS/resume-commands.nix"
     "${self}/nix/secrets-pkg.nix"
   ];
 
@@ -196,16 +201,9 @@ with my-functions;
       after = [ "user@1000.service" ];
       wantedBy = [ "user@1000.service" ];
       preStart = "sleep 5s";
-      script = concatStr (forEach peerList (e: ''
-        ${sysd-restart e} || true
-      ''));
+      script = wg-restart;
     };
   };
 
-  powerManagement.resumeCommands = lib.mkAfter (''
-      sleep 5s
-    '' + concatStr (forEach peerList (e: ''
-      ${sysd-restart e} || true
-    ''))
-  );
+  powerManagement.asyncResumeCommands = [ wg-restart ];
 }
