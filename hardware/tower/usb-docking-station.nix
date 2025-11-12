@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../common/udev-usb.nix
+    ../common/usb-docking-station.nix
   ];
 
   services.udev.usbRule = {

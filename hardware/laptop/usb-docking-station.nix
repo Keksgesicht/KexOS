@@ -8,16 +8,10 @@ let
 in
 {
   imports = [
-    ../common/udev-usb.nix
+    ../common/usb-docking-station.nix
   ];
 
   services.udev.usbRule = {
-    # keyboard wakeup from suspend
-    "99-usb-docking-keyboard-wakeup" = {
-      vendor = "1017";
-      product = "a002";
-      cmd = "ATTR{power/wakeup}=\"enabled\"";
-    };
     # enable ethernet adapter while charging
     "99-usb-docking-ethernet-while-charging" = {
       vendor = "0b95";
