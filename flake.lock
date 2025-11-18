@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1762252233,
-        "narHash": "sha256-JKCPvx1MTCNW2ABYLY2ZIiKkzp9JQtNyb1KdFsRNQ5A=",
+        "lastModified": 1764669882,
+        "narHash": "sha256-sXo4O6c7UCc65VOQNQ+afdcqhaXvTy3h4sxumD7+sb4=",
         "path": "/etc/unCookie",
         "type": "path"
       },
@@ -248,11 +248,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1760862643,
-        "narHash": "sha256-PXwG0TM7Ek87DNx4LbGWuD93PbFeKAJs4FfALtp7Wo0=",
+        "lastModified": 1764560356,
+        "narHash": "sha256-M5aFEFPppI4UhdOxwdmceJ9bDJC4T6C6CzCK1E2FZyo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "33c6dca0c0cb31d6addcd34e90a63ad61826b28c",
+        "rev": "6c8f0cca84510cc79e09ea99a299c9bc17d03cb6",
         "type": "github"
       },
       "original": {
