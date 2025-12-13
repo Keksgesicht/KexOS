@@ -2,10 +2,10 @@
 
 {
   # prevent suspend when closing lid
-  services.logind = {
-    lidSwitch = "lock";
-    lidSwitchDocked = "lock";
-    lidSwitchExternalPower = "lock";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "lock";
+    HandleLidSwitchDocked = "lock";
+    HandleLidSwitchExternalPower = "lock";
   };
 
   systemd.services = {
