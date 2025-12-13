@@ -8,7 +8,7 @@
 
     # https://github.com/NixOS/nixpkgs
     # update nixpkgs every couple of days
-    nixpkgs-stable.url = "nixpkgs/nixos-25.05";
+    nixpkgs-stable.url = "nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
     nixpkgs-custom.url = "/home/keks/git/hdd/nix/nixpkgs/custom";
