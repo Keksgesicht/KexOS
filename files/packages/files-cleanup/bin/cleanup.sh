@@ -43,6 +43,17 @@ rm "$tmp_file_dir"
 
 
 ### only keep newest version of nextcloud or mobile phone backups
+rm-nc-user-files() {
+	nc_file_ending="$2"
+	nc_find_path="${nc_user_files}/$1"
+	realpath $nc_find_path | while read -r nc_user_path; do
+		nc_path_occ=$(echo "$nc_user_path" | awk -F'/' '{for (i=7; i<=NF; i++) printf "%s/", $i; print ""}')
+		find "$nc_user_path" -type f -name '*'"$nc_file_ending" | \
+			head -n -3 | xargs --no-run-if-empty /bin/rm -v
+		docexe-nextcloud occ files:scan --path="/${nc_path_occ}" >/dev/null
+	done
+}
+
 if [ -d "/mnt/array/appdata2/nextcloud" ]; then
 	sleep 7s
 	while ! systemctl is-active podman-nextcloud.service; do
@@ -55,27 +66,28 @@ if [ -d "/mnt/array/appdata2/nextcloud" ]; then
 		podman exec nextcloud "$@"
 	}
 
-	nextcloud_janb_files="/mnt/array/appdata2/nextcloud/janb/files"
+	nc_path="/mnt/array/appdata2/nextcloud/web"
+	nc_user_files="${nc_path}/*/files"
 
 	### limit Calendar Backups
-	IFS=$'\n'
-	for contact_group in $(find ${nextcloud_janb_files}/.Calendar-Backup -type f -name '*.ics' | \
+
+	realpath ${nc_user_files}/.Calendar-Backup | while read -r nc_user_path; do
+		nc_user_name=$(echo "$nc_user_path" | awk -F'/' '{print $7}')
+		IFS=$'\n'
+		for contact_group in $(find "${nc_user_path}" -type f -name '*.ics' | \
                            awk -F'_' '{for(i=1;i<=NF-2;i++) printf $i"_"; print ""}' | sort | uniq); do
-		for contact_file in $(ls "${contact_group}"* | head -n -3); do
-			rm "${contact_file}"
+			for contact_file in $(ls "${contact_group}"* | head -n -3); do
+				rm "${contact_file}"
+			done
 		done
+		IFS=${OLDIFS}
+		docexe-nextcloud occ files:scan --path="/${nc_user_name}/files/.Calendar-Backup/" >/dev/null
 	done
-	IFS=${OLDIFS}
-	docexe-nextcloud occ files:scan --path=/janb/files/.Calendar-Backup/ >/dev/null
 
 	### limit Contact Backups
-	find ${nextcloud_janb_files}/.Contacts-Backup -type f -name '*.vcf' | \
-		head -n -3 | xargs --no-run-if-empty /bin/rm -v
-	docexe-nextcloud occ files:scan --path=/janb/files/.Contacts-Backup/ >/dev/null
+	rm-nc-user-files '.Contacts-Backup' '.vcf'
 
 	### limit Signal Chat Backups
-	find ${nextcloud_janb_files}/InstantUpload/SignalBackup -type f -name 'signal-*.backup' | \
-		head -n -3 | xargs --no-run-if-empty /bin/rm -v
-	find ${nextcloud_janb_files}/InstantUpload/SignalBackup -type f -name '.backup*.tmp' -delete
-	docexe-nextcloud occ files:scan --path=/janb/files/InstantUpload/SignalBackup/ >/dev/null
+	find ${nc_user_files}/InstantUpload/SignalBackup -type f -name '.backup*.tmp' -delete
+	rm-nc-user-files 'InstantUpload/SignalBackup' '.backup'
 fi

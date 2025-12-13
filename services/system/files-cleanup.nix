@@ -16,9 +16,7 @@ in
         ReadWritePaths = [
           "${home-dir}/nixos-config"
           "${data-dir}"
-          "-${hdd-mnt}/appdata2/nextcloud/janb/files/.Calendar-Backup"
-          "-${hdd-mnt}/appdata2/nextcloud/janb/files/.Contacts-Backup"
-          "-${hdd-mnt}/appdata2/nextcloud/janb/files/InstantUpload/SignalBackup"
+          "-${hdd-mnt}/appdata2/nextcloud/web"
           "-${ssd-mnt}/appdata/ddns"
           "-/var/lib/containers/storage"
         ];
