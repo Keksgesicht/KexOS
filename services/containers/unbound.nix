@@ -35,9 +35,11 @@ let
     (myServer "cookieclicker" "220" "nix-serve")
     (myServer "cookieflyer" "2" "")
     (myServer "cookieflyer" "25" "nix-serve")
+    (myServer "cookieflyer" "25" "pihole")
     (myServer "cookiemailer" "3" "")
     (myServer "cookiepi" "4" "")
     (myServer "cookiepi" "222" "nix-serve")
+    (myServer "cookiepi" "222" "pihole")
   ];
   myDomainConf = pkgs.writeText "${myDomain}.conf" (
     lib.strings.concatStringsSep "\n" (flatList myDomainText)
