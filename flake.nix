@@ -159,7 +159,6 @@
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           isDesktop = true;
-          holidayMode = true;
           lan-ip-suf = "220";
           vpn-ip-suf = "1";
           ifLan = "enp4s0";
@@ -176,7 +175,6 @@
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
           isDesktop = true;
-          holidayMode = true;
           vpn-ip-suf = "102";
           lan-ip-suf = "1";
           ifLan = "enp2s0";

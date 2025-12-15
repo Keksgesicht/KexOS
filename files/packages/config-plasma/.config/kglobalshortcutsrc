@@ -7,6 +7,10 @@ Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,
 Switch to Next Keyboard Layout=Ctrl+Alt+K,Meta+Alt+K,
 _k_friendly_name=Keyboard Layout Switcher
 
+[com.nixpak.BilderAnguck]
+LOGO+V||Show main window under mouse cursor=none,Meta+V,CopyQ - Show main window under mouse cursor
+_k_friendly_name=com.nixpak.BilderAnguck
+
 [kaccess]
 Toggle Screen Reader On and Off=Meta+Alt+S,Meta+Alt+S,Toggle Screen Reader On and Off
 _k_friendly_name=Accessibility
@@ -180,7 +184,7 @@ Window One Screen Down=none,,Move Window One Screen Down
 Window One Screen Up=none,,Move Window One Screen Up
 Window One Screen to the Left=none,,Move Window One Screen to the Left
 Window One Screen to the Right=none,,Move Window One Screen to the Right
-Window Operations Menu=Alt+F3,Alt+F3,Window Operations Menu
+Window Operations Menu=Alt+F3,Alt+F3,Window Menu
 Window Pack Down=none,,Move Window Down
 Window Pack Left=none,,Move Window Left
 Window Pack Right=none,,Move Window Right
@@ -195,7 +199,7 @@ Window Quick Tile Top Left=Meta+Shift+Up,,Quick Tile Window to the Top Left
 Window Quick Tile Top Right=Meta+Shift+Right,,Quick Tile Window to the Top Right
 Window Raise=none,,Raise Window
 Window Resize=Meta+Alt+Z,,Resize Window
-Window Shade=none,,Shade Window
+Window Shade=none,none,Shade Window
 Window Shrink Horizontal=none,,Shrink Window Horizontally
 Window Shrink Vertical=none,,Shrink Window Vertically
 Window to Desktop 1=Meta+Ctrl+Shift+F1,,Window to Desktop 1
@@ -265,6 +269,7 @@ _k_friendly_name=Power Management
 powerProfile=Battery,Battery\tMeta+B,Switch Power Profile
 
 [plasmashell]
+Slideshow Wallpaper Next Image=Meta+Alt+Backspace,,Next Wallpaper Image
 _k_friendly_name=plasmashell
 activate application launcher=none,Meta\tAlt+F1,Activate Application Launcher
 activate task manager entry 1=Meta+1,Meta+1,Activate Task Manager Entry 1
