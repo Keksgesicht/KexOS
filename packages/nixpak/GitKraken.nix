@@ -10,7 +10,7 @@ in
     wrapper = {
       packages = [
         { package = pkgs.gitkraken; binName = "gitkraken"; appFile = [
-          { src = "GitKraken Desktop"; dst = "GitKraken"; args.extra = [
+          { src = "gitkraken"; dst = "GitKraken"; args.extra = [
             "--enable-features=UseOzonePlatform" "--ozone-platform=wayland"
           ]; }
         ]; }
