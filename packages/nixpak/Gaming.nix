@@ -150,6 +150,8 @@ in
         "/dev/bus/usb"
         "/dev/input"
         "/dev/uinput"
+        # new synchronisation method
+        "/dev/ntsync"
       ];
       bind.ro = [
         # host system information
@@ -276,4 +278,8 @@ in
       e  /tmp/.X11-unix 1777 ${username} ${username} - -
     '';
   } else {};
+
+  boot.kernelModules = if gamingPC then [
+    "ntsync"
+  ] else [];
 }
