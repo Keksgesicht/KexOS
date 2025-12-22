@@ -1,7 +1,10 @@
-{ ... }:
+{ config, lib, ... }:
 
-# https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html
+let
+  hn = config.networking.hostName;
+in
 {
+  # https://pipewire.pages.freedesktop.org/wireplumber/daemon/configuration/migration.html
   services.pipewire.wireplumber = {
     #enable = true;
     extraConfig = {
@@ -18,7 +21,13 @@
           };
         } ];
       };
-    };
+    } // (if (hn == "cookieclicker") then {
+      "90-keep-playback-on-disconnect" = {
+        "wireplumber.settings" = {
+            "linking.pause-playback" = false;
+        };
+      };
+    } else {});
     extraScripts = {};
   };
 }
