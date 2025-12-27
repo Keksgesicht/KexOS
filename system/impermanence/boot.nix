@@ -83,7 +83,7 @@ in
             IFS=$'\n'
             set +e
             for sv in $(btrfs subvolume list -o "$1" | cut -d' ' -f9); do
-                btrfs subvolume delete $TMP_MNT/$sv
+                btrfs subvolume delete --recursive "$TMP_MNT/$sv"
             done
             btrfs subvolume delete $1
             set -e
