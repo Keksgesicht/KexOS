@@ -30,14 +30,16 @@ array/homeBraunJan/Documents/development/git/Studium
 EOF
 
 IFS=$'\n'   # forloop separator - only newlines
+set +x
 for dir in $(cat "$tmp_file_dir"); do
-	for file in $(plocate '*/'"${dir}"'/*.tex'); do
-		texdir=$(dirname "${file}")
+	for texdir in $(dirname $(plocate '*/'"${dir}"'/*.tex') | sort | uniq); do
+		echo "$texdir"
 		for end in $(cat "$tmp_file_endings"); do
 			find "${texdir}" -maxdepth 1 -type f -name '*.'"${end}" -print -delete
 		done
 	done
 done
+set -x
 IFS=${OLDIFS}
 rm "$tmp_file_dir"
 
