@@ -1,5 +1,9 @@
 #!/bin/bash
 
+while ! [ -d "/run/user/1000/pulse" ]; do
+	sleep 1s
+done
+
 work_dir=$(realpath "$(dirname "$0")")
 export work_dir
 source "${work_dir}"/../lib/settings.sh
