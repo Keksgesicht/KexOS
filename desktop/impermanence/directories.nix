@@ -12,6 +12,9 @@ let
   bind-data = (path: bind-opts // data-opts // {
     device = "${data-dir}/${path}";
   });
+  bind-gaming = (path: bind-opts // data-opts // {
+    device = "${hdd-mnt}/homeGaming/${path}";
+  });
 
   trash-dir = "${hdd-mnt}/Trash/1000";
 
@@ -35,10 +38,10 @@ with my-functions;
     };
 
     # Gaming
-    "${data-dir}/Documents/Gaming" = bind-data "homeGaming/Documents";
-    "${data-dir}/Pictures/Gaming"  = bind-data "homeGaming/Pictures";
-    "${data-dir}/Videos/Gaming/Desktop" = bind-data "homeGaming/Videos/Desktop";
-    "${data-dir}/Videos/Gaming/sandbox" = bind-data "homeGaming/Videos/sandbox";
+    "${data-dir}/Documents/Gaming"      = bind-gaming "Documents";
+    "${data-dir}/Pictures/Gaming"       = bind-gaming "Pictures";
+    "${data-dir}/Videos/Gaming/Desktop" = bind-gaming "Videos/Desktop";
+    "${data-dir}/Videos/Gaming/sandbox" = bind-gaming "Videos/sandbox";
 
     # Miscellaneous
     "${home-dir}/.local/share/Trash" = bind-opts // data-opts // {
