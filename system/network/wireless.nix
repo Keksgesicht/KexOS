@@ -22,6 +22,9 @@ let
   };
 in
 {
+  # avoid conflicts with NetworkManager
+  networking.wireless.enable = lib.mkForce false;
+
   services.hostapd =
     if (hn == "cookieclicker") then
       (netWifi
