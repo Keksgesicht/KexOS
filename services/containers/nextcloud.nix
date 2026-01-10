@@ -1,21 +1,30 @@
-{ config, pkgs, lib, secrets-dir, ssd-mnt, hdd-mnt, hdd-name, ... }:
+{ config, lib, secrets-dir, ssd-mnt, hdd-mnt, hdd-name, ... }:
 
 let
   pss = (sec: import ./podman-systemd-service.nix lib sec);
   serviceExtraConfig = {
     after    = [ "mnt-${hdd-name}.mount" ];
     requires = [ "mnt-${hdd-name}.mount" ];
+    unitConfig.WantsMountsFor = [
+      "${nextcloud-hdd}/files_external/git-ssd"
+      "${nextcloud-hdd}/files_external/homeBraunJan"
+      "${nextcloud-hdd}/files_external/homeGaming"
+    ];
   };
 
   nextcloud-ssd = "${ssd-mnt}/appdata/nextcloud";
   nextcloud-hdd = "${hdd-mnt}/appdata2/nextcloud";
 
-  bind-opts = {
-    fsType = "none";
-    options = [ "bind" "nofail" "x-gvfs-hide" ];
-  };
   hot-path = "/mnt/hot_backup/data/cookieclicker";
-  hot-opts = { depends = [ hdd-mnt hot-path ]; };
+  hot-opts = {
+    fsType = "none";
+    depends = [ hdd-mnt hot-path ];
+    options = [
+      "bind" "nofail" "x-gvfs-hide"
+      "x-systemd.device-bound=yes"
+      "x-systemd.requires-mounts-for=/mnt/hot_backup"
+    ];
+  };
 in
 {
   imports = [
@@ -127,13 +136,13 @@ in
   };
 
   fileSystems = {
-    "${nextcloud-hdd}/files_external/git-ssd" = bind-opts // hot-opts // {
+    "${nextcloud-hdd}/files_external/git-ssd" = hot-opts // {
       device = "${hot-path}/home/keks/git";
     };
-    "${nextcloud-hdd}/files_external/homeBraunJan" = bind-opts // hot-opts // {
+    "${nextcloud-hdd}/files_external/homeBraunJan" = hot-opts // {
       device = "${hot-path}/homeBraunJan";
     };
-    "${nextcloud-hdd}/files_external/homeGaming" = bind-opts // hot-opts // {
+    "${nextcloud-hdd}/files_external/homeGaming" = hot-opts // {
       device = "${hot-path}/homeGaming";
     };
   };

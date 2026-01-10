@@ -3,8 +3,9 @@
 let
   inherit (lib.lists) forEach;
 
-  hot-list = [ 1 2 3 ];
-  hot-name = (num: "hot_backup_" + (builtins.toString num));
+  name = "hot_backup";
+  hot-list = [ 2 3 ];
+  hot-name = (num: name + "_" + (builtins.toString num));
   hot-pkg = pkgs.callPackage ../../packages/backup-hot.nix {};
 
   req-crypt = (n: "x-systemd.requires=systemd-cryptsetup@${n}.service");
@@ -20,12 +21,11 @@ in
     forEach hot-list (e: ctab-tpm2 (hot-name e))
   );
 
-  fileSystems."/mnt/hot_backup" = {
-    device = "/dev/disk/by-label/hot_backup";
+  fileSystems."/mnt/${name}" = {
+    device = "/dev/disk/by-label/${name}";
     options = [
       "nofail"
       "compress-force=zstd:3"
-      "x-systemd.automount" # makes delayed mounting possible
       "x-systemd.device-timeout=123s" # prevent job removal
     ] ++ forEach hot-list (e: (req-crypt (hot-name e)));
   };
@@ -36,12 +36,15 @@ in
       restartIfChanged = false;
       after = [ "podman-pihole.service" ];
       description = "Hot Backup Job for %i";
-      requires = [ "mnt-hot_backup.mount" ];
+      requires = [ "mnt-${name}.mount" ];
       path = with pkgs; [ rsync util-linux ];
+      unitConfig = {
+        RequiresMountsFor = "/mnt/${name}";
+      };
       serviceConfig = {
         Type = "exec";
         ExecStart = "${hot-pkg}/bin/backup-hot.sh %i";
-        ReadWritePaths = "/mnt/hot_backup/data/%i";
+        ReadWritePaths = "/mnt/${name}/data/%i";
         InaccessiblePaths = lib.mkForce [];
       };
     };
