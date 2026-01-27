@@ -28,7 +28,7 @@
         consoleMode = "max";
         # Maximum number of latest generations in the boot menu.
         # Useful to prevent boot partition running out of disk space.
-        configurationLimit = 16;
+        configurationLimit = 8;
         # Make MemTest86 available from the systemd-boot menu.
         memtest86.enable = true;
       };
