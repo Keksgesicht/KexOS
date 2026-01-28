@@ -11,7 +11,7 @@ let
 
   pkgl = pkgs-latest { config.allowUnfree = true; };
   pkgo = pkgs-stable { config.allowUnfree = true; };
-  pkgs-gs = pkgs-stable {};
+  pkgs-gs = pkgs-latest {};
 
   pkgMachineID = pkgs.writeText "${name}-machine-id" ''
     1337deadbeef42bad0815ccc4711da69
@@ -33,6 +33,7 @@ let
   ]);
 
   # https://github.com/ValveSoftware/gamescope
+  # --hdr-enabled --mangoapp
   gamescope-wrapper = (p: n: w:
     p.writers.writePython3Bin "gamescope-${n}" {
       libraries = [];
@@ -41,13 +42,14 @@ let
       import sys
       gsBin = "${pkgs-gs.gamescope}"
       gsBin += "/bin/gamescope"
-      gsArgs = [gsBin, "-b"]
+      gsArgs = [gsBin, "--borderless", "--adaptive-sync"]
       gsArgs += ["-W", "${w}", "-H", "1440", "-r", "120", "-o", "30"]
-      gsArgs += ["--adaptive-sync"] + sys.argv[1:]
+      gsArgs += sys.argv[1:]
       os.execvp(gsBin, gsArgs)
     '')
   );
   gameTools = (p: [
+    p.vulkan-tools
     p.gamemode
     p.mangohud
     # gamescope aliase

@@ -1,5 +1,29 @@
 { config, pkgs, username, isDesktop, ... }:
 
+let
+  kill-exe = "${pkgs.util-linux.bin}/bin/kill";
+  sleep-exe = "${pkgs.coreutils}/bin/sleep";
+  my-kill = pkgs.writeShellScriptBin "my_kill" ''
+    PID="$1"
+    if [ -z "$PID" ] || ! [ -d "/proc/$PID" ]; then
+      exit 1
+    fi
+    kill_func() {
+      SIG="$1"
+      PID="$2"
+      echo "Sending $SIG to $PID"
+      ${kill-exe} "$SIG" "$PID"
+      ${sleep-exe} 1s
+      [ -d "/proc/$PID" ] || exit 0
+    }
+    kill_func  '-3' "$PID"
+    kill_func  '-2' "$PID"
+    kill_func  '-1' "$PID"
+    kill_func '-15' "$PID"
+    kill_func  '-9' "$PID"
+    exit 9
+  '';
+in
 {
   imports = [
     ./git.nix
@@ -26,6 +50,8 @@
     strace
     unixtools.xxd
     unzip
+    # custom packages/executeables
+    my-kill
   ] ++ lib.optionals isDesktop [ config.KexOS.packages."DevShell" ];
 
   KexOS.packages."DevShell" = pkgs.writeShellScriptBin "KexOS-DevShell" ''
