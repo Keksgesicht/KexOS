@@ -47,4 +47,6 @@ in
       "x-systemd.requires=systemd-cryptsetup@${hdd-name}.service"
     ];
   };
+
+  boot.kernelParams = [ "usbcore.autosuspend=-1" ];
 }
