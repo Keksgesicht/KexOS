@@ -8,6 +8,9 @@ let
   bind-path = "${ssd-mnt}/appdata/swag";
   swag-cfg = (pkgs.callPackage "${self}/packages/containers/swag-cfg.nix" {});
 
+  base-update-srv = config.KexOS.service."server-and-config-update@";
+  inherit (base-update-srv.service.serviceConfig) InaccessiblePaths;
+
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
@@ -36,6 +39,7 @@ with my-functions;
       serviceConfig = {
         BindReadOnlyPaths = "/etc/containers";
         ReadWritePaths = "/var/lib/containers/storage";
+        InaccessiblePaths = lib.mkForce InaccessiblePaths.content;
       };
     };
     timer = {

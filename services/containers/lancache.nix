@@ -4,6 +4,9 @@
 
 let
   dep-mount = [ "mnt-${nvm-name}.mount" ];
+
+  base-update-srv = config.KexOS.service."server-and-config-update@";
+  inherit (base-update-srv.service.serviceConfig) InaccessiblePaths;
 in
 {
   imports = [
@@ -36,6 +39,7 @@ in
             "/etc/ssl"
             "/etc/static/ssl"
           ];
+          InaccessiblePaths = lib.mkForce InaccessiblePaths.content;
         };
       };
     };
