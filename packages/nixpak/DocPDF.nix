@@ -3,76 +3,7 @@
 
 let
   name = "DocPDF";
-  latexSet = "work";
-
   pkgs-sta = pkgs-stable {};
-  tl = pkgs.texlive;
-
-  pkgsTexLive = (tl.combine ({
-    inherit (tl)
-      scheme-small
-      latexmk
-      standalone
-    ;
-  } // (lib.optionals (latexSet == "work") {
-    inherit (tl)
-      # TUDa comperate design
-      tuda-ci
-      adjustbox
-      anyfontsize
-      environ
-      fontaxes
-      pdfx
-      roboto
-      urcls
-      xcharter
-      xstring
-      # additional packages
-      csquotes
-      datetime
-      fmtcount
-      fontawesome
-      forest
-      glossaries
-      makecell
-      numprint
-      pgf-umlsd
-      siunitx
-      tabularray
-      xmpincl
-    ;
-  })));
-
-
-
-  wrapperLaTeX = (name: args: let
-    strFunc = lib.strings;
-    npOut1 = strFunc.head (strFunc.splitString "-" pkgsTexLive);
-    npOut2 = strFunc.removePrefix npOut1 pkgsTexLive;
-    argStr = strFunc.concatStringsSep ", " (lib.lists.forEach args (e:
-      "\"${e}\""
-    ));
-  in
-  pkgs.writers.writePython3Bin "my-${name}" {
-        libraries = [];
-  } ''
-    import sys
-    import os
-    wrappedCmd = "${npOut1}"
-    wrappedCmd += "${npOut2}"
-    wrappedCmd += "/bin/${name}"
-    wrappedArgs = [wrappedCmd]
-    wrappedArgs += [${argStr}]
-    wrappedArgs += sys.argv[1:]
-    os.execv(wrappedCmd, wrappedArgs)
-  '');
-  pkgsLaTeX = [
-    pkgsTexLive
-    (wrapperLaTeX "latexmk"  [ "-synctex=1" "-pdf" "-silent" ])
-    (wrapperLaTeX "lualatex" [ "-synctex=1" "-interaction=nonstopmode" ])
-    (wrapperLaTeX "pdflatex" [ "-synctex=1" "-interaction=nonstopmode" ])
-    (wrapperLaTeX "xelatex"  [ "-synctex=1" "-interaction=nonstopmode" ])
-  ];
 
   okularPkg = (myKDEpkg pkgs.kdePackages.okular "okular" "cp -n" [
     "" "part"
@@ -95,9 +26,6 @@ in
         { package = pkgs-sta.pympress; binName = "pympress"; appFile = [
           { src = "io.github.pympress"; }
         ]; }
-        { package = pkgs.texstudio; binName = "texstudio"; appFile = [
-          { args.remove = "%F"; args.extra = "%F"; }
-        ]; }
         { package = pkgs.xournalpp; binName = "xournalpp"; appFile = [
           { src = "com.github.xournalpp.xournalpp"; }
         ]; }
@@ -106,10 +34,7 @@ in
         #pkgs.pdfdiff
         pkgs.pdfgrep
         pkgs.ocrmypdf
-      ]
-      # LaTeX stuff
-      ++ pkgsLaTeX
-      ;
+      ];
       qtKDEintegration = true;
       printing = true;
     };
@@ -136,5 +61,12 @@ in
         (sloth.concat' sloth.homeDir "/Module")
       ];
     };
+  };
+
+  environment.shellAliases = {
+    "latexmk"  = "latexmk  -synctex=1 -pdf -silent";
+    "lualatex" = "lualatex -synctex=1 -interaction=nonstopmode";
+    "pdflatex" = "pdflatex -synctex=1 -interaction=nonstopmode";
+    "xelatex"  = "xelatex  -synctex=1 -interaction=nonstopmode";
   };
 }

@@ -74,13 +74,13 @@ in
       "text/javascript" = textEditor;
       "text/markdown"   = textEditor;
       "text/plain"      = textEditor;
-      "text/x-bibtex"   = "texstudio.desktop";
+      "text/x-bibtex"   = textEditor;
       "text/x-c++src"   = textEditor;
       "text/x-csrc"     = textEditor;
       "text/x-makefile" = textEditor;
       "text/x-patch"    = "org.gnome.meld.desktop";
       "text/x-python"   = textEditor;
-      "text/x-tex"      = "texstudio.desktop";
+      "text/x-tex"      = textEditor;
 
       "image/gif"     = imageViewer;
       "image/jpeg"    = imageViewer;
