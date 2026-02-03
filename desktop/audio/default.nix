@@ -1,6 +1,7 @@
 { self, config, pkgs, username, ... }:
 
 let
+  hn = config.networking.hostName;
   inherit (config.KexOS.service."dummy".service) serviceConfig;
   pkg-dir = "${self}/packages";
   my-audio = pkgs.callPackage "${pkg-dir}/my-audio.nix" {};
@@ -54,7 +55,9 @@ in
       wantedBy = srvList;
       serviceConfig = serviceConfig // {
         ExecStart = "${my-audio}/bin/audio-init.sh";
-        Restart = "always";
+        Restart = if (hn == "cookieclicker")
+                  then "always"
+                  else "on-failure";
         Type = "exec";
         ProtectHome = "read-only";
         BindReadOnlyPaths = "/run/user/1000";

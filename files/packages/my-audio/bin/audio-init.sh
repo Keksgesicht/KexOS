@@ -34,6 +34,10 @@ mute_hardware
 
 echo "Audio connection setup finished!"
 
+if [ "$(cat /etc/hostname)" != "cookieclicker" ]; then
+	exit 0
+fi
+
 # react on new devices being added and connect them automatically
 "${work_dir}"/../lib/audio-auto-relink.sh 'sink' &
 pids[1]=$!
