@@ -24,4 +24,9 @@
     ../system/network/network-manager/IPv6.nix
     ../system/network/wireless.nix
   ];
+
+  boot.kernelParams = [
+    "amd_iommu=on" "iommu=pt"
+    "usbcore.autosuspend=-1"
+  ];
 }
