@@ -1,7 +1,9 @@
-{ pkgs, username, ... }:
+{ pkgs, pkgs-latest, username, ... }:
 
 # https://nixos.wiki/wiki/Scanners
 let
+  pkgs-scan = pkgs-latest { config.allowUnfree = true; };
+
   epson-gt-x750-config = pkgs.writeTextFile {
     name = "epson-gt-x750.conf";
     destination = "/etc/sane.d/epson-gt-x750.conf";
@@ -9,23 +11,11 @@ let
   };
 in
 {
-  imports = [
-    ../../nix/pkgs-unfree.nix
-  ];
-
-  nixpkgs.allowUnfreePackages = [
-    pkgs.epkowa
-    "iscan-data" "iscan-ds" "iscan-gt"
-    "iscan-gt-f720-bundle" "iscan-gt-s600-bundle" "iscan-gt-s650-bundle"
-    "iscan-gt-s80-bundle" "iscan-gt-x750-bundle" "iscan-gt-x770-bundle"
-    "iscan-gt-x820-bundle" "iscan-nt-bundle" "iscan-perfection-v550-bundle"
-    "iscan-v330-bundle" "iscan-v370-bundle"
-  ];
 
   hardware.sane = {
     enable = true;
     extraBackends = [
-      pkgs.epkowa
+      pkgs-scan.epkowa
       epson-gt-x750-config
     ];
   };
