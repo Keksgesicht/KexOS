@@ -18,6 +18,12 @@ in
       SystemKeepFree=8G
       SystemMaxFiles=300
       ''
+    else if (cfgNetName == "cookiemailer") then
+      ''
+      SystemMaxUse=512M
+      SystemKeepFree=1G
+      SystemMaxFiles=50
+      ''
     else
       ''
       SystemMaxUse=1G

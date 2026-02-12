@@ -42,9 +42,9 @@ in
         ];
         script = ''
           set +e
-          ${mailcow-updater-script}
+          ${mailcow-updater-script} >/dev/null
           if [ "$?" = 2 ]; then
-            ${mailcow-updater-script}
+            ${mailcow-updater-script} >/dev/null
           fi
         '';
         serviceConfig = serviceConfig // {
@@ -57,14 +57,12 @@ in
         startAt = "*-*-* 06:06:06";
         path = with pkgs; [ bash docker findutils gnugrep gnused which ];
         environment = {
-          BACK_PARAMS = "backup all";
-          BACK_OPTS = "--delete-days 1";
           inherit MAILCOW_BACKUP_LOCATION;
         };
         script = ''
-          mkdir -p $MAILCOW_BACKUP_LOCATION
-          helper-scripts/backup_and_restore.sh \
-            $BACK_PARAMS $BACK_OPTS
+          mkdir -p "$MAILCOW_BACKUP_LOCATION"
+          helper-scripts/backup_and_restore.sh backup \
+            --delete-days 0 all >/dev/null
         '';
         serviceConfig = serviceConfig // {
           ReadWritePaths = ReadWritePaths ++ [ MAILCOW_BACKUP_LOCATION ];

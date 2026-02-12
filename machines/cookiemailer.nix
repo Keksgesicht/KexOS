@@ -14,4 +14,10 @@
   ];
 
   services.nix-serve.bindAddress = lib.mkForce "${vpn-subnet-v4}.${vpn-ip-suf}";
+
+  # reduce space on disk
+  nix.gc.options = lib.mkForce "--delete-older-than 13d";
+  boot.initrd.systemd.services."setup-impermanence-root-volume" = {
+    environment.BACKUP_DAYS = lib.mkForce "3";
+  };
 }
