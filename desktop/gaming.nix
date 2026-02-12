@@ -23,7 +23,7 @@ in
         description = "OBS Studio Autostarter (gaming)";
         path = with pkgs; [
           config.nixpak."OBS-Studio".output.env
-          bash gawk procps psmisc util-linux xorg.xrandr
+          bash gawk procps psmisc util-linux xrandr
         ];
         serviceConfig = serviceConfig // {
           PrivateDevices = "no";
