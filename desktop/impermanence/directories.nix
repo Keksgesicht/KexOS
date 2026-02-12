@@ -97,6 +97,7 @@ with my-functions;
           ".local/share/okular"
           ".local/share/plasma"
           ".local/share/plasma-systemmonitor"
+          ".local/share/systemd/timers"
           ".local/share/themes"
           ".local/share/waydroid"
         ]
