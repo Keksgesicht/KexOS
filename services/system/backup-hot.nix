@@ -55,4 +55,16 @@ in
     "backup-hot@cookiemailer" = timer-hot;
     "backup-hot@cookiepi" = timer-hot;
   };
+
+  # usb device sometimes vanishes after snapshot
+  systemd.services."usb-vanish-recovery" = {
+    path = with pkgs; [ systemd util-linux ];
+    script = ''
+      if ! mountpoint "/mnt/${name}"; then
+        systemctl --no-block reboot
+      fi
+      exit 0
+    '';
+    startAt = "*-*-* 06:19:00";
+  };
 }
