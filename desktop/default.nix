@@ -8,7 +8,7 @@
     ./home-manager
     ./home-manager/desktop.nix
     ./impermanence
-    ./kde-plasma.nix
+    ./kde-plasma
     ./openssh.nix
     ./packages.nix
     ./printing.nix

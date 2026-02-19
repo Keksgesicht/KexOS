@@ -19,12 +19,20 @@ let
   };
 
   plasma-config = pkgs.callPackage "${self}/packages/config-plasma.nix" {};
-  kwin-display-json = ".config/kwinoutputconfig.json";
-  kwin-display-path = "${plasma-config}/${kwin-display-json}.machine-tower";
+  sddm-config = (src-dir: file: src-ext: ''
+    C  ${sddmHome}/${file} - - - - ${src-dir}/${file}${src-ext}
+    Z  ${sddmHome}/${file} 0644 sddm sddm - -
+  '');
 in
 {
   # Enable the KDE Plasma Desktop Environment (wayland by default).
   services.displayManager = {
+    /*
+    plasma-login-manager = {
+      enable = true;
+      settings = {};
+    };
+    */
     sddm = {
       enable = true;
       wayland.enable = true;
@@ -62,9 +70,9 @@ in
     '';
   } // lib.optionalAttrs (hn == "cookieclicker") {
     # disable DP over USB-C displays
-    "tmpfiles.d/ZZ-sddm-99-display-config.conf".text = ''
-      C  ${sddmHome}/${kwin-display-json} - - - - ${kwin-display-path}
-      Z  ${sddmHome}/${kwin-display-json} 0644 sddm sddm - -
-    '';
+    "tmpfiles.d/ZZ-sddm-99-user-config.conf".text = ""
+    + (sddm-config plasma-config ".config/kwinoutputconfig.json" ".machine-tower")
+    + (sddm-config plasma-config ".config/kcminputrc" "")
+    ;
   };
 }

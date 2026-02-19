@@ -6,13 +6,13 @@ let
   plasma = "plasma6";
   qt-ver = "6";
 
-  my-functions = (import ../nix/my-functions.nix lib);
+  my-functions = (import ../../nix/my-functions.nix lib);
 in
 with my-functions;
 {
   imports = [
-    ../development/language-server-wrapper.nix
-    ./sddm.nix
+    ../../development/language-server-wrapper.nix
+    ./login-manager.nix
   ];
 
   # Enable the X11 windowing system.

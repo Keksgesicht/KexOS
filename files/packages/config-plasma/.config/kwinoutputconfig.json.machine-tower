@@ -4,7 +4,16 @@
             {
                 "allowDdcCi": true,
                 "allowSdrSoftwareBrightness": true,
+                "autoBrightnessCurve": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
                 "autoRotation": "InTabletMode",
+                "automaticBrightness": false,
                 "brightness": 1,
                 "colorPowerTradeoff": "PreferEfficiency",
                 "colorProfileSource": "sRGB",
@@ -27,6 +36,7 @@
                 "scale": 1,
                 "sdrBrightness": 270,
                 "sdrGamutWideness": 0,
+                "sharpness": 0,
                 "transform": "Normal",
                 "uuid": "4e46882a-e325-4556-b6b7-5236f684265e",
                 "vrrPolicy": "Always",
@@ -35,7 +45,16 @@
             {
                 "allowDdcCi": true,
                 "allowSdrSoftwareBrightness": true,
+                "autoBrightnessCurve": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
                 "autoRotation": "InTabletMode",
+                "automaticBrightness": false,
                 "brightness": 1,
                 "colorPowerTradeoff": "PreferEfficiency",
                 "colorProfileSource": "sRGB",
@@ -57,6 +76,7 @@
                 "scale": 1,
                 "sdrBrightness": 200,
                 "sdrGamutWideness": 0,
+                "sharpness": 0,
                 "transform": "Normal",
                 "uuid": "6c22c19e-08b0-410b-8d96-750662f82757",
                 "vrrPolicy": "Never",
@@ -76,7 +96,6 @@
                 "edrPolicy": "always",
                 "highDynamicRange": false,
                 "iccProfilePath": "",
-                "maxBitsPerColor": 0,
                 "mode": {
                     "height": 2160,
                     "refreshRate": 60000,
@@ -107,7 +126,6 @@
                 "edrPolicy": "always",
                 "highDynamicRange": true,
                 "iccProfilePath": "",
-                "maxBitsPerColor": 0,
                 "maxPeakBrightnessOverride": 540,
                 "mode": {
                     "height": 1440,

@@ -9,7 +9,7 @@
     ../../desktop/environment-desktop.nix
     ../../desktop/home-manager
     ../../desktop/home-manager/desktop.nix
-    ../../desktop/kde-plasma.nix
+    ../../desktop/kde-plasma
     ../../desktop/packages.nix
     ../../development
     ../../packages/nixpak
