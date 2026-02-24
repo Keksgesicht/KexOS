@@ -33,7 +33,7 @@ in
         # PDF tools
         #pkgs.pdfdiff
         pkgs.pdfgrep
-        pkgs.ocrmypdf
+        pkgs-sta.ocrmypdf
       ];
       qtKDEintegration = true;
       printing = true;

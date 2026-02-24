@@ -1,5 +1,8 @@
-{ pkgs, username, ... }:
+{ pkgs, pkgs-stable, username, ... }:
 
+let
+  pkgs-sta = pkgs-stable {};
+in
 {
   # nix-shell -p "(ventoy.override { withQt5 = true; })"
 
@@ -10,7 +13,7 @@
     keepassxc
     meld
     nextcloud-client
-    okteta
+    pkgs-sta.okteta
     qrencode
     wireguard-tools
     yubikey-manager
