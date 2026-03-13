@@ -29,6 +29,7 @@ with my-functions;
     kmailtransport
     oxygen
     plasma-browser-integration
+    spectacle
   ];
 
   KexOS.lsp-wrapper.ide-pkgs = [ {
@@ -37,15 +38,18 @@ with my-functions;
   } ];
 
   users.users."${username}".packages = [
-    libKDE.discover
-    libKDE.kruler
-    # use digital clock with PIM plugin
-    libKDE.akonadi-calendar
-    libKDE.merkuro
-    # security stuff
-    libKDE.ksshaskpass
     config.programs.kdeconnect.package
-  ] ++ (with pkgs; [
+  ] ++ (with libKDE; [
+    discover
+    kruler
+    # use digital clock with PIM plugin
+    akonadi-calendar
+    merkuro
+    # security stuff
+    ksshaskpass
+    # enable extract text in KDE's screenshotting tool
+    (spectacle.override { tesseractLanguages = [ "deu" "eng" "equ" "osd" ]; })
+  ]) ++ (with pkgs; [
     candy-icons
     # graphics info
     clinfo
