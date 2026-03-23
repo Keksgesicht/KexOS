@@ -36,8 +36,9 @@ in
     ];
     allowedUDPPorts = [
          53 # DNS (Pihole)
-        443 # HTTP3 (swag)
+        443 # HTTP3 (swag - external)
        2053 # DNS (unbound)
+       2443 # HTTP3 (swag - internal)
     ];
     allowedTCPPortRanges = [ { from = 22200; to = 22299; } ];
     allowedUDPPortRanges = allowedTCPPortRanges;
