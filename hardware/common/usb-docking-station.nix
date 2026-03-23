@@ -1,8 +1,8 @@
-{ pkgs, username, ... }:
+{ config, pkgs, username, ... }:
 
 let
-  sysd = "${pkgs.systemd}/bin/systemctl --no-block";
-  sysd-user = "${sysd} --machine ${username}@.host --user restart";
+  uid = builtins.toString config.users.users."${username}".uid;
+  sysd = "${pkgs.systemd}/bin/systemctl";
 in
 {
   imports = [
@@ -21,6 +21,16 @@ in
 
   powerManagement.asyncResumeCommands = [ ''
     sleep 7s
-    ${sysd-user} my-audio.service
+    ${sysd} start my-audio-resume.service
   '' ];
+
+  systemd.services = {
+    "my-audio-resume" = {
+      serviceConfig.User = username;
+      environment.XDG_RUNTIME_DIR = "/run/user/${uid}";
+      script = ''
+        ${sysd} --user restart my-audio.service
+      '';
+    };
+  };
 }
