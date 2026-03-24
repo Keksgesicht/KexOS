@@ -4,6 +4,9 @@
 , ... }:
 
 let
+  str = lib.strings;
+  hn = config.networking.hostName;
+
   my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
 with my-functions;
@@ -13,7 +16,10 @@ let
   pss = (sec: (import ./podman-systemd-service.nix lib sec));
 
   myDomainGen = (l: forEach l (eL: forEach eL.zone (eZ:
-    ''
+    if ((str.hasPrefix "pihole." eZ.name)
+    && ! (str.hasPrefix "${hn}.internal." (str.removePrefix "pihole." eZ.name)))
+    then ""
+    else ''
       local-zone: "${eZ.name}" ${eZ.type}
       local-data: "${eZ.name} 30 IN A ${eL.ip4}"
       local-data: "${eZ.name} 30 IN AAAA ${eL.ip6}"
@@ -33,6 +39,7 @@ let
   myDomainText = myDomainGen [
     (myServer "cookieclicker" "1" "")
     (myServer "cookieclicker" "220" "nix-serve")
+    (myServer "cookieclicker" "220" "pihole")
     (myServer "cookieflyer" "2" "")
     (myServer "cookieflyer" "25" "nix-serve")
     (myServer "cookieflyer" "25" "pihole")
