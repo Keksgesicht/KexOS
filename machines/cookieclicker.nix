@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   # Define your hostname
@@ -24,6 +24,8 @@
     ../system/network/network-manager/IPv6.nix
     ../system/network/wireless.nix
   ];
+
+  nixpak.Gaming.enable = lib.mkForce true;
 
   boot.kernelParams = [
     "amd_iommu=on" "iommu=pt"

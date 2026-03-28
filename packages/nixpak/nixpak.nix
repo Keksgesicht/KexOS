@@ -54,6 +54,10 @@ let
 
   nixpakOpts = { name, config, ... }: {
     options = {
+      enable = lib.mkOption {
+        type = types.bool;
+        default = true;
+      };
       wrapper.packages = lib.mkOption {
         type = types.listOf (
           types.coercedTo types.package (p: {
@@ -455,7 +459,7 @@ in
 
   config.users.users."${username}".packages = (mapAL (name: value:
     value.output.env
-  ) config.nixpak)
+  ) (lib.attrsets.filterAttrs (name: value: value.enable or false) config.nixpak))
   ++ [
     # https://forum.xfce.org/viewtopic.php?id=14926
     pkgs.d-spy

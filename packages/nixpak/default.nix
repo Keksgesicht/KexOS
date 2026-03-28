@@ -64,10 +64,10 @@ let
     ./Office.nix
     ./PlayGround.nix
     ./Signal.nix
-    #./SIP.nix
+    ./SIP.nix
     ./ThunderBird.nix
     ./Vesktop.nix
-    #./VideoEdit.nix
+    ./VideoEdit.nix
     ./WebViewer.nix
   ];
   appFuncList = lib.lists.forEach appCfgList (app:
@@ -86,4 +86,10 @@ in
     ./nixpak.nix
   ]
   ++ appFuncList;
+
+  nixpak = {
+    Gaming.enable = false;
+    SIP.enable = false;
+    VideoEdit.enable = false;
+  };
 }

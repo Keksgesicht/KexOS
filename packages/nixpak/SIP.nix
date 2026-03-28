@@ -6,8 +6,7 @@ let
   pkgs = pkgs-stable {};
 in
 {
-  nixpak = if (config.networking.hostName == "cookieclicker") then {
-  "${name}" = {
+  nixpak."${name}" = {
     wrapper = {
       packages = [
         { package = pkgs.jami; binName = "jami"; }
@@ -33,5 +32,5 @@ in
       ];
       network = true;
     };
-  }; } else {};
+  };
 }

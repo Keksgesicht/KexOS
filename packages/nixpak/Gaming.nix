@@ -3,7 +3,7 @@
 , nvm-mnt, home-dir, username, ... }:
 
 let
-  gamingPC = (config.networking.hostName == "cookieclicker");
+  gamingPC = config.nixpak."${name}".enable;
 
   name = "Gaming";
   name-dir = "${home-dir}/.var/app/${name}";
@@ -76,8 +76,7 @@ let
   });
 in
 {
-  nixpak = if gamingPC then {
-  "${name}" = {
+  nixpak."${name}" = {
     wrapper = {
       packages = [
         # Steam
@@ -240,7 +239,7 @@ in
       sockets.x11 = false; # gamescope custom workaround
       #shareIpc = true;
     };
-  }; } else {};
+  };
 
   hardware = if gamingPC then {
     graphics.enable32Bit = true;
