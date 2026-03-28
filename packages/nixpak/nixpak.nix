@@ -207,6 +207,8 @@ let
         if not os.path.exists(myLink):
             os.symlink(myHome, myLink)
 
+        os.environ["MY_NIXPAK_NAME"] = "${name}"
+
         os.system("truncate -s 0 ~/.zshrc")
         os.execvp(sys.argv[1], sys.argv[1:])
       ''

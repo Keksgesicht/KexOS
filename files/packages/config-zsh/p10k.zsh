@@ -913,9 +913,8 @@
   # Default context format (no privileges, no SSH): user@hostname.
   typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%m'
 
-  if [ -n "${NIXPAK_APP_EXE}" ]; then
-    local NIXPAK_NAME=$(echo "${NIXPAK_APP_NAME}" | cut -d'-' -f1)
-    typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE="nixpak@${NIXPAK_NAME}"
+  if [ -n "${MY_NIXPAK_NAME}" ]; then
+    typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE="nixpak@${MY_NIXPAK_NAME}"
   else
     # Don't show context unless running with privileges or in SSH.
     # Tip: Remove the next line to always show context.
