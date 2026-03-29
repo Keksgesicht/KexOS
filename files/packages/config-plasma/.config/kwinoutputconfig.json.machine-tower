@@ -98,7 +98,7 @@
                 "iccProfilePath": "",
                 "mode": {
                     "height": 2160,
-                    "refreshRate": 60000,
+                    "refreshRate": 30000,
                     "width": 3840
                 },
                 "mstPath": "-1\u0000",
@@ -129,7 +129,7 @@
                 "maxPeakBrightnessOverride": 540,
                 "mode": {
                     "height": 1440,
-                    "refreshRate": 119970,
+                    "refreshRate": 59977,
                     "width": 5120
                 },
                 "mstPath": "-3-1\u0000",
@@ -158,7 +158,7 @@
                             "x": 0,
                             "y": 2160
                         },
-                        "priority": 0,
+                        "priority": 1,
                         "replicationSource": ""
                     },
                     {
@@ -168,7 +168,7 @@
                             "x": 0,
                             "y": 0
                         },
-                        "priority": 1,
+                        "priority": 2,
                         "replicationSource": ""
                     }
                 ]
@@ -200,7 +200,7 @@
                         "enabled": false,
                         "outputIndex": 2,
                         "position": {
-                            "x": 8960,
+                            "x": 0,
                             "y": 0
                         },
                         "priority": -1,
@@ -210,8 +210,8 @@
                         "enabled": false,
                         "outputIndex": 3,
                         "position": {
-                            "x": 11219,
-                            "y": 0
+                            "x": 0,
+                            "y": 2160
                         },
                         "priority": -1,
                         "replicationSource": ""
