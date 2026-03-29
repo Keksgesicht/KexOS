@@ -8,8 +8,9 @@ let
   hot-name = (num: name + "_" + (builtins.toString num));
   hot-pkg = pkgs.callPackage ../../packages/backup-hot.nix {};
 
+  ctab-opt = "nofail,tpm2-device=auto,no-read-workqueue,no-write-workqueue";
+  ctab-tpm2 = (n: "${n} /dev/disk/by-label/${n} - ${ctab-opt}");
   req-crypt = (n: "x-systemd.requires=systemd-cryptsetup@${n}.service");
-  ctab-tpm2 = (n: "${n} /dev/disk/by-label/${n} - nofail,tpm2-device=auto");
 
   timer-hot = {
     overrideStrategy = "asDropin";
