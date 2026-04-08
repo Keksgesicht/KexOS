@@ -27,7 +27,7 @@ in
           { src = "io.github.pympress"; }
         ]; }
         { package = pkgs.xournalpp; binName = "xournalpp"; appFile = [
-          { src = "com.github.xournalpp.xournalpp"; }
+          { src = "com.github.xournalpp.xournalpp"; args.remove = "-wrapper"; }
         ]; }
         okularPkg
         # PDF tools
