@@ -79,16 +79,17 @@ in
         shift
       done
 
-      cd ${kexos-cfg-path}/ || exit 21
+      KEXOS_CFG_PATH=$(realpath "${kexos-cfg-path}")
+      cd "''${KEXOS_CFG_PATH}/" || exit 21
       set -e
 
       if [ -n "$KEXOS_REBUILD_LOCKFILERESET" ]; then
         if [ -n "$KEXOS_REBUILD_REMOTE_HOST" ]; then
           rsync -te ssh \
-            "$KEXOS_REBUILD_REMOTE_HOST":"${kexos-cfg-old}/flake.lock" \
-            "${kexos-cfg-path}/flake.lock"
+            "$KEXOS_REBUILD_REMOTE_HOST":"''${KEXOS_CFG_PATH}/flake.lock" \
+            "''${KEXOS_CFG_PATH}/flake.lock"
         else
-          cp -fv "${kexos-cfg-old}/flake.lock" "${kexos-cfg-path}/flake.lock"
+          cp -fv "${kexos-cfg-old}/flake.lock" "''${KEXOS_CFG_PATH}/flake.lock"
         fi
       fi
 
@@ -104,7 +105,7 @@ in
 
       kexos-rebuild() {
         set -x
-        $PRFX nixos-rebuild --flake ${kexos-cfg-path}"$KEXOS_REBUILD_OUTPUT" \
+        $PRFX nixos-rebuild --flake "''${KEXOS_CFG_PATH}''${KEXOS_REBUILD_OUTPUT}" \
           $ACTION "$@"
       }
 

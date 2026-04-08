@@ -7,6 +7,7 @@
     ./flake-registry.nix
     ./garbage-collect.nix
     ./KexOS
+    ./package-manager.nix
     ./tmp.nix
   ];
 
