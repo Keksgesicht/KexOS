@@ -22,7 +22,7 @@
     ../services/system/fancontrol.nix
     ../services/wireguard/server.nix
     ../system/network/network-manager/IPv6.nix
-    ../system/network/wireless.nix
+    #../system/network/wireless.nix
   ];
 
   nixpak.Gaming.enable = lib.mkForce true;

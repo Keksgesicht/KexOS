@@ -14,10 +14,12 @@ dns=@dnsserver@
 gateway=@gateway@
 may-fail=false
 method=manual
+route-metric=789
 
 [ipv6]
 addr-gen-mode=stable-privacy
 ip6-privacy=0
 method=link-local
+route-metric=1234
 
 [proxy]
