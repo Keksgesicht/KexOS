@@ -36,11 +36,9 @@
     # https://nixos.wiki/wiki/Impermanence
     # https://github.com/nix-community/impermanence
     impermanence = {
-      type = "github";
-      owner = "nix-community";
-      repo = "impermanence";
-      ref = "master";
-      rev = "a33ef102a02ce77d3e39c25197664b7a636f9c30";
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows      = "nixpkgs-unstable";
+      inputs.home-manager.follows = "home-manager";
     };
 
     # https://nixos.wiki/wiki/Secure_Boot

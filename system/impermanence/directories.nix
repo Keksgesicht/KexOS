@@ -35,6 +35,7 @@ in
         "/var/lib/bluetooth"
         "/var/lib/flatpak"
         "/var/lib/fwupd"
+        "/var/lib/nixos"
         "/var/lib/rasdaemon"
         "/var/lib/systemd/backlight"
         "/var/lib/systemd/timers"

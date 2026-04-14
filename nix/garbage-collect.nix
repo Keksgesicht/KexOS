@@ -1,14 +1,10 @@
-{ config, holidayMode, ... }:
+{ ... }:
 
-let
-  timerConfig = config.KexOS.service."dummy".timer;
-in
 {
+  system.autoUpgrade.runGarbageCollection = true;
+
   nix.gc = {
-    automatic = !holidayMode;
-    persistent = true;
-    dates = "Sat *-*-* 01:23:45";
-    randomizedDelaySec = timerConfig.timerConfig.RandomizedDelaySec;
+    automatic = false;
     options = "--delete-older-than 32d";
   };
 
@@ -17,5 +13,4 @@ in
     IOSchedulingClass = "idle";
     IOSchedulingPriority = 7;
   };
-  systemd.timers."nix-gc" = timerConfig;
 }

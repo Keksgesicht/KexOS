@@ -1,4 +1,4 @@
-{ self, config, isDesktop, holidayMode, home-dir, username, ... }:
+{ self, config, pkgs, isDesktop, holidayMode, home-dir, username, ... }:
 
 let
   current-system = "/nix/var/nix/profiles/system";
@@ -7,6 +7,7 @@ let
 
   srvNameCopy = "copy-latest-lock-file";
   localCfgDir = "${home-dir}/nixos-config";
+  tmpCfgDir = config.system.autoUpgrade.flake;
 
   timerConfig = config.KexOS.service."dummy".timer;
 in
@@ -33,12 +34,8 @@ in
       upper = "04:32";
     };
 
-    flake = self.outPath;
+    flake = "/tmp/nixos-config";
     flags = [
-      "--update-input" "flake-registry"
-      "--update-input" "nixpkgs-stable"
-      "--update-input" "nixpkgs-unstable"
-      "--update-input" "cookie-pkg"
       "--print-build-logs" # -L
       #"--verbose"         # -v
     ];
@@ -46,11 +43,24 @@ in
 
   systemd.services = {
     "nixos-upgrade" = {
+      path = [ pkgs.rsync ];
       onSuccess = [ "${srvNameCopy}.service" ];
       serviceConfig = {
         CPUSchedulingPolicy = "idle";
         IOSchedulingClass = "idle";
         IOSchedulingPriority = 7;
+        PrivateTmp = "yes";
+        ExecStartPre = (pkgs.writeShellScript "copy-nixos-config" ''
+          rsync -rlpt --delete ${self.outPath}/ ${tmpCfgDir}/
+          cd ${tmpCfgDir}/ || exit 1
+          nix flake update cookie-pkg flake-registry
+          nix flake update nixpkgs-stable nixpkgs-unstable
+          exit 0
+        '');
+        ExecStartPost = (pkgs.writeShellScript "cleanup-nixos-auto-upgrade" ''
+          rm -fr ${tmpCfgDir}
+          exit 0
+        '');
       };
     };
     "${srvNameCopy}".script = ''
