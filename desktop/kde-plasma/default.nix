@@ -27,6 +27,7 @@ with my-functions;
     kate
     khelpcenter
     kmailtransport
+    okular
     oxygen
     plasma-browser-integration
     spectacle

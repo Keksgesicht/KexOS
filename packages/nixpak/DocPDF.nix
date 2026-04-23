@@ -5,7 +5,7 @@ let
   name = "DocPDF";
   pkgs-sta = pkgs-stable {};
 
-  okularPkg = (myKDEpkg pkgs.kdePackages.okular "okular" "cp -n" [
+  okularPkg = (myKDEpkg pkgs.kdePackages.okular "okular" "cp --update=none" [
     "" "part"
   ]);
 in
@@ -29,7 +29,9 @@ in
         { package = pkgs.xournalpp; binName = "xournalpp"; appFile = [
           { src = "com.github.xournalpp.xournalpp"; args.remove = "-wrapper"; }
         ]; }
-        okularPkg
+        { package = okularPkg; binName = "okular"; appFile = [
+          { src = "org.kde.okular"; }
+        ]; }
         # PDF tools
         #pkgs.pdfdiff
         pkgs.pdfgrep
@@ -41,32 +43,28 @@ in
 
     dbus.policies = {
       "io.github.pympress" = "own";
+      "org.kde.okular.*" = "own";
     };
 
     bubblewrap = {
       bind.ro = [
         (myKDEmount "okular" "")
         (myKDEmount "okular" "part")
-        (sloth.concat' sloth.homeDir "/texmf") # TUDa Logo and other templates
+        (sloth.concat' sloth.homeDir "/.local/share/kxmlgui5")
       ];
       bind.rw = [
         (bindHomeDir name "/.config/pdfarranger")
         (bindHomeDir name "/.config/texstudio")
         (bindHomeDir name "/.config/xournalpp")
+        (bindHomeDir name "/.local/share/okular")
 
         (sloth.concat' sloth.xdgDocumentsDir "/Office")
         (sloth.concat' sloth.xdgDocumentsDir "/Studium")
         (sloth.xdgDownloadDir)
+        (sloth.concat' sloth.homeDir "/.local/share/kxmlgui5/okular")
         (sloth.concat' sloth.homeDir "/git")
         (sloth.concat' sloth.homeDir "/Module")
       ];
     };
-  };
-
-  environment.shellAliases = {
-    "latexmk"  = "latexmk  -synctex=1 -pdf -silent";
-    "lualatex" = "lualatex -synctex=1 -interaction=nonstopmode";
-    "pdflatex" = "pdflatex -synctex=1 -interaction=nonstopmode";
-    "xelatex"  = "xelatex  -synctex=1 -interaction=nonstopmode";
   };
 }

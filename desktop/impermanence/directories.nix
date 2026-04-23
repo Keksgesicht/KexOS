@@ -94,7 +94,6 @@ with my-functions;
           ".local/share/konsole"
           ".local/share/kwin"
           ".local/share/kxmlgui5"
-          ".local/share/okular"
           ".local/share/plasma"
           ".local/share/plasma-systemmonitor"
           ".local/share/systemd/timers"
