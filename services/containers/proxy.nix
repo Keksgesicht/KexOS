@@ -61,7 +61,7 @@ with my-functions;
         EMAIL = "certbot@${myDomain}";
         SUBDOMAINS =
           if (hn == "cookieflyer") then
-            "${subdomain-base},cloud,tandoor.tb"
+            "${subdomain-base},cloud,links,tandoor.tb"
           else subdomain-base;
         ONLY_SUBDOMAINS = "true";
         VALIDATION = "dns";
