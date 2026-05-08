@@ -65,7 +65,7 @@ let
       p.keyutils
     ]));
   });
-  lutrisPkg = (pkgl.lutris.override {
+  lutrisPkg = (pkgo.lutris.override {
     extraPkgs = (p: ((gameTools p) ++ [
       p.kdePackages.konsole # terminal emulator
       p.kdePackages.qttools # qdbus
