@@ -1,11 +1,15 @@
 { config, pkgs, ... }:
 
 let
-  filter-lib = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+  hn = config.networking.hostName;
+  filter-name = "librnnoise_ladspa";
 in
 {
+  services.pipewire.extraLadspaPackages = if (hn == "cookieclicker")
+    then [ pkgs.rnnoise-plugin ] else [];
+
   services.pipewire.extraConfig.pipewire =
-  if (config.networking.hostName == "cookieclicker")
+  if (hn == "cookieclicker")
   then {
     "65-noise-filter" = {
       # PipeWire:
@@ -25,7 +29,7 @@ in
               nodes = [ {
                 type    = "ladspa";
                 name    = "rnnoise";
-                plugin  = filter-lib;
+                plugin  = filter-name;
                 label   = "noise_suppressor_mono";
                 control = {
                   "VAD Threshold (%)" = 95;
@@ -55,7 +59,7 @@ in
               nodes = [ {
                 type    = "ladspa";
                 name    = "rnnoise";
-                plugin  = filter-lib;
+                plugin  = filter-name;
                 label   = "noise_suppressor_mono";
                 control = {
                   "VAD Threshold (%)" = 85;
@@ -87,7 +91,7 @@ in
               nodes = [ {
                 type    = "ladspa";
                 name    = "rnnoise";
-                plugin  = filter-lib;
+                plugin  = filter-name;
                 label   = "noise_suppressor_mono";
                 control = {
                   "VAD Threshold (%)" = 75;

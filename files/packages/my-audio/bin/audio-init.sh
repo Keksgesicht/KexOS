@@ -3,6 +3,7 @@
 while ! [ -d "/run/user/1000/pulse" ]; do
 	sleep 1s
 done
+sleep 1s
 
 work_dir=$(realpath "$(dirname "$0")")
 export work_dir
