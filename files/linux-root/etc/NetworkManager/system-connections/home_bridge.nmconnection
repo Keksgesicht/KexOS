@@ -9,17 +9,18 @@ interface-name=br-home
 [bridge]
 
 [ipv4]
+method=manual
 address1=@ipaddr@
 dns=@dnsserver@
 gateway=@gateway@
 may-fail=false
-method=manual
 route-metric=789
 
 [ipv6]
-addr-gen-mode=stable-privacy
+method=auto
+ignore-auto-dns=true
 ip6-privacy=0
-method=link-local
+addr-gen-mode=stable-privacy
 route-metric=1234
 
 [proxy]

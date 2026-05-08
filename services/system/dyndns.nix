@@ -29,8 +29,8 @@ in
     timer = {
       after = lib.mkForce [];
       timerConfig = lib.mkForce {
-        OnStartupSec = "12sec";
-        OnUnitInactiveSec = "4321sec";
+        OnStartupSec = "13sec";
+        OnUnitInactiveSec = "1234sec";
       };
     };
   };

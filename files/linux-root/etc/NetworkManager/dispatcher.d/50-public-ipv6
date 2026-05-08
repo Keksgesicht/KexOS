@@ -1,78 +1,23 @@
 #!/usr/bin/env bash
 
 PREFIX_LEN='64'
-awk_ipv6_no_local='$1 == "inet6" && $2 !~ /^fe80:/ && $2 !~ /^f[cd]/'
-awk_gsub_2='{gsub(/\/.*$/, "", $2); print $2}'
 
-get-existing-static() {
-	ipv6_addr=$(ip -6 addr show "${IFLINK}" | \
-		awk "${awk_ipv6_no_local}"' && /'"${MY_IPV6_SUFFIX}"'/ '"${awk_gsub_2}" | \
-		head -n 1)
-}
+set-sysctl() {
+	# remove old temp addresses quicker
+	sysctl -w net.ipv6.conf."${IFLINK}".temp_prefered_lft=43210 >/dev/null
+	sysctl -w net.ipv6.conf."${IFLINK}".temp_valid_lft=87654 >/dev/null
 
-gen-ipv6-suffix() {
-	hd1=$(hexdump -vn2 -e '1/4 "%8X"' /dev/urandom | awk '{print $1}')
-	hd2=$(hexdump -vn2 -e '1/4 "%8X"' /dev/urandom | awk '{print $1}')
-	hd3=$(hexdump -vn2 -e '1/4 "%8X"' /dev/urandom | awk '{print $1}')
-	hd4=$(hexdump -vn2 -e '1/4 "%8X"' /dev/urandom | awk '{print $1}')
-	echo "::${hd1}:${hd2}:${hd3}:${hd4}/${PREFIX_LEN}" | tr '[:upper:]' '[:lower:]'
-}
-
-gen-ipv6-static() {
-	ip token set "::${MY_IPV6_SUFFIX}/${PREFIX_LEN}" dev "${IFLINK}"
-	sleep 3s
-	get-existing-static
-}
-
-has-ipv6-token() {
-	sleep 3s
-	ipv6_addr=$(ip -6 addr show "${IFLINK}" | \
-		awk "${awk_ipv6_no_local}"' && /'"${PREFIX_LEN}"' scope global dynamic mngtmpaddr/ '"${awk_gsub_2}")
-
-	if [ -z "${ipv6_addr}" ]; then
-		return 1
-	else
-		return 0
-	fi
+	# force usage of temporary address
+	sysctl -w net.ipv6.conf."${IFLINK}".addr_gen_mode=3 >/dev/null
+	sysctl -w net.ipv6.conf."${IFLINK}".use_tempaddr=2 >/dev/null
 }
 
 set-ipv6-token() {
-	get-existing-static
-	if [ -n "${ipv6_addr}" ]; then
-		ip addr del "${ipv6_addr}/${PREFIX_LEN}" dev "${IFLINK}"
-	fi
-
-	# Set static suffix first for FritzBox
-	gen-ipv6-static
-	while ! echo "${ipv6_addr}" | grep -q "${MY_IPV6_SUFFIX}"; do
-		sleep 2s
-		gen-ipv6-static
-	done
-	ip token del dev "${IFLINK}"
-	ip addr add "${ipv6_addr}/${PREFIX_LEN}" dev "${IFLINK}"
-
-	# set custom suffix for LAN network adapter
-	# https://bbs.archlinux.org/viewtopic.php?id=244359
-	IPTOKEN=$(gen-ipv6-suffix)
-	ip token set "${IPTOKEN}" dev "${IFLINK}"
-
-	# try addresses until nobody else in the network uses the same
-	while ! has-ipv6-token; do
-		sleep 2s
-		IPTOKEN=$(gen-ipv6-suffix)
-		ip token set "${IPTOKEN}" dev "${IFLINK}"
-	done
-}
-
-update-ipv6() {
-	if ! ip -6 addr show "${IFLINK}" | grep 'inet6' | \
-	grep -qE "${MY_IPV6_SUFFIX}/${PREFIX_LEN}"; then
-		set-ipv6-token
-	elif ! ip token get dev "${IFLINK}" | grep -qE '::[0-9a-f]'; then
-		set-ipv6-token
-	elif ip addr show "${IFLINK}" | grep -q 'deprecated'; then
-		set-ipv6-token
-	fi
+	# enable router advertisement on LAN network adapter
+	# https://unix.stackexchange.com/questions/61641/how-can-i-disable-automatic-ipv6-neighbor-route-advertisement-on-a-router
+	sysctl -w net.ipv6.conf."${IFLINK}".accept_ra=2 >/dev/null
+	sleep 1s
+	ip token set "::${MY_IPV6_SUFFIX}/${PREFIX_LEN}" dev "${IFLINK}"
 }
 
 [ -n "${MY_IFLINK}" ] || exit 0
@@ -83,37 +28,17 @@ NMMODE="$2"
 
 case "${IFLINK}" in
 "${MY_IFLINK}")
-	# enable router advertisement on LAN network adapter
-	# https://unix.stackexchange.com/questions/61641/how-can-i-disable-automatic-ipv6-neighbor-route-advertisement-on-a-router
-	sysctl -w net.ipv6.conf."${IFLINK}".accept_ra=2 >/dev/null
-
 	case "${NMMODE}" in
 	up)
-		update-ipv6
-	;;
-	dhcp6-change)
-		update-ipv6
-	;;
-	prefix)
-		if ip addr show "${IFLINK}" | grep -q 'deprecated'; then
-			for my6 in $(ip addr show "${IFLINK}" | awk '/deprecated/ {print $2}'); do
-				ip addr del "${my6}" dev "${IFLINK}"
-			done
+		sleep 1s
+		set-ipv6-token
+		while ! ip a s "${IFLINK}" | grep ":${MY_IPV6_SUFFIX}/${PREFIX_LEN}"; do
+			sleep 1s
+			ip token del dev "${IFLINK}"
 			set-ipv6-token
-		else
-			ipv6_prefix_old="$(
-				ip -6 addr show "${IFLINK}" | \
-				awk '/inet6/ && /'"${MY_IPV6_SUFFIX}\/${PREFIX_LEN}"'/ {print $2}' | \
-				grep -vE '^(fe80:|f(c|d))' | sed -e 's|'"${MY_IPV6_SUFFIX}/${PREFIX_LEN}"'||'
-			)"
-			if [ -z "${ipv6_prefix_old}" ]; then
-				set-ipv6-token
-			elif ! ip -6 addr show "${IFLINK}" | awk '/inet6/ {print $2}' | \
-			grep -vE '^(fe80:|f(c|d))' | grep -v "${MY_IPV6_SUFFIX}/${PREFIX_LEN}" | \
-			grep -q "${ipv6_prefix_old}"; then
-				set-ipv6-token
-			fi
-		fi
+		done
+		sleep 1s
+		set-sysctl
 	;;
 	esac
 ;;

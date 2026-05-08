@@ -197,7 +197,7 @@
       "cookieflyer" = nixpkgs-stable.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = (myArgs system) // {
-          lan-subnet-v6 = "fd00:da:c54::192:168:178";
+          lan-subnet-v6 = "fd00:3581::192:168:178";
           lan-ip-suf = "25";
           vpn-ip-suf = "2";
           ifLan = "enp0s31f6";

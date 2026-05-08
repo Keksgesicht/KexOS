@@ -8,11 +8,12 @@ zone=home
 auto-negotiate=true
 
 [ipv4]
+method=manual
 address1=@ipaddr@
 dns=@dnsserver@
-method=manual
 
 [ipv6]
-addr-gen-mode=stable-privacy
+method=auto
+ignore-auto-dns=true
 ip6-privacy=0
-method=link-local
+addr-gen-mode=stable-privacy

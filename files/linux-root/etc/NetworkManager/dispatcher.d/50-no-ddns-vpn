@@ -7,12 +7,10 @@ NMMODE="$2"
 
 
 ddns_stop() {
-	systemctl stop podman-ddns-v4.service
-	systemctl stop podman-ddns-v6.service
+	systemctl --no-block stop hetzner-ddns.service
 }
 ddns_start() {
-	systemctl start podman-ddns-v4.service
-	systemctl start podman-ddns-v6.service
+	systemctl --no-block start hetzner-ddns.service
 }
 
 

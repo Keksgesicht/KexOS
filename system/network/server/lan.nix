@@ -1,8 +1,8 @@
 { pkgs, lan-subnet-v4, lan-ip-suf, ... }:
 
 let
-  lan-nm-conf = ../../../files + "/${nmsc-path}/server_lan.nmconnection";
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
+  lan-nm-conf = ../../../files + "/${nmsc-path}/server_lan.nmconnection";
 in
 {
   imports = [
