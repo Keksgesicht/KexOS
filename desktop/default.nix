@@ -3,6 +3,7 @@
 {
   imports = [
     ./audio
+    ./bluetooth.nix
     ./environment-desktop.nix
     ./flatpak.nix
     ./home-manager

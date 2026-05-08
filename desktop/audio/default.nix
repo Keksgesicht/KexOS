@@ -39,13 +39,6 @@ in
     wireplumber.enable = true;
   };
 
-  # enable bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    # https://wiki.archlinux.org/title/bluetooth#Default_adapter_power_state
-    powerOnBoot = false;
-  };
-
   systemd.user.services = {
     "my-audio" = {
       description = "Custom Audio Setup (pipewire)";
