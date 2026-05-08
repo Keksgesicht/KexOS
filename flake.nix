@@ -56,12 +56,7 @@
 
     # https://github.com/pjones/plasma-manager
     plasma-manager = {
-      type = "github";
-      owner = "pjones";
-      repo = "plasma-manager";
-      ref = "trunk";
-      rev = "96a90a7f5ce6b29e01d7da83d082e870e4462174";
-
+      url = "github:pjones/plasma-manager";
       inputs.home-manager.follows = "home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };

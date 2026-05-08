@@ -102,7 +102,7 @@ with my-functions;
   in
   {
     imports = [
-      plasma-manager.homeManagerModules.plasma-manager
+      plasma-manager.homeModules.plasma-manager
       # nix run github:pjones/plasma-manager
     ];
 
