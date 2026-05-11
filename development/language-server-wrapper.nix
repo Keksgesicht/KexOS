@@ -63,6 +63,8 @@ in
       nil
       # Python
       python3Packages.python-lsp-server ruff
+      # Typst
+      tinymist
       # XML
       lemminx libxml2
       # YAML
