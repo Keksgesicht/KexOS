@@ -25,6 +25,7 @@ in
     ../services/containers/unbound.nix
     ../services/system/backup-hot.nix
     ../services/system/dyndns.nix
+    ../system/dead-man-switch.nix
     ../system/network/server/lan.nix
   ];
 
