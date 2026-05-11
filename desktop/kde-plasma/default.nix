@@ -13,6 +13,7 @@ with my-functions;
   imports = [
     ../../development/language-server-wrapper.nix
     ./login-manager.nix
+    ./performance.nix
   ];
 
   # Enable the X11 windowing system.
