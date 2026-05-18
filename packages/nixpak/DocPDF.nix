@@ -39,6 +39,7 @@ in
       ];
       qtKDEintegration = true;
       printing = true;
+      time = true;
     };
 
     dbus.policies = {
