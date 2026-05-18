@@ -20,6 +20,14 @@ set-ipv6-token() {
 	ip token set "::${MY_IPV6_SUFFIX}/${PREFIX_LEN}" dev "${IFLINK}"
 }
 
+toggle-ipv6() {
+	# Microsoft/Azure workaround
+	sleep 42s
+	sysctl -w net.ipv6.conf."${IFLINK}".disable_ipv6=1 >/dev/null
+	sleep 1s
+	sysctl -w net.ipv6.conf."${IFLINK}".disable_ipv6=0 >/dev/null
+}
+
 [ -n "${MY_IFLINK}" ] || exit 0
 [ -n "${MY_IPV6_SUFFIX}" ] || exit 0
 
@@ -39,6 +47,8 @@ case "${IFLINK}" in
 		done
 		sleep 1s
 		set-sysctl
+		toggle-ipv6 &
+		disown
 	;;
 	esac
 ;;
