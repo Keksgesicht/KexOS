@@ -90,7 +90,7 @@ in
     done
 
     kexos-devshell() {
-      exec -a nix nix develop "$myDir" $myOpts $@ --command $cmd
+      exec nom develop "$myDir" $myOpts $@ --command $cmd
     }
 
     if [ -z "$resPath" ]; then
