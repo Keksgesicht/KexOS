@@ -65,6 +65,7 @@ let
     ./PlayGround.nix
     ./Signal.nix
     ./SIP.nix
+    ./TeamSpeak.nix
     ./ThunderBird.nix
     ./Vesktop.nix
     ./VideoEdit.nix
@@ -90,6 +91,7 @@ in
   nixpak = {
     Gaming.enable = false;
     SIP.enable = false;
+    TeamSpeak.enable = false;
     VideoEdit.enable = false;
   };
 }
