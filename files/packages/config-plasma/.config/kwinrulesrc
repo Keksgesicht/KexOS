@@ -20,6 +20,8 @@ wmclassmatch=1
 
 [2]
 Description=Window settings for WebViewer
+desktopfile=WebViewer
+desktopfilerule=2
 desktops=\\0
 desktopsrule=3
 ignoregeometry=true

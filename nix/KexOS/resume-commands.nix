@@ -10,7 +10,7 @@ in
   };
 
   config.powerManagement.resumeCommands = lib.mkAfter (''
-      sleep 5s
+      sleep 2s
       pids_background=()
 
     '' + lib.strings.concatLines (lib.lists.forEach

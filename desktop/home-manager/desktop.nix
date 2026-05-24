@@ -1,5 +1,8 @@
 { config, username, home-dir, ... }:
 
+let
+  hn = config.networking.hostName;
+in
 {
   home-manager = {
     users."${username}" = {
@@ -23,5 +26,10 @@
         "home-${username}-Pictures.mount"
       ];
     };
-  };
+  } // (if (hn == "cookieclicker") then {
+    "app-Ferdium@autostart" = {
+      overrideStrategy = "asDropin";
+      preStart = "sleep 5s";
+    };
+  } else {});
 }
