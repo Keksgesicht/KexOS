@@ -4,11 +4,22 @@
             {
                 "allowDdcCi": true,
                 "allowSdrSoftwareBrightness": false,
+                "autoBrightnessCurve": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
                 "autoRotation": "InTabletMode",
+                "automaticBrightness": false,
                 "brightness": 0.05,
                 "colorPowerTradeoff": "PreferEfficiency",
                 "colorProfileSource": "sRGB",
                 "connectorName": "eDP-1",
+                "customModes": [
+                ],
                 "detectedDdcCi": false,
                 "edidHash": "0e4b7ed9a65ba090c5c7d54a91f926cd",
                 "edidIdentifier": "CMN 5622 0 17 2017 0",
@@ -17,6 +28,7 @@
                 "iccProfilePath": "",
                 "maxBitsPerColor": 8,
                 "mode": {
+                    "flags": 0,
                     "height": 1080,
                     "refreshRate": 40005,
                     "width": 1920
@@ -26,6 +38,7 @@
                 "scale": 1,
                 "sdrBrightness": 200,
                 "sdrGamutWideness": 0,
+                "sharpness": 0,
                 "transform": "Normal",
                 "uuid": "5b03c092-8096-471e-87cd-8fbda26019c3",
                 "vrrPolicy": "Never",
@@ -34,11 +47,22 @@
             {
                 "allowDdcCi": true,
                 "allowSdrSoftwareBrightness": true,
+                "autoBrightnessCurve": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
                 "autoRotation": "InTabletMode",
-                "brightness": 1,
-                "colorPowerTradeoff": "PreferEfficiency",
+                "automaticBrightness": false,
+                "brightness": 0.75,
+                "colorPowerTradeoff": "PreferAccuracy",
                 "colorProfileSource": "sRGB",
                 "connectorName": "DP-3",
+                "customModes": [
+                ],
                 "detectedDdcCi": false,
                 "edidHash": "4b507577d58661dfbb3a129c9565ac58",
                 "edidIdentifier": "GSM 23304 225959 4 2019 0",
@@ -47,6 +71,7 @@
                 "iccProfilePath": "",
                 "maxBitsPerColor": 8,
                 "mode": {
+                    "flags": 0,
                     "height": 2160,
                     "refreshRate": 59940,
                     "width": 3840
@@ -57,6 +82,7 @@
                 "scale": 1,
                 "sdrBrightness": 200,
                 "sdrGamutWideness": 0,
+                "sharpness": 0,
                 "transform": "Normal",
                 "uuid": "6c22c19e-08b0-410b-8d96-750662f82757",
                 "vrrPolicy": "Never",
@@ -65,19 +91,32 @@
             {
                 "allowDdcCi": true,
                 "allowSdrSoftwareBrightness": true,
+                "autoBrightnessCurve": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
                 "autoRotation": "InTabletMode",
-                "brightness": 1,
+                "automaticBrightness": false,
+                "brightness": 0.9,
                 "colorPowerTradeoff": "PreferEfficiency",
                 "colorProfileSource": "sRGB",
                 "connectorName": "DP-6",
+                "customModes": [
+                ],
                 "detectedDdcCi": false,
                 "edidHash": "a12f31713ec982d50b269c861a8b95e7",
                 "edidIdentifier": "SAM 3996 0 43 2018 0",
                 "edrPolicy": "always",
-                "highDynamicRange": false,
+                "highDynamicRange": true,
                 "iccProfilePath": "",
                 "maxBitsPerColor": 8,
+                "maxPeakBrightnessOverride": 540,
                 "mode": {
+                    "flags": 0,
                     "height": 1440,
                     "refreshRate": 59977,
                     "width": 5120
@@ -86,12 +125,13 @@
                 "overscan": 0,
                 "rgbRange": "Automatic",
                 "scale": 1,
-                "sdrBrightness": 500,
+                "sdrBrightness": 270,
                 "sdrGamutWideness": 0,
+                "sharpness": 0,
                 "transform": "Normal",
                 "uuid": "4e46882a-e325-4556-b6b7-5236f684265e",
                 "vrrPolicy": "Never",
-                "wideColorGamut": false
+                "wideColorGamut": true
             }
         ],
         "name": "outputs"

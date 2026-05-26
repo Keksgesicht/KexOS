@@ -10,7 +10,7 @@ in
     wrapper = {
       packages = [
         { package = pkgs.metadata-cleaner; binName = "metadata-cleaner"; appFile = [
-          { src = "fr.romainvigier.MetadataCleaner"; }
+          { src = "io.gitlab.metadatacleaner.metadatacleaner"; }
         ]; }
       ];
       variables = {
