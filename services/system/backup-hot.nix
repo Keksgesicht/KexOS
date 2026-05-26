@@ -24,6 +24,7 @@ in
 
   fileSystems."/mnt/${name}" = {
     device = "/dev/disk/by-label/${name}";
+    fsType = "btrfs";
     options = [
       "nofail"
       "compress-force=zstd:3"
