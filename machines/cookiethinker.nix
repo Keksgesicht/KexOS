@@ -12,6 +12,7 @@
     ../hardware/office/scanner.nix
     ../nix/build-cache/client.nix
     ../services/wireguard/client.nix
+    ../system/network/network-manager/IPv6.nix
   ];
 
   # filesystem extras
@@ -24,4 +25,8 @@
 
   # why does /boot grow faster on my laptop? tower uses 1G too.
   boot.loader.systemd-boot.configurationLimit = lib.mkForce 10;
+
+   networking.networkmanager.dispatcherScript = {
+    "50-public-ipv6".variables.MY_IFLINK = lib.mkForce "eth0";
+  };
 }

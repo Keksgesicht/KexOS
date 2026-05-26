@@ -9,11 +9,15 @@ cloned-mac-address=@macaddr@
 mac-address=@macaddr@
 
 [ipv4]
+route-metric=987
 method=@meth4@
 @ip4@
 
 [ipv6]
 method=@meth6@
+ignore-auto-dns=true
+ip6-privacy=0
 addr-gen-mode=stable-privacy
+route-metric=4321
 
 [proxy]
