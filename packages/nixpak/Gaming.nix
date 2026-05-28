@@ -9,8 +9,19 @@ let
   name-dir = "${home-dir}/.var/app/${name}";
   name-home = "${home-dir}/.var/home/${name}";
 
-  pkgl = pkgs-latest { config.allowUnfree = true; };
-  pkgo = pkgs-stable { config.allowUnfree = true; };
+  # lutris -> buildFHS -> OpenLDAP (test checks)
+  # https://github.com/NixOS/nixpkgs/issues/513245
+  # https://github.com/NixOS/nixpkgs/issues/514113
+  overlays = [
+    (_: prev: {
+      openldap = prev.openldap.overrideAttrs {
+        doCheck = !prev.stdenv.hostPlatform.isi686;
+      };
+    })
+  ];
+
+  pkgl = pkgs-latest { config.allowUnfree = true; inherit overlays; };
+  pkgo = pkgs-stable { config.allowUnfree = true; inherit overlays; };
   pkgs-gs = pkgs-latest {};
 
   pkgMachineID = pkgs.writeText "${name}-machine-id" ''
