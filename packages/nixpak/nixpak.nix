@@ -144,7 +144,7 @@ let
       wrapper = {
         packages = with pkgs; [
           zsh bash
-          coreutils gawk ncurses
+          coreutils gawk hostname ncurses
           bat eza gnugrep
           nano procps util-linux
           xdg-utils
