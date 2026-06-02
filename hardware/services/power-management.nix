@@ -60,11 +60,11 @@ in
 
   # disable hibernation for systems with encrypted swap
   # https://forum.manjaro.org/t/howto-disable-turn-off-hibernate-completely/8033
-  systemd.sleep.extraConfig = ''
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowHibernation = false;
+    AllowHybridSleep = false;
+    AllowSuspendThenHibernate = false;
+  };
   services.logind.settings.Login = {
     HandleHibernateKeyLongPress = "ignore";
     HandleHibernateKey = "ignore";
