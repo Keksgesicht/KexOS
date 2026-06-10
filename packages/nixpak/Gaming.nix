@@ -55,7 +55,18 @@ let
       gsBin += "/bin/gamescope"
       gsArgs = [gsBin, "--borderless", "--adaptive-sync"]
       gsArgs += ["-W", "${w}", "-H", "1440", "-r", "120", "-o", "30"]
-      gsArgs += sys.argv[1:]
+
+      # https://github.com/ValveSoftware/gamescope/issues/697
+      orig_ldpl = os.environ.get("LD_PRELOAD", "")
+      os.environ["LD_PRELOAD"] = ""
+      mark = False
+      for arg in sys.argv[1:]:
+          gsArgs.append(arg)
+          if not mark and arg == "--":
+              set_ldpl = f"LD_PRELOAD={orig_ldpl}"
+              gsArgs += ["env", set_ldpl]
+              mark = True
+
       os.execvp(gsBin, gsArgs)
     '')
   );
