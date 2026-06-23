@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xbel>
-<xbel xmlns:kdepriv="http://www.kde.org/kdepriv" xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks" xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info">
+<xbel xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks" xmlns:kdepriv="http://www.kde.org/kdepriv" xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info">
  <info>
   <metadata owner="http://www.kde.org">
    <GroupState-Places-IsHidden>false</GroupState-Places-IsHidden>
@@ -185,20 +185,6 @@
    </metadata>
   </info>
  </bookmark>
- <bookmark href="file:///home/keks/Documents/Studium/Module">
-  <title>Module</title>
-  <info>
-   <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-orange"/>
-   </metadata>
-   <metadata owner="http://www.kde.org">
-    <ID>1610484848/1</ID>
-    <isSystemItem>false</isSystemItem>
-    <IsHidden>false</IsHidden>
-    <OnlyInApp/>
-   </metadata>
-  </info>
- </bookmark>
  <bookmark href="file:///mnt/ram/Games">
   <title>Games</title>
   <info>
@@ -299,15 +285,22 @@
    </metadata>
   </info>
  </bookmark>
- <bookmark href="file:///home/keks/git/ssd/Studium/HiWi/ESA">
-  <title>ESA git</title>
+ <separator>
   <info>
-   <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="inode-directory"/>
-   </metadata>
    <metadata owner="http://www.kde.org">
-    <ID>1705411133/2</ID>
+    <UDI>/org/freedesktop/UDisks2/block_devices/dm_2d0</UDI>
+    <isSystemItem>true</isSystemItem>
+    <uuid>f57e717c-b7c0-44d5-9a42-d13a9621164e</uuid>
    </metadata>
   </info>
- </bookmark>
+ </separator>
+ <separator>
+  <info>
+   <metadata owner="http://www.kde.org">
+    <UDI>/org/freedesktop/UDisks2/block_devices/nvme0n1p1</UDI>
+    <isSystemItem>true</isSystemItem>
+    <uuid>c720b152-baf0-4336-bb04-83f01857cfab</uuid>
+   </metadata>
+  </info>
+ </separator>
 </xbel>
