@@ -1,9 +1,9 @@
 { sloth, appDir, bindHomeDir, ... }:
-{ pkgs-latest, ... }:
+{ pkgs-stable, ... }:
 
 let
   name = "LibreWolf";
-  pkgs = pkgs-latest {};
+  pkgs = pkgs-stable {};
 
   arkenfox-lw = (pkgs.callPackage ../arkenfox-user.js.nix {
     patchSet = "LibreWolf";
