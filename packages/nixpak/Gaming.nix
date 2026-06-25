@@ -1,5 +1,5 @@
 { sloth, bindHomeDir, ... }:
-{ config, pkgs, pkgs-latest, pkgs-stable, pkgs-fetch
+{ config, pkgs, pkgs-latest, pkgs-stable, pkgs-fetch, lib
 , nvm-mnt, home-dir, username, ... }:
 
 let
@@ -9,16 +9,20 @@ let
   name-dir = "${home-dir}/.var/app/${name}";
   name-home = "${home-dir}/.var/home/${name}";
 
-  # lutris -> buildFHS -> OpenLDAP (test checks)
-  # https://github.com/NixOS/nixpkgs/issues/513245
-  # https://github.com/NixOS/nixpkgs/issues/514113
-  overlays = [
-    (_: prev: {
-      openldap = prev.openldap.overrideAttrs {
-        doCheck = !prev.stdenv.hostPlatform.isi686;
-      };
-    })
-  ];
+  disable64checks = (prev: pkg: prev."${pkg}".overrideAttrs {
+    doCheck = !prev.stdenv.hostPlatform.isi686;
+  } );
+  overlays = lib.lists.forEach [
+    # lutris -> buildFHS -> OpenLDAP (test checks)
+    # https://github.com/NixOS/nixpkgs/issues/513245
+    # https://github.com/NixOS/nixpkgs/issues/514113
+    "openldap"
+    # lutris -> buildFHS -> OpenBLAS (test checks) -> zblat3
+    # https://discourse.nixos.org/t/openblas-i686-linux-hangs-in-checkphase-on-zblat3/78487
+    "openblas"
+  ] (e: (_: prev: {
+    "${e}" = (disable64checks prev e);
+  } ));
 
   pkgl = pkgs-latest { config.allowUnfree = true; inherit overlays; };
   pkgo = pkgs-stable { config.allowUnfree = true; inherit overlays; };
