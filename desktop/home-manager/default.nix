@@ -18,7 +18,7 @@
       # Some modules do not do anything without it.
       home.homeDirectory = home-dir;
 
-      xdg.userDirs = {
+      xdg.userDirs = rec {
         enable = true;
         setSessionVariables = true;
         desktop   = "$HOME/Desktop";
@@ -26,6 +26,7 @@
         documents = "$HOME/Documents";
         music     = "$HOME/Music";
         pictures  = "$HOME/Pictures";
+        projects  = "${documents}/Projects";
         videos    = "$HOME/Videos";
         publicShare = "$HOME/Public";
         templates   = "$HOME/Templates";
