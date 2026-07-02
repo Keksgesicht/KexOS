@@ -1,8 +1,10 @@
 { bindHomeDir, ... }:
-{ pkgs, ... }:
+{ pkgs-stable, ... }:
 
 let
   name = "Vesktop";
+
+  pkgs = pkgs-stable {};
 in
 {
   nixpak."${name}" = {

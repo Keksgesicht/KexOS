@@ -1,10 +1,9 @@
 { bindHomeDir, myKDEpkg, myKDEmount, ... }:
-{ pkgs, pkgs-stable, ... }:
+{ pkgs, ... }:
 
 let
   name = "BilderAnguck";
 
-  pkgs-sta = pkgs-stable {};
   gwenviewPkg = (myKDEpkg pkgs.kdePackages.gwenview "gwenview" "cp -n" [ "" ]);
 in
 {
@@ -12,7 +11,7 @@ in
     wrapper = {
       packages = [
         # base system
-        { package = pkgs-sta.copyq; binName = "copyq"; appFile = [
+        { package = pkgs.copyq; binName = "copyq"; appFile = [
           { src = "com.github.hluk.copyq"; }
         ]; }
         gwenviewPkg

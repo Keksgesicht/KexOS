@@ -59,10 +59,13 @@ in
         TZ = config.time.timeZone;
         LANCACHE_IP = "${lan-subnet-v4}.${lan-ip-suf}";
         UPSTREAM_DNS = "${pod-subnet-v4}.53.2";
-        CACHE_MAX_AGE = "1234d";
-        CACHE_MEM_SIZE = "1000m";
-        CACHE_DISK_SIZE = "4321g";
+        # https://lancache.net/docs/advanced/tuning-cache/#tweaking-slice-size
         CACHE_SLICE_SIZE = "8m";
+        # https://lancache.net/docs/containers/monolithic/#tweaking-cache-sizes
+        CACHE_MAX_AGE    = "2000d";
+        CACHE_MEM_SIZE   = "1000m";
+        CACHE_INDEX_SIZE = "2000m";
+        CACHE_DISK_SIZE  = "6789g";
       };
       volumes = [
         "${nvm-mnt}/appdata3/lancache/data:/data/cache:Z"
