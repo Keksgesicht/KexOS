@@ -18,6 +18,7 @@ set-ipv6-token() {
 	sysctl -w net.ipv6.conf."${IFLINK}".accept_ra=2 >/dev/null
 	sleep 1s
 	ip token set "::${MY_IPV6_SUFFIX}/${PREFIX_LEN}" dev "${IFLINK}"
+	sleep 1s
 }
 
 toggle-ipv6() {

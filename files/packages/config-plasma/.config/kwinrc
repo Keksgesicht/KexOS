@@ -248,6 +248,9 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.32929687500000004},{"w
 [TouchEdges]
 Bottom=KRunner
 
+[Wayland]
+InputMethod[$e]=/run/current-system/sw/share/applications/org.kde.plasma.keyboard.desktop
+
 [Windows]
 AutoRaise=true
 AutoRaiseInterval=842
@@ -270,5 +273,5 @@ Scale=1
 BorderSizeAuto=false
 ButtonsOnLeft=MNSH
 ButtonsOnRight=LIAX
-library=org.kde.kwin.aurorae
+library=org.kde.kwin.aurorae.v2
 theme=__aurorae__svg__Sweet-Dark
