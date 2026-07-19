@@ -5,8 +5,16 @@ let
   serviceConfig = {
     Nice = 13;
     OOMScoreAdjust = 123;
-    CPUAccounting = true;
-    CPUQuota = "80%";
+    #CPUAccounting = true;
+    #CPUQuota = "80%";
+    Slice = "system-nix\\x2ddaemon.slice";
+  };
+  sliceConfig = {
+    MemorySwapMax =   "6G";
+    MemoryMax     = "384M";
+    MemoryHigh    = "384M";
+    CPUWeight     =     95;
+    IOWeight      =     75;
   };
 
   dns-cfg = pkgs.writeText "wg-refresh-resolv.conf" ''
@@ -29,6 +37,11 @@ in
   # no smart capable disk avaiable
   services.smartd.enable = lib.mkForce false;
 
+  # do not freeze system on updates or rebuilds
+  KexOS.packages."rebuild" = lib.mkForce pkgs.hello;
+  systemd.slices = {
+    "system-nix\\x2ddaemon" = { inherit sliceConfig; };
+  };
   swapDevices = [ {
     device = "${ssd-mnt}/swapfile";
     randomEncryption.enable = true;
@@ -40,9 +53,13 @@ in
   # TODO create service on cookieflyer for this
   system.autoUpgrade.enable = lib.mkForce false;
 
+  # force non Lix version
+  services.nix-serve.package = lib.mkForce pkgs.nix-serve;
+
   systemd.services = {
     # try not freezing RPi on any Nix commands
     "nix-daemon" = { inherit serviceConfig; };
+    "nixos-upgrade" = { inherit serviceConfig; };
 
     # sshd might not listen to the needed addresses
     # also RPi has no RTC. startup of NTP might be useful.
