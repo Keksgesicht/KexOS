@@ -182,7 +182,7 @@
       };
 
       # nix build -L .'#'nixosConfigurations."cookiepi".config.system.build.sdImage
-      "cookiepi" = nixpkgs-custom.lib.nixosSystem rec {
+      "cookiepi" = nixpkgs-stable.lib.nixosSystem rec {
         system = "aarch64-linux";
         specialArgs = (myArgs system) // {
           vpn-ip-suf = "4";

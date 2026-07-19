@@ -25,8 +25,14 @@ let
     buildCommand = str.concatLines (forEach
       (str.splitString "\n" prev.buildCommand) (line:
         if (str.hasInfix "mkfs.btrfs" line)
-        then "mkdir -p " + (subvolStr " ./rootImage/")
-           + "\n" + line + (subvolStr " --subvol ") + " --compress zstd:3"
+        then
+        let
+          # TODO find cleaner way by overriding nativeBuildInputs correctly
+          newMkfs = "${final.btrfs-progs}/bin/mkfs.btrfs";
+          repLine = builtins.replaceStrings [ "mkfs.btrfs" ] [ newMkfs ] line;
+        in
+        "mkdir -p " + (subvolStr " ./rootImage/")
+           + "\n" + repLine + (subvolStr " --subvol ") + " --compress zstd:3"
         # move nixRegPathFile to root subvolume
         # otherwise wierd things happen after running the first nix commands
         else if (str.hasSuffix nixPathRegFile line)
@@ -36,6 +42,12 @@ let
         else line
       )
     );
+    # fix mkfs not setting correct permissions
+    # https://github.com/NixOS/nixpkgs/issues/401263#issuecomment-4301326442
+    btrfs-progs = pkgs.btrfs-progs.overrideAttrs (final: prev: {
+      patches = [ ./mkfs-btrfs-force-root-ownership-and-time.patch ];
+      postPatch = "";
+    });
   });
 
   rootDev = "/dev/disk/by-uuid/" + config.sdImage.rootPartitionUUID;
@@ -85,6 +97,9 @@ in
       "rootflags=subvol=root" # see impermanence
     ];
     initrd.kernelModules = [ "btrfs" "zstd" ];
+    #postBootCommands = ''
+    #  ${pkgs.btrfs-progs}/bin/btrfs filesystem resize max ${ssd-mnt}
+    #'';
   };
 
   # see fileystem-single-disk and impermanence
