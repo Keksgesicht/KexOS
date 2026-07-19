@@ -1,8 +1,9 @@
 { pkgs, lib, myDomain, hdd-mnt, hdd-name, ... }:
 
 let
+  th = (name: "${name}.internal.${myDomain}");
   bd-pkg = (pkgs.callPackage ../../packages/backup-download.nix {});
-  bd-units = (sn: th: {
+  bd-units = (sn: {
     systemd.tmpfiles.rules = [ "d  ${hdd-mnt}/machines/${sn}" ];
     KexOS.service."backup-download@${sn}" = {
       service = {
@@ -14,7 +15,7 @@ let
         description = "Generates Backups from different Remote Systems";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${bd-pkg}/bin/backup-download.sh ${sn} ${th}";
+          ExecStart = "${bd-pkg}/bin/backup-download.sh ${sn} ${th sn}";
           ProtectHome = "no";
           TemporaryFileSystem = [
             "/etc:ro" "/home:ro" "/run/user:ro"
@@ -36,10 +37,9 @@ in
 {
   config = lib.mkMerge [
     ({ systemd.tmpfiles.rules = [ "q  ${hdd-mnt}/machines" ]; })
-    (bd-units "cookieflyer"   "cookieflyer.internal.${myDomain}")
-    (bd-units "cookiemailer" "cookiemailer.internal.${myDomain}")
-    (bd-units "cookiepi"         "cookiepi.internal.${myDomain}")
-    (bd-units "pihole"         "rpi.pihole.internal")
+    (bd-units "cookieflyer")
+    (bd-units "cookiemailer")
+    (bd-units "cookiepi")
   ];
 
   /*

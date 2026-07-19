@@ -186,7 +186,7 @@
         system = "aarch64-linux";
         specialArgs = (myArgs system) // {
           vpn-ip-suf = "4";
-          lan-ip-suf = "222";
+          lan-ip-suf = "221";
           ifLan = "enu1u1u1";
           ifWlan = "wlan0";
         };

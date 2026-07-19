@@ -45,8 +45,8 @@ let
     (myServer "cookieflyer" "25" "pihole")
     (myServer "cookiemailer" "3" "")
     (myServer "cookiepi" "4" "")
-    (myServer "cookiepi" "222" "nix-serve")
-    (myServer "cookiepi" "222" "pihole")
+    (myServer "cookiepi" "221" "nix-serve")
+    (myServer "cookiepi" "221" "pihole")
   ];
   myDomainConf = pkgs.writeText "${myDomain}.conf" (
     lib.strings.concatStringsSep "\n" (flatList myDomainText)

@@ -90,10 +90,6 @@ let
       name = "cookiepi";
       suf4 = "4"; suf6 = "4";
       ep = "pi.host.${myDomain}:22263";
-    } {
-      name = "rpi";
-      suf4 = "103"; suf6 = "10:3";
-      ep = "ub.host.${myDomain}:22263";
   } ];
 
   sysd-restart = (e:

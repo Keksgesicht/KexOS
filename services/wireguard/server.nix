@@ -60,10 +60,6 @@ let
   wg-pi = wg-client "cookiepi" "" "" "4" "4";
   wg-pi-click = wg-pi // (cli-end "pi" "22263");
 
-  # rpi
-  wg-rpi = wg-client "rpi" "" "" "103" "10:3";
-  wg-rpi-click = wg-rpi // (cli-end "ub" "22263");
-
   # server
   wg-srv = (name: suf: wg-client name "" "" suf suf);
   wg-click = wg-srv "cookieclicker" "1";
@@ -90,8 +86,8 @@ let
         peers = []
           ++ (lib.optionals (hn != "cookiemailer") [ wg-mail wg-client-handy ])
           ++ (lib.optionals (hncc) [ wg-click ])
-          ++ (lib.optionals (hncc && hn != "cookieflyer" ) [ wg-fly ])
-          ++ (lib.optionals (hncc && hn != "cookiepi" ) [ wg-pi wg-rpi ])
+          ++ (lib.optionals (hncc && hn != "cookieflyer" && hn != "cookiepi") [ wg-fly ])
+          ++ (lib.optionals (hncc && hn != "cookiepi") [ wg-pi ])
           ++ [ wg-client-laptop ]
           ++ extPeers;
       };
@@ -114,10 +110,10 @@ in
 
   networking.wireguard.interfaces =
     if (hn == "cookieclicker") then
-      wg-server "1" ifLan 22223 [ wg-fly-click wg-pi-click wg-rpi-click ]
+      wg-server "1" ifLan 22223 [ wg-fly-click wg-pi-click ]
     else if (hn == "cookieflyer")  then (wg-server "2" "${ifLan}" 22243 [])
     else if (hn == "cookiemailer") then (wg-server "3" "invalid"  22301 [])
-    else if (hn == "cookiepi")     then (wg-server "4" "${ifLan}" 22263 [])
+    else if (hn == "cookiepi")     then (wg-server "4" "${ifLan}" 22263 [ wg-fly-click ])
     else {};
 
   systemd.services =
@@ -150,8 +146,8 @@ in
     });
   in
   if (hn == "cookieclicker") then
-     (listRefresh [ "cookieflyer" "cookiemailer" "cookiepi" "rpi" ])
-    // (listCheck [ "cookieflyer" "cookiemailer" "cookiepi" "rpi" ] [ "2" "3" "4" "103" ])
+     (listRefresh [ "cookieflyer" "cookiemailer" "cookiepi" ])
+    // (listCheck [ "cookieflyer" "cookiemailer" "cookiepi" ] [ "2" "3" "4" ])
   else if (hn == "cookieflyer") then
     (listCheck [ "cookiemailer" ] [ "3" ])
   else if (hn == "cookiepi") then

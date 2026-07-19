@@ -66,11 +66,6 @@ Host cookiepi
 Host cookiethinker
 	HostName cookiethinker.internal.keksgesicht.de
 
-Host pihole
-	HostName rpi.pihole.internal
-	User cookie
-	IdentityFile ~/.secrets/ssh/id_pihole
-
 Host git*
 	User git
 	IdentityFile ~/.secrets/ssh/id_git
