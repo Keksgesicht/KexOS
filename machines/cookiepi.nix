@@ -15,6 +15,7 @@
     ../services/system/dyndns.nix
     ../services/system/rsyncd.nix
     ../system/network/server/bridge.nix
+    ../system/network/wireless.nix
   ];
 
   KexOS.variables.rpi_version = 3;
@@ -26,6 +27,7 @@
 
   networking.firewall.allowedUDPPorts = [
     67    # DHCP
+    547   # NDP
     5353  # mDNS
   ];
   virtualisation.oci-containers.containers."pihole".ports = [

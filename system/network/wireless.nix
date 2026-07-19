@@ -15,22 +15,33 @@ let
     } // radCfg;
   });
 
-  authSea = {
-    authentication.saePasswords = [{
-      passwordFile = "${secrets-dir}/keys/wireless/pass/${hn}";
-    }];
+  passwordFile = "${secrets-dir}/keys/wireless/pass/${hn}";
+  authWPA = {
+    mode = "wpa2-sha1";
+    wpaPasswordFile = passwordFile;
   };
+  authSea = {
+    saePasswords = [{ inherit passwordFile; }];
+  };
+  defCfg = (band: channel: auth: rad:
+    (netWifi
+      ({ settings.bridge = "br-home"; authentication = auth; })
+      ({ inherit band; inherit channel; } // rad)
+    )
+  );
 in
 {
   # avoid conflicts with NetworkManager
   networking.wireless.enable = lib.mkForce false;
 
   services.hostapd =
-    if (hn == "cookieclicker") then
-      (netWifi
-        (authSea // { settings.bridge = "br-home"; })
-        ({ band = "2g"; channel = 4; })
-      )
+         if (hn == "cookieclicker") then (defCfg "2g" 1 authSea {})
+    else if (hn == "cookiepi")      then (defCfg "2g" 4 authWPA {
+        wifi4 = { enable = true; capabilities = [ "HT20" "SHORT-GI-20" ]; };
+        wifi5.enable = false;
+        wifi6.enable = false;
+        wifi7.enable = false;
+      })
     else {};
 
   systemd.services."hostapd" = {

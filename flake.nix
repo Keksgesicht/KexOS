@@ -188,6 +188,7 @@
           vpn-ip-suf = "4";
           lan-ip-suf = "222";
           ifLan = "enu1u1u1";
+          ifWlan = "wlan0";
         };
         modules = [
           ./machines/cookiepi.nix
