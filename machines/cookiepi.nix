@@ -13,6 +13,7 @@
     ../services/containers/proxy.nix
     ../services/containers/unbound.nix
     ../services/system/dyndns.nix
+    ../services/system/rsyncd.nix
     ../system/network/server/lan.nix
   ];
 

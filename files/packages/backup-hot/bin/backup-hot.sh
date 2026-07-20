@@ -3,7 +3,7 @@
 cfg_dir=$(realpath "$(dirname "$0")/../cfg")
 system_name=$1
 
-RSYNCD_KEY="/etc/nixos/secrets/keys/rsyncd/client/backup"
+RSYNCD_KEY="/etc/nixos/secrets/keys/rsyncd/client/backup-${system_name}"
 TARGET_DIR="/mnt/hot_backup/data"
 DATA_DIR="${TARGET_DIR}/${system_name}"
 
