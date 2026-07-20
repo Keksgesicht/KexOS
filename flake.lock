@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1782894787,
-        "narHash": "sha256-HdeOSRuzcacYA7QcsEH6Lh3FtiuI7kihy0xyvV0CxLk=",
+        "lastModified": 1784465871,
+        "narHash": "sha256-9oQi6k0jSxWQT+HzcBWMnzmpZ4d4i8gJSaO/ROkQIs4=",
         "path": "/etc/unCookie",
         "type": "path"
       },
@@ -234,12 +234,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1782847225,
-        "narHash": "sha256-JC9PjqKYG9ve5U8aDOLQipp3+KLANBHUvGdLZlxzdKI=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "95ca1e203c0750115fd4a6f17d5a245dfe6b1edd",
-        "type": "github"
+        "lastModified": 1784011430,
+        "narHash": "sha256-LX2eBS9gFbXL5xUNBwp5mZ0tjnNvgiXoDnhz3ee1LzY=",
+        "rev": "8eeec934ae0dbeca3d7868c059568a65c08b2fc3",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.4937.8eeec934ae0d/nixexprs.tar.xz?lastModified=1784011430&rev=8eeec934ae0dbeca3d7868c059568a65c08b2fc3"
       },
       "original": {
         "id": "nixpkgs",
@@ -249,12 +248,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1782723713,
-        "narHash": "sha256-oPXCU/SSUokcGaJREHibG1CBX3+s/W7orDWQOZDsEeQ=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b5aa0fbd538984f6e3d201be0005b4463d8b09f8",
-        "type": "github"
+        "lastModified": 1784007870,
+        "narHash": "sha256-G9I5EeMhwLckqD5QLgowA6hNBaOjG9CeYIzfSz4gZ6k=",
+        "rev": "18b9261cb3294b6d2a06d03f96872827b8fe2698",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1034379.18b9261cb329/nixexprs.tar.xz?lastModified=1784007870&rev=18b9261cb3294b6d2a06d03f96872827b8fe2698"
       },
       "original": {
         "id": "nixpkgs",
@@ -347,8 +345,8 @@
     "secrets-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1760455381,
-        "narHash": "sha256-+6v1NY325Bi+gZNBqcLdZBLnDIVPhbl52tkLaNbtNKc=",
+        "lastModified": 1784488617,
+        "narHash": "sha256-+6xzCER7Ov+CUbRlau4SJ2A0Zq/Vg0TUlZ9AEaNrAj4=",
         "path": "/etc/nixos/secrets/local",
         "type": "path"
       },

@@ -45,7 +45,7 @@ let
         MY_PATH = "$PATH:" + (lib.strings.makeSearchPath "bin" config.packages);
         MY_IPV6_ULU = "${lan-subnet-v6}:${lan-ip-suf}/64";
         MY_IFLINK =
-          if (hn == "cookieclicker") then "br-home"
+          if (hn == "cookieclicker" || hn == "cookiepi") then "br-home"
           else ifLan;
         MY_IPV6_SUFFIX =
                if (hn == "cookieclicker") then "da:b44:${lan-ip-suf}:1"
