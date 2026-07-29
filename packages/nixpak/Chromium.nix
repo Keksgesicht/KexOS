@@ -20,14 +20,10 @@ in
     wrapper = {
       packages = [
         { package = pkgs.brave; binName = "brave"; appFile = [
-          { src = "brave-browser"; args.extra = [
-            args-wallet args-vulkan
-          ]; }
+          { src = "brave-browser"; args.extra = [ args-wallet args-vulkan ]; }
         ]; }
         { package = pkgs.ungoogled-chromium; binName = "chromium"; appFile = [
-          { src = "chromium-browser"; args.extra = [
-            args-wallet "--disable-gpu"
-          ]; }
+          { src = "chromium-browser"; args.extra = [ args-wallet ]; }
         ]; }
       ];
       variables = {
