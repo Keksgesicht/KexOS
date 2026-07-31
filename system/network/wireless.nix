@@ -45,9 +45,11 @@ in
     else {};
 
   systemd.services."hostapd" = {
-    #overrideStrategy = "asDropin";
     serviceConfig = {
-      ExecStartPre = "${pkgs.util-linux.bin}/bin/rfkill unblock wlan";
+      ExecStartPre = [
+        "${pkgs.util-linux.bin}/bin/rfkill unblock wlan"
+        "${pkgs.coreutils}/bin/sleep 10s"
+      ];
       ExecStopPost = "${pkgs.util-linux.bin}/bin/rfkill block wlan";
       LogFilterPatterns = [
         "~handle_probe_req: send failed"

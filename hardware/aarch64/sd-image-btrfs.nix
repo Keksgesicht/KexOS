@@ -90,6 +90,9 @@ in
   virtualisation.podman.autoPrune.enable = true;
 
   boot = {
+    # disables `boot.zfs.enabled`
+    supportedFilesystems.zfs = false;
+    #initrd.supportedFilesystems.zfs = false;
     kernelParams = [
       "rootwait"
       "root=${rootDev}"
