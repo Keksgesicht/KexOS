@@ -91,7 +91,6 @@ in
   nixpak = {
     Gaming.enable = false;
     SIP.enable = false;
-    TeamSpeak.enable = false;
     VideoEdit.enable = false;
   };
 }

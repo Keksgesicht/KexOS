@@ -26,7 +26,6 @@
   ];
 
   nixpak.Gaming.enable = lib.mkForce true;
-  nixpak.TeamSpeak.enable = lib.mkForce true;
 
   boot.kernelParams = [
     "amd_iommu=on" "iommu=pt"
