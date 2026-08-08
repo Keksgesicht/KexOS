@@ -10,7 +10,7 @@ let
   WVname = "firefox";
   pkgBase = pkgs."${WVname}";
   pkgWrapper = pkgs.writeShellScriptBin nameLow ''
-    exec -a ${nameLow} ${pkgBase}/bin/${WVname} --name ${name}
+    exec -a ${nameLow} ${pkgBase}/bin/${WVname} --name ${name} "$@"
   '';
   WVpkg = pkgs.symlinkJoin {
     name = nameLow;
@@ -23,7 +23,7 @@ let
     text = ''
       [Desktop Entry]
       Categories=Network;WebBrowser
-      Exec=${nameLow} --name ${name} %U
+      Exec=${nameLow} %U
       GenericName=Web Browser
       Icon=4kyoutubetomp3
       MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;x-scheme-handler/http;x-scheme-handler/https
@@ -61,7 +61,7 @@ in
         [
           # mozilla.cfg
           ("${WVpkg}/lib/${WVname}")
-          ("/app/etc/firefox")
+          ("/app/etc/${WVname}")
         ]
         # USB Webcam
         "/sys/class/video4linux"
