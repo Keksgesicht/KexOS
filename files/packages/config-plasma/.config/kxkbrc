@@ -2,7 +2,8 @@
 update_info=kxkb.upd:remove-empty-lists,kxkb.upd:add-back-resetoptions,kxkb_variants.upd:split-variants
 
 [Layout]
-LayoutList=altgr-weur
+DisplayNames=
+LayoutList=us
 Options=caps:none,compose:menu
 ResetOldOptions=true
 ShowFlag=false
@@ -12,3 +13,4 @@ ShowSingle=false
 SwitchMode=Global
 Use=true
 VariantList=altgr-weur
+

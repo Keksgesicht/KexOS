@@ -103,7 +103,6 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][29][Applets][30][Configuration]
-PreloadWeight=100
 popupHeight=567
 popupWidth=718
 
@@ -126,7 +125,6 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][29][Applets][32][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=85
 popupHeight=238
 popupWidth=156
 
@@ -153,7 +151,6 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][29][Applets][33][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=95
 popupHeight=278
 popupWidth=233
 
@@ -268,9 +265,6 @@ plugin=org.kde.plasma.networkmanagement
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
-[Containments][29][Applets][34][Configuration]
-PreloadWeight=100
-
 [Containments][29][Applets][34][General]
 extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.merkuro.contact.applet,org.kde.plasma.weather
 hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3,org.kde.merkuro.contact.applet,Wallet Manager
@@ -282,7 +276,6 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][29][Applets][47][Configuration]
-PreloadWeight=100
 popupHeight=461
 popupWidth=821
 
@@ -333,7 +326,6 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][3][Applets][109][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=80
 popupHeight=238
 popupWidth=233
 
@@ -359,7 +351,6 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][3][Applets][110][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=65
 popupHeight=238
 popupWidth=156
 
@@ -383,7 +374,6 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][3][Applets][111][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=75
 popupHeight=278
 popupWidth=233
 
@@ -410,7 +400,6 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][3][Applets][21][Configuration]
-PreloadWeight=85
 popupHeight=472
 popupWidth=954
 
@@ -444,7 +433,6 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][3][Applets][4][Configuration]
-PreloadWeight=100
 popupHeight=603
 popupWidth=1440
 
@@ -496,11 +484,15 @@ plugin=org.kde.plasma.cameraindicator
 
 [Containments][3][Applets][8][Applets][116]
 immutability=1
-plugin=org.kde.plasma.brightness
+plugin=org.kde.plasma.weather
 
 [Containments][3][Applets][8][Applets][12]
 immutability=1
 plugin=org.kde.plasma.manage-inputmethod
+
+[Containments][3][Applets][8][Applets][120]
+immutability=1
+plugin=org.kde.plasma.brightness
 
 [Containments][3][Applets][8][Applets][13]
 immutability=1
@@ -558,9 +550,6 @@ plugin=org.kde.plasma.networkmanagement
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
-[Containments][3][Applets][8][Configuration]
-PreloadWeight=100
-
 [Containments][3][Applets][8][General]
 extraItems=org.kde.plasma.battery,org.kde.plasma.devicenotifier,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.notifications,org.kde.kdeconnect,org.kde.kscreen,org.kde.plasma.bluetooth,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.weather
 hiddenItems=Discover Notifier_org.kde.DiscoverNotifier,org.kde.plasma.keyboardlayout,org.kde.merkuro.contact,ibus-ui-gtk3,Wallet Manager
@@ -595,7 +584,6 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][54][Applets][55][Configuration]
-PreloadWeight=100
 popupHeight=512
 popupWidth=663
 
@@ -628,7 +616,6 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][54][Applets][57][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=55
 popupHeight=238
 popupWidth=156
 
@@ -655,7 +642,6 @@ plugin=org.kde.plasma.systemmonitor
 
 [Containments][54][Applets][58][Configuration]
 CurrentPreset=org.kde.plasma.systemmonitor
-PreloadWeight=55
 popupHeight=278
 popupWidth=233
 
@@ -762,15 +748,9 @@ showPercentage=true
 immutability=1
 plugin=org.kde.plasma.networkmanagement
 
-[Containments][54][Applets][59][Applets][76][Configuration]
-PreloadWeight=60
-
 [Containments][54][Applets][59][Applets][77]
 immutability=1
 plugin=org.kde.plasma.bluetooth
-
-[Containments][54][Applets][59][Configuration]
-PreloadWeight=95
 
 [Containments][54][Applets][59][Configuration][General]
 extraItems=org.kde.kdeconnect,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.devicenotifier,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.manage-inputmethod,org.kde.plasma.mediacontroller,org.kde.plasma.networkmanagement,org.kde.plasma.nightcolorcontrol,org.kde.plasma.notifications,org.kde.plasma.printmanager,org.kde.plasma.volume,org.kde.kscreen,org.kde.plasma.wacomtablet,Wallet Manager
@@ -789,7 +769,6 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][54][Applets][72][Configuration]
-PreloadWeight=75
 popupHeight=450
 popupWidth=810
 

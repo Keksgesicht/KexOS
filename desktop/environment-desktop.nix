@@ -3,6 +3,7 @@
 let
   xdg-data = "${home-dir}/.local/share";
   pkgs-unfree = pkgs-latest { config.allowUnfree = true; };
+  key-layout = "us-altgr-weur";
 in
 {
   xdg.portal = {
@@ -26,7 +27,11 @@ in
     aspellDicts.en
     aspellDicts.en-computers
     aspellDicts.de
-  ];
+  ] ++ (with kdePackages; [
+    fcitx5-qt
+    fcitx5-unikey
+    fcitx5-configtool
+  ]);
 
   fonts.packages = with pkgs; [
     noto-fonts
@@ -45,4 +50,26 @@ in
   systemd.tmpfiles.rules = [
     "L+ ${xdg-data}/fonts - - - - /run/current-system/sw/share/X11/fonts"
   ];
+
+  # https://nixos.wiki/wiki/Fcitx5
+  # https://www.youtube.com/watch?v=KW5tu-aBHh0
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = with pkgs; [
+        fcitx5-gtk
+      ];
+      settings.inputMethod = {
+        GroupOrder."0" = "Default";
+        "Groups/0" = {
+          Name = "Default";
+          "Default Layout" = key-layout;
+          DefaultIM = "keyboard-${key-layout}";
+        };
+        "Groups/0/Items/0".Name = "keyboard-${key-layout}";
+      };
+    };
+  };
 }
