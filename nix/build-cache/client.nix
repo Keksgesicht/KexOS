@@ -13,7 +13,7 @@ let
       key = "OGeVzmNtrB+2y1nogJnuBrV3+G/LUxCQIasya7ake6A=";
     } {
       name = "cookiepi"; proto = "https"; port = "443";
-      key = "gg2p72frz2N8Ocf4amLQRDXkfiUgbO0uz/zuhUcwrK0=";
+      key = "zRHpmfIDsAdZWe27PXlhWvPvfvNYAqeoPGGeqZKzKVc=";
   } ];
   hostName = (name: "nix-serve.${name}.internal.${myDomain}");
   hostFilter = (list: func: (func (builtins.filter (e: (hn != e.name)) list)));
