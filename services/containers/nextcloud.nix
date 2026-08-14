@@ -1,4 +1,4 @@
-{ config, lib, secrets-dir, ssd-mnt, hdd-mnt, hdd-name, ... }:
+{ config, pkgs, lib, secrets-dir, ssd-mnt, hdd-mnt, hdd-name, ... }:
 
 let
   pss = (sec: import ./podman-systemd-service.nix lib sec);
@@ -11,6 +11,31 @@ let
       "${nextcloud-hdd}/files_external/homeGaming"
     ];
   };
+
+  auto-restart-script = ''
+    DATE_PREFIX="$(date '+%d/%b/%Y:%H')"
+    restart-nextcloud() {
+      echo "Nextcloud Uptime Check: $1"
+      echo "RESTARTING ALL NEXTCLOUD SERVICES"
+      systemctl --no-block restart \
+        podman-nextcloud.service \
+        podman-nextcloud-db.service \
+        podman-nextcloud-redis.service
+    }
+    NUM_SRV_ERR=$(cat "${nextcloud-ssd}/web/log/nginx/access.log" | \
+      awk -v prefix="[$DATE_PREFIX" -F'|' 'index($0, prefix) == 1 {print $2}' | \
+      awk '{print $1}' | grep -E '^504$' | wc -l)
+    if [ 0 -lt "$NUM_SRV_ERR" ]; then
+      restart-nextcloud "Internal Server Error"
+    fi
+    NUM_SRV_ERR=$(cat "${ssd-mnt}/appdata/swag/log/nginx/access-cloud.log" | \
+      awk -v prefix="[$DATE_PREFIX" -F'|' 'index($0, prefix) == 1 {print $3}' | \
+      awk '{print $1}' | grep -E '^502$' | wc -l)
+    if [ 0 -lt "$NUM_SRV_ERR" ]; then
+      restart-nextcloud "Gateway Error"
+    fi
+    exit 0
+  '';
 
   nextcloud-ssd = "${ssd-mnt}/appdata/nextcloud";
   nextcloud-hdd = "${hdd-mnt}/appdata2/nextcloud";
@@ -54,6 +79,12 @@ in
     "podman-nextcloud" = (pss 23) // serviceExtraConfig;
     "podman-nextcloud-db" = (pss 27);
     "podman-nextcloud-redis" = (pss 27);
+    "nextcloud-restart-on-error" = {
+      path = with pkgs; [ coreutils gawk ];
+      script = auto-restart-script;
+      startAt = "*-*-* *:59:00";
+      serviceConfig.Type = "oneshot";
+    };
   };
 
   virtualisation.oci-containers.containers = {
