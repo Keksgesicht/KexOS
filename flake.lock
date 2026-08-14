@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1786177810,
-        "narHash": "sha256-qLCHJGukBv80wjEwRH2fvZJfi122drcYUd2A94HNsLg=",
+        "lastModified": 1787068047,
+        "narHash": "sha256-mHy9IW2I/odbiHmR8f8XKLF+SyC61Rp+3HD6UlPlWU8=",
         "path": "/etc/unCookie",
         "type": "path"
       },
@@ -234,11 +234,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1786089803,
-        "narHash": "sha256-iDLHbagLeTbQwI79zkbPdsUbwPvsk6nCJNSep+l1BRk=",
-        "rev": "ee48b147c18c7de1e6ec97dc74792be42724bed1",
+        "lastModified": 1786711500,
+        "narHash": "sha256-mB6w7h+UsvxLf3PY6U3hSDVWCfmn2Q6VtSw5JugbeY0=",
+        "rev": "02e08985a27c65ffd33d434eeb2e660a2e4dc84d",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.7201.ee48b147c18c/nixexprs.tar.xz?lastModified=1786089803&rev=ee48b147c18c7de1e6ec97dc74792be42724bed1"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.7675.02e08985a27c/nixexprs.tar.xz?lastModified=1786711500&rev=02e08985a27c65ffd33d434eeb2e660a2e4dc84d"
       },
       "original": {
         "id": "nixpkgs",
@@ -248,11 +248,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1786106723,
-        "narHash": "sha256-CgKDSHL6rqAAQkkvg1xaZDQXb77+4XW73iGcUMJ+2w0=",
-        "rev": "f13ff45afd1bb73e640eaa08a7066dbed07e3238",
+        "lastModified": 1786599213,
+        "narHash": "sha256-yjGG65gA1jORt0hWxjzrnw3AYkIn8EWolp8vezwXZ3I=",
+        "rev": "0e251e24a4f24e036a084b6b4b2d2491af4167f4",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1049422.f13ff45afd1b/nixexprs.tar.xz?lastModified=1786106723&rev=f13ff45afd1bb73e640eaa08a7066dbed07e3238"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1053317.0e251e24a4f2/nixexprs.tar.xz?lastModified=1786599213&rev=0e251e24a4f24e036a084b6b4b2d2491af4167f4"
       },
       "original": {
         "id": "nixpkgs",
@@ -345,8 +345,8 @@
     "secrets-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1785337972,
-        "narHash": "sha256-R9+WJsOsz0Aadm74HHlM5F06tK/pWix9S+Z+39our78=",
+        "lastModified": 1787074404,
+        "narHash": "sha256-UgjchvAwR3vJaEjkAGAGrMxG33NfHYFo85yPMlnTSzk=",
         "path": "/etc/nixos/secrets/local",
         "type": "path"
       },

@@ -1,0 +1,3 @@
+[bluetooth-autoswitch]
+saved-headset-profile:bluez_card.@MY_BT_DEV_IN_EAR@=headset-head-unit
+saved-headset-profile:bluez_card.@MY_BT_DEV_OVER_THE_EARS@=headset-head-unit
