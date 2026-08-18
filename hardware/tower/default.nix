@@ -7,5 +7,6 @@
     ./services.nix
     ./sysctl.nix
     ./usb-docking-station.nix
+    ../services/emulation.nix
   ];
 }

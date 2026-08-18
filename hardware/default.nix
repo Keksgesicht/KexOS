@@ -1,4 +1,4 @@
-{ pkgs, lib, modulesPath, system, isDesktop, ... }:
+{ pkgs, lib, modulesPath, isDesktop, ... }:
 
 {
   imports = [
@@ -10,12 +10,6 @@
     ./development/utils.nix
     ./security/watchdog.nix
     ./services/btrfs.nix
-  ]
-  ++ lib.optionals (system == "aarch64-linux") [
-    #./aarch64/binfmt.nix
-  ]
-  ++ lib.optionals (system == "x86_64-linux") [
-    #./x86_64/binfmt.nix
   ];
 
   boot.kernelPackages =
