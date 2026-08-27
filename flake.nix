@@ -103,7 +103,6 @@
         nvm-name = "ram";
         nvm-mnt  = "/mnt/${nvm-name}";
 
-        cookie-dir = "/etc/unCookie";
         cookie-pkg = inputs.cookie-pkg;
         secrets-dir = "/etc/nixos/secrets";
         secrets-pkg = inputs.secrets-pkg;

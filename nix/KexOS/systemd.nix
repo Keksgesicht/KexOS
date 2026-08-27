@@ -1,6 +1,7 @@
-{ config, lib, cookie-dir, ssd-mnt, ssd-name, hdd-mnt, hdd-name, ... }:
+{ config, lib, ssd-mnt, ssd-name, hdd-mnt, hdd-name, ... }:
 
 let
+  inherit (config.KexOS.variables) cookie-dir;
   inherit (lib) attrsets mkDefault mkForce mkMerge mkOption strings types;
 
   defOpt = mkOption { default = { enable = true; }; };

@@ -29,6 +29,7 @@ in
       nixCfgDataDir = "${home-dir}/git/hdd/nix/config/KexOS";
     };
     variables = {
+      cookie-dir = "/etc/unCookie";
       data-dir = "${hdd-mnt}/homeBraunJan";
     };
   };

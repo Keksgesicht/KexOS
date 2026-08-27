@@ -1,6 +1,7 @@
-{ config, lib, cookie-pkg, cookie-dir, ... }:
+{ config, lib, cookie-pkg, ... }:
 
 let
+  inherit (config.KexOS.variables) cookie-dir;
   update-days = (builtins.head (builtins.split " " config.system.autoUpgrade.dates));
   image-updater = ../../../files/packages/containers/image-updater;
 in

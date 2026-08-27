@@ -1,9 +1,11 @@
-{ self, config, pkgs, lib, cookie-pkg, cookie-dir, ssd-mnt, myDomain
+{ self, config, pkgs, lib, cookie-pkg, ssd-mnt, myDomain
 , lan-subnet-v4, pod-subnet-v4, vpn-subnet-v4
 , lan-subnet-v6, pod-subnet-v6, vpn-subnet-v6
 , ... }:
 
 let
+  inherit (config.KexOS.variables) cookie-dir;
+
   str = lib.strings;
   hn = config.networking.hostName;
 

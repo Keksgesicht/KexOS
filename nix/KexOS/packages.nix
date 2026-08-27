@@ -1,6 +1,7 @@
-{ config, pkgs, username, cookie-dir, home-dir, isDesktop, ... }:
+{ config, pkgs, username, home-dir, isDesktop, ... }:
 
 let
+  inherit (config.KexOS.variables) cookie-dir;
   kexos-pkgs = config.KexOS.packages;
   kexos-cfg-remote = "/tmp/KexOS-remote-config";
   kexos-cfg-path = "${home-dir}/nixos-config";
