@@ -2,10 +2,20 @@
 
 let
   ssd-dev = "/dev/mapper/root";
+  ssd-fs-cfg = config.fileSystems."${ssd-mnt}";
   bfs-opts = [ "compress=zstd:3" ];
 in
 {
   fileSystems = {
+    "/" = {
+      device = ssd-fs-cfg.device;
+      fsType = ssd-fs-cfg.fsType;
+      options = [
+        "subvol=root"
+        "compress=zstd:3"
+        "nodev" "nosuid"
+      ];
+    };
     "/boot" = {
       fsType = "vfat";
       options = [ "umask=0077" "shortname=winnt" ];

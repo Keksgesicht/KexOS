@@ -8,16 +8,6 @@ let
   tmp-mnt = "/mnt-${ssd-name}";
 in
 {
-  config.fileSystems."/" = {
-    device = ssd-fs-cfg.device;
-    fsType = ssd-fs-cfg.fsType;
-    options = [
-      "subvol=root"
-      "compress=zstd:3"
-      "nodev" "nosuid"
-    ];
-  };
-
   options."setup-impermance-root-volume" = {
     backupCommands = lib.mkOption {
       type = lib.types.str;
