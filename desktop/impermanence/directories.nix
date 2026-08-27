@@ -1,7 +1,8 @@
-{ self, config, lib, username, home-dir, ssd-mnt, hdd-mnt, data-dir, ... }:
+{ self, config, lib, username, home-dir, ssd-mnt, hdd-mnt, ... }:
 
 let
   kexPaths = config.KexOS.paths;
+  inherit (config.KexOS.variables) data-dir;
 
   bind-opt = [ "bind" "nofail" "x-gvfs-hide" ];
   bind-opts = {

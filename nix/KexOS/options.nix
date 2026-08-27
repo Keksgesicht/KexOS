@@ -1,4 +1,4 @@
-{ lib, home-dir, ... }:
+{ lib, home-dir, hdd-mnt, ... }:
 
 let
   inherit (lib) mkOption types;
@@ -27,6 +27,9 @@ in
     paths = {
       nixCfgHomeLink = "${home-dir}/nixos-config";
       nixCfgDataDir = "${home-dir}/git/hdd/nix/config/KexOS";
+    };
+    variables = {
+      data-dir = "${hdd-mnt}/homeBraunJan";
     };
   };
 }

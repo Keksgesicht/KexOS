@@ -102,7 +102,6 @@
         hdd-mnt  = "/mnt/${hdd-name}";
         nvm-name = "ram";
         nvm-mnt  = "/mnt/${nvm-name}";
-        data-dir = "${hdd-mnt}/homeBraunJan";
 
         cookie-dir = "/etc/unCookie";
         cookie-pkg = inputs.cookie-pkg;

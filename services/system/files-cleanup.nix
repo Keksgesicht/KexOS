@@ -1,8 +1,7 @@
-{ config, pkgs, lib, home-dir, data-dir
-, ssd-mnt, ssd-name, hdd-mnt, hdd-name
-, ... }:
+{ config, pkgs, lib, home-dir, ssd-mnt, ssd-name, hdd-mnt, hdd-name, ... }:
 
 let
+  inherit (config.KexOS.variables) data-dir;
   cleanup-pkg = pkgs.callPackage ../../packages/files-cleanup.nix {};
   locate-path = "/var/cache/locatedb";
   inherit (config.KexOS.service."dummy".service) serviceConfig;

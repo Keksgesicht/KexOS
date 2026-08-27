@@ -1,5 +1,8 @@
-{ home-dir, ssd-mnt, data-dir, ... }:
+{ config, home-dir, ssd-mnt, ... }:
 
+let
+  inherit (config.KexOS.variables) data-dir;
+in
 {
   # base environment variables
   # https://nixos.wiki/wiki/Environment_variables
