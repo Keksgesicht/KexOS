@@ -135,7 +135,7 @@ with my-functions;
     });
     wgDNScfg = pkgs.writeText "wg-laptop-resolv.conf" (''
       nameserver ${vpn-subnet-v4}.2
-      nameserver ${vpn-subnet-v4}.103
+      nameserver ${vpn-subnet-v4}.4
       options timeout:2
       options attempts:2
     '');
