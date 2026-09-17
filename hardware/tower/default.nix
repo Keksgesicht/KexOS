@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./acpi-tpm2-fix.nix
     ./boot-backup.nix
     ./filesystem.nix
     ./services.nix
