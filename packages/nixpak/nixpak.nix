@@ -484,9 +484,16 @@ in
       NxAPP="$USER_BIN_PATH/$NxAPP"
       Nfile="$2"
       Nfile="''${Nfile//--file-access=}"
+      Ndir="$(dirname "$Nfile")"
 
-      if $NxAPP ls "$Nfile" >/dev/null; then
+      if $NxAPP ls "$Nfile" >/dev/null 2>&1; then
         echo -n "read-write"
+      elif $NxAPP ls "$Ndir" >/dev/null 2>&1; then
+        if [ "$($NxAPP mountpoint --show "$Ndir" 2>/dev/null)" = "${home-dir}" ]; then
+          echo -n "hidden"
+        else
+          echo -n "read-write"
+        fi
       else
         echo -n "hidden"
       fi
