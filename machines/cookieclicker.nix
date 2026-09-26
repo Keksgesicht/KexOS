@@ -11,6 +11,7 @@
     ../development
     ../hardware/tower
     ../nix/build-cache
+    ../services/containers/CheckMK-Server.nix
     ../services/containers/lancache.nix
     ../services/containers/pihole.nix
     ../services/containers/proxy.nix

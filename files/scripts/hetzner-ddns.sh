@@ -11,8 +11,8 @@ test_configuration() {
 
     if [ -z "$TTL" ] || [ "$TTL" -lt 30 ]; then
         logger -t $self -p 5 \
-            'Info: TTL is invalid, defaulting to 1000 seconds'
-        TTL=1000
+            'Info: TTL is invalid, defaulting to 600 seconds'
+        TTL=600
     fi
     if [ -z "$HCLOUD_TOKEN" ]; then
         logger -t $self -p 3 'Error: API key is not set, unable to proceed'

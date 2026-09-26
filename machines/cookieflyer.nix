@@ -18,6 +18,7 @@ in
     ../hardware/services/baremetal.nix
     ../hardware/x86_64/desktop.nix
     ../services/system/files-cleanup.nix
+    ../services/containers/CheckMK-Server.nix
     ../services/containers/nextcloud.nix
     ../services/containers/pihole.nix
     ../services/containers/proxy.nix

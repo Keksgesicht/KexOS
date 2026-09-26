@@ -47,7 +47,7 @@ let
   });
   cli-end = (n: p: {
     endpoint = "${n}.host.${myDomain}:${p}";
-    dynamicEndpointRefreshSeconds = 1000;
+    dynamicEndpointRefreshSeconds = 600;
   });
 
   # handy

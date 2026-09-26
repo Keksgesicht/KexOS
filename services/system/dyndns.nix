@@ -12,7 +12,7 @@ in
       environment = pub6ds.variables // {
         TTL =
           if (hn == "cookieclicker") then "300"
-          else "1000";
+          else "600";
         records =
           if (hn == "cookieclicker") then "tw.host"
           else if (hn == "cookieflyer") then "fy.host"
