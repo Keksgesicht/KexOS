@@ -24,7 +24,9 @@
         "/etc/localtime:/etc/localtime:ro"
         "/tmp/check_mk/sites:/opt/omd/sites/cmk/tmp"
         "${hdd-mnt}/appdata2/check_mk/monitoring:/omd/sites"
-      ];
+      ] ++ (lib.lists.forEach config.services.checkmk-agent.externalPlugins (e:
+        "${e}:/tmp/check_mk-plugins/${builtins.baseNameOf e}:ro"
+      ));
       extraOptions = [
         "--network" "host"
         "--cap-add" "NET_RAW"

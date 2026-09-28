@@ -1,8 +1,13 @@
-{ pkgs, lan-subnet-v4, lan-ip-suf, ... }:
+{ config, pkgs, lib, lan-subnet-v4, lan-ip-suf, ... }:
 
 let
   nmsc-path = "linux-root/etc/NetworkManager/system-connections";
   lan-nm-conf = ../../../files + "/${nmsc-path}/server_lan.nmconnection";
+
+  cmk-port = config.services.checkmk-agent.port;
+  allowedPortsCMKagent = {
+    allowedTCPPorts = [ cmk-port ];
+  };
 in
 {
   imports = [
@@ -42,6 +47,11 @@ in
     ];
     allowedTCPPortRanges = [ { from = 22200; to = 22299; } ];
     allowedUDPPortRanges = allowedTCPPortRanges;
+    interfaces = {
+      "wg-server" = lib.mkMerge [
+        allowedPortsCMKagent
+      ];
+    };
   };
 
   networking.hosts = {

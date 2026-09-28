@@ -9,7 +9,9 @@
     ../../hardware/common/filesystem-single-disk.nix
     ../../hardware/common/swap.nix
     ../../nix
+    ../../packages/CheckMK-Agent.nix
     ../../services/system/backup-snapshot.nix
+    ../../services/system/CheckMK-Agent.nix
     ../../system
   ];
 }

@@ -55,6 +55,11 @@ let
     allowedUDPPortRanges = [ { from = 27031; to = 27036; } ];
   };
 
+  cmk-port = config.services.checkmk-agent.port;
+  allowedPortsCMKagent = {
+    allowedTCPPorts = [ cmk-port ];
+  };
+
   allowedPortsVPNuser = rec { # nearly all user ports
     allowedTCPPortRanges = [ { from = 10000; to = 65535; } ];
     allowedUDPPortRanges = allowedTCPPortRanges;
@@ -84,6 +89,7 @@ in
           allowedPortsCCextra
           allowedPortsKDEconnect
           allowedPortsSteam
+          allowedPortsCMKagent
         ];
         "podman-server" = allowedPortsCCbase;
         "enp6s0" = allowedPortsShared;
@@ -91,7 +97,10 @@ in
         "tap0" = if allowVPNaccess then allowedPortsVPNuser else {};
       }
       else if (config.networking.hostName == "cookiethinker") then {
-        "wg-laptop" = { allowedTCPPorts = [ 22 ]; };
+        "wg-laptop" = { allowedTCPPorts = [
+          22       # OpenSSH
+          cmk-port # CheckMK Agent
+        ]; };
         "${ifLan}" = allowedPortsShared;
         #"${ifWlan}" = { allowedUDPPorts = [ 5353 ]; };
       }

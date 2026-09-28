@@ -39,6 +39,7 @@ in
     jq
     ldns
     lsof
+    net-tools
     nix-output-monitor
     nmap
     psmisc

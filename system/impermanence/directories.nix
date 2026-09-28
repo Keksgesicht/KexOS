@@ -28,11 +28,13 @@ in
     "${ssd-mnt}" = {
       hideMounts = true;
       directories = [
+        "/etc/check_mk"
         "/etc/NetworkManager/system-connections"
         "/etc/nixos"
         "/etc/secureboot"
         "/etc/unCookie"
         "/var/lib/bluetooth"
+        "/var/lib/check_mk_agent"
         "/var/lib/flatpak"
         "/var/lib/fwupd"
         "/var/lib/nixos"
