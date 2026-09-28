@@ -1,4 +1,4 @@
-{ config, lib, secrets-dir, hdd-mnt, hdd-name, ... }:
+{ config, lib, secrets-dir, hdd-mnt, hdd-name, myDomain, ... }:
 
 let
   pss = (sec: import ./podman-systemd-service.nix lib sec);
@@ -50,6 +50,9 @@ in
         TZ = config.time.timeZone;
       };
       environmentFiles = [ sec-file ];
+      environment = {
+        ALLOWED_HOSTS = "tandoor.tb.${myDomain},internal.${myDomain}";
+      };
       volumes = [
         # Do not make this a bind mount
         # see https://docs.tandoor.dev/install/docker/#volumes-vs-bind-mounts
