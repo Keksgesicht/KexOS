@@ -22,15 +22,18 @@ in
       };
       serviceConfig = {
         EnvironmentFile = "${secrets-dir}/keys/services/ddns/HETZNER_APIKEY";
-        ExecStart = "${self}/files/scripts/hetzner-ddns.sh";
         PrivateDevices = "no";
       };
+      script = ''
+        ${pub6ds.output.script} ${pub6ds.variables.MY_IFLINK} check
+        ${self}/files/scripts/hetzner-ddns.sh
+      '';
     };
     timer = {
       after = lib.mkForce [];
       timerConfig = lib.mkForce {
         OnStartupSec = "13sec";
-        OnUnitInactiveSec = "1234sec";
+        OnUnitInactiveSec = "666sec";
       };
     };
   };

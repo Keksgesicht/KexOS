@@ -29,6 +29,14 @@ toggle-ipv6() {
 	sysctl -w net.ipv6.conf."${IFLINK}".disable_ipv6=0 >/dev/null
 }
 
+set-ipv6-retry() {
+	while ! ip a s "${IFLINK}" | grep ":${MY_IPV6_SUFFIX}/${PREFIX_LEN}"; do
+		sleep 1s
+		ip token del dev "${IFLINK}"
+		set-ipv6-token
+	done
+}
+
 [ -n "${MY_IFLINK}" ] || exit 0
 [ -n "${MY_IPV6_SUFFIX}" ] || exit 0
 
@@ -41,15 +49,14 @@ case "${IFLINK}" in
 	up)
 		sleep 1s
 		set-ipv6-token
-		while ! ip a s "${IFLINK}" | grep ":${MY_IPV6_SUFFIX}/${PREFIX_LEN}"; do
-			sleep 1s
-			ip token del dev "${IFLINK}"
-			set-ipv6-token
-		done
+		set-ipv6-retry
 		sleep 1s
 		set-sysctl
 		toggle-ipv6 &
 		disown
+	;;
+	check)
+		set-ipv6-retry
 	;;
 	esac
 ;;
