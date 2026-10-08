@@ -41,7 +41,7 @@ with my-functions;
 
     cpHomeFile = (t: f: [
       "C  ${t} - - - - ${f}"
-      "Z  ${t} 0644 ${username} ${username} - -"
+      "z  ${t} 0644 ${username} ${username} - -"
     ]);
 
     initPlasmaFiles = mname: flatList (forEach (listFilesRec plasma-config) (e:
@@ -90,9 +90,10 @@ with my-functions;
     "${tmp-unit}-${username}" = {
       partOf   = [ tmp-re-unit ];
       after    = [ "${tmp-unit}.service" tmp-re-unit "user@${uid}.service" ];
-      wantedBy = [ "${tmp-unit}.service" tmp-re-unit ];
-      requiredBy = [ "home-manager-${username}.service" ];
-      before     = [ "home-manager-${username}.service" ];
+      before   = [ "home-manager-${username}.service" ];
+      wantedBy = [
+        "${tmp-unit}.service" tmp-re-unit "home-manager-${username}.service"
+      ];
       serviceConfig = {
         Type = "oneshot";
         User = username;
