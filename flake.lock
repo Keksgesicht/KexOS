@@ -3,8 +3,8 @@
     "cookie-pkg": {
       "flake": false,
       "locked": {
-        "lastModified": 1790453133,
-        "narHash": "sha256-0WQPqFQb6a0D95Da2BCGBCO3xIUBgr0kiOJOQADYZmw=",
+        "lastModified": 1791478860,
+        "narHash": "sha256-lub9dJQvjpmyKzJ2US3eYLKIKaDQ8lacS1jeF8xJa0M=",
         "path": "/etc/unCookie",
         "type": "path"
       },
@@ -234,11 +234,11 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1789998861,
-        "narHash": "sha256-GiMDMZpYQ2eK3OFtqj/yXpRZwqfu6JfG5WWrUHWyF8M=",
-        "rev": "1e8bc658fc985ef27ccd66d107d767b32bb7ef98",
+        "lastModified": 1791426274,
+        "narHash": "sha256-/hsaG8yWXZjTs6WJS2xnerd9VKBgJ8jN8e5ELHLt+bs=",
+        "rev": "7c8764b7c7b09b34f632464276218ef9090eaa11",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.10402.1e8bc658fc98/nixexprs.tar.xz?lastModified=1789998861&rev=1e8bc658fc985ef27ccd66d107d767b32bb7ef98"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.11576.7c8764b7c7b0/nixexprs.tar.zst?lastModified=1791426274&rev=7c8764b7c7b09b34f632464276218ef9090eaa11"
       },
       "original": {
         "id": "nixpkgs",
@@ -248,11 +248,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1790046670,
-        "narHash": "sha256-OJe62m8gZx4xEAQnMcqH1u31/uu4Xf0q2ykAEHZfgrg=",
-        "rev": "6774f7bc253789b113a4f39285dc0fa100abeacc",
+        "lastModified": 1791456040,
+        "narHash": "sha256-gRZ/s8WQJ2CsXdhcDVQH34qxuL0MuMCOs3aBiK1Prsw=",
+        "rev": "e7439b6b14ad3cc35d05608ebca9bce01a25f5f8",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1077996.6774f7bc2537/nixexprs.tar.xz?lastModified=1790046670&rev=6774f7bc253789b113a4f39285dc0fa100abeacc"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1087755.e7439b6b14ad/nixexprs.tar.zst?lastModified=1791456040&rev=e7439b6b14ad3cc35d05608ebca9bce01a25f5f8"
       },
       "original": {
         "id": "nixpkgs",

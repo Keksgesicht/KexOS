@@ -25,7 +25,6 @@ in
   users.users."${username}".packages = with pkgs; [
     aspell
     aspellDicts.en
-    aspellDicts.en-computers
     aspellDicts.de
   ] ++ (with kdePackages; [
     fcitx5-qt
