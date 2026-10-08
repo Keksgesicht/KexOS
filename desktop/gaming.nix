@@ -1,4 +1,4 @@
-{ config, pkgs, username, home-dir, ... }:
+{ self, config, pkgs, lib, username, home-dir, ... }:
 
 let
   xdg-config = "${home-dir}/.config";
@@ -6,7 +6,15 @@ let
   mango-hud = pkgs.callPackage ../packages/MangoHud.nix {};
   options = [ "NOPASSWD" ];
   usb-bind-script = ../files/scripts/usb-bind-devices-by-name.sh;
+
+  cpHomeFile = (t: f: [
+    "C  ${t} - - - - ${f}"
+    "Z  ${t} 0644 ${username} ${username} - -"
+  ]);
+
+  my-functions = (import "${self}/nix/my-functions.nix" lib);
 in
+with my-functions;
 {
   imports = [
     ../hardware/services/gaming.nix
@@ -54,8 +62,14 @@ in
   };
 
   systemd.user.tmpfiles.users."${username}".rules = [
-    "C+ ${xdg-config}/MangoHud - - - - ${mango-hud}"
-  ];
+    "d  ${xdg-config}/MangoHud 0750 ${username} ${username} - -"
+  ] ++ (flatList (forEach (listFilesRec mango-hud) (e:
+    let
+      eFile = lib.removePrefix "${mango-hud}/" e;
+      tFile = "${xdg-config}/MangoHud/${eFile}";
+    in
+    cpHomeFile tFile e
+  )));
 
   security.sudo-rs.extraRules = [ {
     users = [ username ];
