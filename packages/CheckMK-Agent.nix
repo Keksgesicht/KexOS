@@ -8,13 +8,13 @@ let
 
   checkmk-agent-pkg = pkgs.stdenvNoCC.mkDerivation rec {
     pname = "check-mk-agent";
-    version = "2.5.0";
+    version = "v2.5.0p16";
 
     src = pkgs.fetchFromGitHub {
       owner = "Checkmk";
       repo = "checkmk";
       rev = version;
-      hash = "sha256-zIQgjpNKdJO7ddmmZ/5NpBRjJlPrrS1p4snJ2OcW72c=";
+      hash = "sha256-IzVYV+2P/jfuFrTRQ5eSh5ccnYgrxPl2vUcGrLIYViw=";
     };
 
     dontBuild = true;
