@@ -21,6 +21,7 @@
         TZ = config.time.timeZone;
       };
       volumes = [
+        "/dev/null:/etc/apache2/ports.conf:ro"
         "/etc/localtime:/etc/localtime:ro"
         "/tmp/check_mk/sites:/opt/omd/sites/cmk/tmp"
         "${hdd-mnt}/appdata2/check_mk/monitoring:/omd/sites"
