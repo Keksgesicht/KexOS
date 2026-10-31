@@ -6,8 +6,8 @@
   ];
 
   boot = {
-    # enable SystemD in initramfs
-    initrd.systemd.enable = true;
+    # systemd is enabled by default: "Scripted initrd has been removed."
+    #initrd.systemd.enable = true;
 
     # Bootloader
     loader = {

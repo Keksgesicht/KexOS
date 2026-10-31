@@ -5,6 +5,10 @@ let
   rfkill = "${pkgs.util-linux}/bin/rfkill";
 in
 {
+  imports = [
+    ../nix/KexOS/resume-commands.nix
+  ];
+
   # enable bluetooth
   hardware.bluetooth = {
     enable = true;

@@ -36,7 +36,7 @@ in
   };
 
   config.boot.initrd.systemd = {
-    enable = true;
+    #enable = true; # with nixpkgs-26.11 enabled by default
     storePaths = biss."setup-impermanence-root-volume".path;
     services."setup-impermanence-root-volume" = {
       enable = (ssd-fs-cfg.fsType == "btrfs");
