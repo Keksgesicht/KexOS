@@ -16,7 +16,7 @@ in
 
     containers = {
       enable = true;
-      storage.settings = {
+      storage.rootful.settings = {
         storage = {
           driver = lib.mkForce "btrfs";
           graphroot = "/var/lib/containers/storage";
