@@ -2,15 +2,14 @@
     {
         "data": [
             {
+                "abmLevel": 0,
                 "allowDdcCi": true,
                 "allowSdrSoftwareBrightness": true,
                 "autoBrightnessCurve": [
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
+                    [
+                        0,
+                        1
+                    ]
                 ],
                 "autoRotation": "InTabletMode",
                 "automaticBrightness": false,
@@ -22,14 +21,28 @@
                 "edidHash": "a12f31713ec982d50b269c861a8b95e7",
                 "edidIdentifier": "SAM 3996 0 43 2018 0",
                 "edrPolicy": "always",
+                "hdrColorProfileSource": "EDID",
+                "hdrIccProfilePath": "",
                 "highDynamicRange": true,
                 "iccProfilePath": "",
                 "maxBitsPerColor": 0,
                 "maxPeakBrightnessOverride": 540,
                 "mode": {
-                    "height": 1440,
-                    "refreshRate": 119970,
-                    "width": 5120
+                    "cvt": {
+                        "clock": 966000,
+                        "flags": 9,
+                        "hdisplay": 5120,
+                        "hskew": 0,
+                        "hsyncEnd": 5200,
+                        "hsyncStart": 5168,
+                        "htotal": 5280,
+                        "vdisplay": 1440,
+                        "vscan": 0,
+                        "vsyncEnd": 1453,
+                        "vsyncStart": 1443,
+                        "vtotal": 1525
+                    },
+                    "flags": 1
                 },
                 "overscan": 0,
                 "rgbRange": "Automatic",
@@ -43,15 +56,14 @@
                 "wideColorGamut": true
             },
             {
+                "abmLevel": 0,
                 "allowDdcCi": true,
                 "allowSdrSoftwareBrightness": true,
                 "autoBrightnessCurve": [
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
+                    [
+                        0,
+                        1
+                    ]
                 ],
                 "autoRotation": "InTabletMode",
                 "automaticBrightness": false,
@@ -63,16 +75,30 @@
                 "edidHash": "afe7407879b8791cc909f40c925d59c2",
                 "edidIdentifier": "GSM 23304 225959 4 2019 0",
                 "edrPolicy": "always",
+                "hdrColorProfileSource": "EDID",
+                "hdrIccProfilePath": "",
                 "highDynamicRange": false,
                 "iccProfilePath": "",
                 "maxBitsPerColor": 0,
                 "mode": {
-                    "height": 2160,
-                    "refreshRate": 60000,
-                    "width": 3840
+                    "cvt": {
+                        "clock": 594000,
+                        "flags": 1048581,
+                        "hdisplay": 3840,
+                        "hskew": 0,
+                        "hsyncEnd": 4104,
+                        "hsyncStart": 4016,
+                        "htotal": 4400,
+                        "vdisplay": 2160,
+                        "vscan": 0,
+                        "vsyncEnd": 2178,
+                        "vsyncStart": 2168,
+                        "vtotal": 2250
+                    },
+                    "flags": 0
                 },
                 "overscan": 0,
-                "rgbRange": "Automatic",
+                "rgbRange": "Full",
                 "scale": 1,
                 "sdrBrightness": 200,
                 "sdrGamutWideness": 0,
@@ -97,6 +123,7 @@
                 "highDynamicRange": false,
                 "iccProfilePath": "",
                 "mode": {
+                    "flags": 0,
                     "height": 2160,
                     "refreshRate": 30000,
                     "width": 3840
@@ -128,6 +155,7 @@
                 "iccProfilePath": "",
                 "maxPeakBrightnessOverride": 540,
                 "mode": {
+                    "flags": 0,
                     "height": 1440,
                     "refreshRate": 59977,
                     "width": 5120
