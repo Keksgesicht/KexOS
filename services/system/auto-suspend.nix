@@ -1,8 +1,12 @@
-{ ... }:
+{ pkgs-stable, ... }:
 
+let
+  pkgs = pkgs-stable {};
+in
 {
   services.autosuspend = {
     enable = true;
+    package = pkgs.autosuspend;
     settings = {
       enable = true;
       interval = 60;
