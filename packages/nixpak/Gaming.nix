@@ -184,6 +184,7 @@ in
         # host system information
         "/etc/lsb-release"
         "/etc/os-release"
+        "/etc/zoneinfo"
 
         [ "${pkgMachineID}" "/etc/machine-id" ]
         [ "${pkgPasswd}" "/etc/passwd" ]
