@@ -101,6 +101,10 @@ let
         type = types.bool;
         default = false;
       };
+      wrapper.fido2 = lib.mkOption {
+        type = types.bool;
+        default = false;
+      };
       output.script = lib.mkOption {
         description = "The final wrapper script.";
         internal = true;
@@ -291,6 +295,12 @@ let
                   "${pkgs.tzdata}/share/zoneinfo"
                   "/usr/share/zoneinfo"
                 ]
+              ]
+              ++ lib.optionals (value.wrapper.fido2) [
+                "/run/pcscd/pcscd.comm"
+                "/sys/class/hidraw"
+                "/sys/dev/char"
+                "/sys/devices/pci0000:00"
               ];
               bind.rw = [
                 [
@@ -313,6 +323,10 @@ let
                   (sloth.concat' sloth.runtimeDir "/doc")
                 ]
               ];
+              bind.dev = []
+              ++ lib.optionals (value.wrapper.fido2) (
+                builtins.genList (i: "/dev/hidraw${builtins.toString i}") 10
+              );
               sockets = {
                 wayland = lib.mkDefault true;
                 x11     = lib.mkDefault false;

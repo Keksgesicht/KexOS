@@ -17,6 +17,7 @@ in
       ];
       audio = true;
       time  = true;
+      fido2 = true;
     };
 
     #dbus.args = [ "--log" ];

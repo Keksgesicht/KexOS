@@ -23,6 +23,7 @@ in
       chromiumCleanupScript = true;
       audio = true;
       time  = true;
+      fido2 = true;
     };
 
     dbus.policies = {
