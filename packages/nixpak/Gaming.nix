@@ -132,7 +132,9 @@ in
         */
 
         # Proton update and configuration
-        { package = pkgl.protonup-qt; binName = "protonup-qt"; }
+        { package = pkgl.protonup-qt; binName = "protonup-qt"; appFile = [
+          { src = "net.davidotek.pupgui2"; }
+        ]; }
         { package = pkgl.protontricks; binName = "protontricks"; }
       ]
       # additional tools
@@ -184,6 +186,7 @@ in
         # host system information
         "/etc/lsb-release"
         "/etc/os-release"
+        "/etc/zoneinfo"
 
         [ "${pkgMachineID}" "/etc/machine-id" ]
         [ "${pkgPasswd}" "/etc/passwd" ]

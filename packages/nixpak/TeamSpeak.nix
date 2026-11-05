@@ -41,6 +41,7 @@ in
 
     bubblewrap = {
       bind.ro = [
+        "/etc/zoneinfo"
         "/sys/bus"
         "/sys/class"
         "/sys/dev"
