@@ -66,11 +66,17 @@ in
         # USB Webcam
         "/sys/class/video4linux"
         "/sys/devices"
+        # FIDO2 Auth
+        "/run/pcscd/pcscd.comm"
+        "/sys/class/hidraw"
       ];
       bind.dev = [
         # USB Webcam
         "/dev/video0"
         "/dev/video1"
+        # FIDO2 Auth
+        "/dev/hidraw8"
+        "/dev/hidraw9"
       ];
       bind.rw = [
         (bindHomeDir name "/.mozilla")

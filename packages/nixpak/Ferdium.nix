@@ -35,6 +35,14 @@ in
     bubblewrap = {
       bind.rw = [
         (bindHomeDir name "/.config/Ferdium")
+        # FIDO2 Auth
+        "/run/pcscd/pcscd.comm"
+        "/sys/class/hidraw"
+      ];
+      bind.dev = [
+        # FIDO2 Auth
+        "/dev/hidraw8"
+        "/dev/hidraw9"
       ];
       network = true;
     };

@@ -39,6 +39,9 @@ in
           (sloth.concat' sloth.homeDir "/.mozilla/user.js")
         ]
         (sloth.mkdir (sloth.concat' sloth.homeDir "/Downloads/read-only"))
+        # FIDO2 Auth
+        "/run/pcscd/pcscd.comm"
+        "/sys/class/hidraw"
       ];
       bind.rw = [
         (bindHomeDir name "/.librewolf")
@@ -47,6 +50,11 @@ in
           (sloth.concat' sloth.homeDir "/.mozilla/librewolf")
         ]
         (sloth.mkdir (sloth.concat' sloth.homeDir "/Downloads/read-write"))
+      ];
+      bind.dev = [
+        # FIDO2 Auth
+        "/dev/hidraw8"
+        "/dev/hidraw9"
       ];
       network = true;
     };
