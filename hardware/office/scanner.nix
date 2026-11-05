@@ -2,7 +2,12 @@
 
 # https://nixos.wiki/wiki/Scanners
 let
-  pkgs-scan = pkgs-latest { config.allowUnfree = true; };
+  pkgs-scan = pkgs-latest {
+    config = {
+      allowUnfree = true;
+      problems.handlers."gtk+".broken = "ignore";
+    };
+  };
 
   epson-gt-x750-config = pkgs.writeTextFile {
     name = "epson-gt-x750.conf";
