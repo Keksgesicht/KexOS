@@ -1,9 +1,14 @@
 { bindHomeDir, ... }:
-{ pkgs-stable, pkgs-latest, ... }:
+{ pkgs-stable, pkgs-fetch, ... }:
 
 let
   name = "Chromium";
   pkgs = pkgs-stable {};
+  pkgf = (pkgs-fetch
+    "0e210d62d89ece047403dd879b85cd85dd6fb29b"
+    "sha256-rcqGrys6vDq0Y2WAIatcwzM79CZynRSm6wPPBBMDmmc="
+    {}
+  );
 
   # otherwise, chromium aggressivly tries to open KDE Wallet
   args-wallet = "--password-store=basic";
@@ -19,7 +24,7 @@ in
   nixpak."${name}" = {
     wrapper = {
       packages = [
-        { package = pkgs.brave; binName = "brave"; appFile = [
+        { package = pkgf.brave; binName = "brave"; appFile = [
           { src = "brave-browser"; args.extra = [ args-wallet args-vulkan ]; }
         ]; }
         { package = pkgs.ungoogled-chromium; binName = "chromium"; appFile = [
