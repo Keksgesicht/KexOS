@@ -24,6 +24,10 @@ let
         type = types.str;
         default = config.src;
       };
+      args.prepend = lib.mkOption {
+        type = types.str;
+        default = "";
+      };
       args.extra = lib.mkOption {
         type = with types; coercedTo (listOf str) (l:
           lib.strings.concatStringsSep " " l
@@ -417,7 +421,7 @@ let
         newBin  = "${mkNPfileWrapper}/bin/${name}";
         deskFileEdit = (lib.lists.forEach p.appFile (af:
           let
-            newExec = "${newBin} ${p.binName} ${af.args.extra}";
+            newExec = "${newBin} ${af.args.prepend} ${p.binName} ${af.args.extra}";
           in
           ''
             cp "$src/share/applications/${af.src}.desktop" \
