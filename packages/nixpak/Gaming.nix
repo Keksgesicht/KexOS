@@ -104,11 +104,14 @@ in
 {
   nixpak."${name}" = {
     wrapper = {
-      packages = [
+      packages = (with pkgo; [
+        # workaround with own dbus session for Steam runtime
+        dbus
+      ]) ++ [
         # Steam
-        { package = steamPkg; binName = "steam"; appFile = [
-          { dst = "com.valvesoftware.Steam"; }
-        ]; }
+        { package = steamPkg; binName = "steam"; appFile = [ {
+          dst = "com.valvesoftware.Steam"; args.prepend = "dbus-run-session";
+        } ]; }
         pkgl.steamcmd
 
         # Heroic Games Launcher
@@ -187,6 +190,9 @@ in
         "/etc/lsb-release"
         "/etc/os-release"
         "/etc/zoneinfo"
+
+        # workaround with own dbus session for Steam runtime
+        "/etc/dbus-1/session.conf"
 
         [ "${pkgMachineID}" "/etc/machine-id" ]
         [ "${pkgPasswd}" "/etc/passwd" ]
