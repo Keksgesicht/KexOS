@@ -1,5 +1,8 @@
 { config, lib, username, hdd-mnt, ... }:
 
+let
+  cmk-tmp = "/tmp/check_mk";
+in
 {
   imports = [
     ../../system/containers/podman.nix
@@ -23,7 +26,8 @@
       volumes = [
         "/dev/null:/etc/apache2/ports.conf:ro"
         "/etc/localtime:/etc/localtime:ro"
-        "/tmp/check_mk/sites:/opt/omd/sites/cmk/tmp"
+        "${cmk-tmp}/sites:/opt/omd/sites/cmk/tmp"
+        "${cmk-tmp}/spool-cron:/var/spool/cron"
         "${hdd-mnt}/appdata2/check_mk/monitoring:/omd/sites"
       ] ++ (lib.lists.forEach config.services.checkmk-agent.externalPlugins (e:
         "${e}:/tmp/check_mk-plugins/${builtins.baseNameOf e}:ro"
@@ -36,7 +40,8 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d  /tmp/check_mk        0750 - - - -"
-    "d  /tmp/check_mk/sites  0755 ${username} ${username} - -"
+    "d  ${cmk-tmp}             0750 - - - -"
+    "d  ${cmk-tmp}/sites       0755 ${username} ${username} - -"
+    "d  ${cmk-tmp}/spool-cron  0755 ${username} ${username} - -"
   ];
 }
